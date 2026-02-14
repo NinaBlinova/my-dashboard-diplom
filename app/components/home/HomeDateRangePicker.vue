@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DateFormatter, getLocalTimeZone, CalendarDate, today } from '@internationalized/date'
 import type { Range } from '~/types'
-
+// Компонент выбора временного диапазона.
 const df = new DateFormatter('en-US', {
   dateStyle: 'medium'
 })

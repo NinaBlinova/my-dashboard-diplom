@@ -151,23 +151,20 @@ const columns: TableColumn<Taxpayer>[] = [
   }
 ]
 
-const INN = computed({
-  get: (): string => {
-    return (table.value?.tableApi?.getColumn('INN')?.getFilterValue() as string) || ''
-  },
-  set: (value: string) => {
-    table.value?.tableApi?.getColumn('INN')?.setFilterValue(value || undefined)
-  }
-})
+const INNFilter = ref('')
+// const INN = computed({
+//   get: (): string => {
+//     return (table.value?.tableApi?.getColumn('INN')?.getFilterValue() as string) || ''
+//   },
+//   set: (value: string) => {
+//     table.value?.tableApi?.getColumn('INN')?.setFilterValue(value || undefined)
+//   }
+// })
 
 const pagination = reactive({
   pageIndex: 0,
   pageSize: 10
 })
-
-const INNFilter = ref('')
-// const pageIndex = ref(0)
-// const pageSize = ref(10)
 
 async function fetchTaxpayers() {
   const query = new URLSearchParams({
@@ -188,6 +185,10 @@ async function fetchTaxpayers() {
 }
 
 watch([() => pagination.pageIndex, () => pagination.pageSize, INNFilter], fetchTaxpayers, { immediate: true })
+const debouncedINNFilter = refDebounced(INNFilter, 300)
+watch(debouncedINNFilter, () => {
+  pagination.pageIndex = 0 // Сбрасываем на первую страницу при изменении фильтра
+})
 </script>
 
 <template>
@@ -207,7 +208,7 @@ watch([() => pagination.pageIndex, () => pagination.pageSize, INNFilter], fetchT
     <template #body>
       <div class="flex flex-wrap items-center justify-between gap-1.5">
         <UInput
-          v-model="INN"
+          v-model="INNFilter"
           class="max-w-sm"
           icon="i-lucide-search"
           placeholder="Filter INN..."
@@ -260,7 +261,6 @@ watch([() => pagination.pageIndex, () => pagination.pageSize, INNFilter], fetchT
 
       <UTable
         ref="table"
-        v-model:column-filters="columnFilters"
         v-model:column-visibility="columnVisibility"
         v-model:row-selection="rowSelection"
         :pagination="pagination"

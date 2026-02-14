@@ -1,49 +1,41 @@
+<template>
+  <div class="flex flex-wrap gap-4 items-center bg-ui-surface p-4 rounded-lg shadow-sm">
+    <!-- Tax Type -->
+    <USelect
+      v-model="filters.taxType"
+      :items="taxTypes"
+      label="Tax Type"
+      placeholder="Select tax type"
+      class="min-w-[180px]"
+      :disabled="filters.scope === 'alone'"
+    />
+
+    <USwitch v-model="modeBool" label="General / Average" />
+    <USwitch v-model="scopeBool" label="All / Alone" />
+  </div>
+</template>
+
 <script setup lang="ts">
-import { eachDayOfInterval } from 'date-fns'
-import type { Period, Range } from '~/types'
+import { useDashboardFilters } from '~/composables/useDashboardFilters'
 
-const model = defineModel<Period>({ required: true })
+const { filters } = useDashboardFilters()
 
-const props = defineProps<{
-  range: Range
-}>()
+// Список налогов
+const taxTypes = [
+  { label: 'Самозанятый (НПД)', value: 'SZ' },
+  { label: 'ИП на УСН 6%', value: 'IP6' },
+  { label: 'ИП на УСН 15%', value: 'IP15' },
+  { label: 'ИП на ОСНО', value: 'IPOS' },
+  { label: 'ИП на патенте', value: 'IPP' }
+]
 
-const days = computed(() => eachDayOfInterval(props.range))
-
-const periods = computed<Period[]>(() => {
-  if (days.value.length <= 8) {
-    return [
-      'daily'
-    ]
-  }
-
-  if (days.value.length <= 31) {
-    return [
-      'daily',
-      'weekly'
-    ]
-  }
-
-  return [
-    'weekly',
-    'monthly'
-  ]
+const modeBool = computed({
+  get: () => filters.mode === 'average',
+  set: (val: boolean) => filters.mode = val ? 'average' : 'general'
 })
 
-// Ensure the model value is always a valid period
-watch(periods, () => {
-  if (!periods.value.includes(model.value)) {
-    model.value = periods.value[0]!
-  }
+const scopeBool = computed({
+  get: () => filters.scope === 'alone',
+  set: (val: boolean) => filters.scope = val ? 'alone' : 'all'
 })
 </script>
-
-<template>
-  <USelect
-    v-model="model"
-    :items="periods"
-    variant="ghost"
-    class="data-[state=open]:bg-elevated"
-    :ui="{ value: 'capitalize', itemLabel: 'capitalize', trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200' }"
-  />
-</template>

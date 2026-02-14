@@ -60,3 +60,11 @@ export interface Range {
   start: Date
   end: Date
 }
+
+export interface DashboardFilters {
+  range: Range
+  period: Period
+  taxType?: string
+  mode: 'general' | 'average'
+  scope: 'all' | 'alone'
+}

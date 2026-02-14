@@ -18,7 +18,7 @@ const links = [[{
   label: 'Taxpayers',
   icon: 'i-lucide-users',
   to: '/taxpayers',
-  badge: '4',
+  // badge: '4',
   onSelect: () => {
     open.value = false
   }

@@ -10,8 +10,14 @@
       :disabled="filters.scope === 'alone'"
     />
 
-    <USwitch v-model="modeBool" label="General / Average" />
-    <USwitch v-model="scopeBool" label="All / Alone" />
+    <USwitch v-model="scope" label="All / Alone" />
+    <UInput
+      v-if="filters.scope === 'alone'"
+      v-model="filters.inn"
+      label="ИНН"
+      placeholder="Введите ИНН"
+      class="min-w-[220px]"
+    />
   </div>
 </template>
 
@@ -29,13 +35,10 @@ const taxTypes = [
   { label: 'ИП на патенте', value: 'IPP' }
 ]
 
-const modeBool = computed({
-  get: () => filters.mode === 'average',
-  set: (val: boolean) => filters.mode = val ? 'average' : 'general'
-})
-
-const scopeBool = computed({
-  get: () => filters.scope === 'alone',
-  set: (val: boolean) => filters.scope = val ? 'alone' : 'all'
+const scope = computed<boolean>({
+  get: () => filters.value.scope === 'alone',
+  set: (val: boolean) => {
+    filters.value.scope = val ? 'alone' : 'all'
+  }
 })
 </script>

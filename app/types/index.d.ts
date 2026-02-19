@@ -67,4 +67,35 @@ export interface DashboardFilters {
   taxType?: string
   mode: 'general' | 'average'
   scope: 'all' | 'alone'
+  inn: undefined
+}
+
+interface YearsResponse {
+  data?: {
+    max_year?: number
+    min_year?: number
+    years?: number[]
+  }
+  success: boolean
+}
+
+interface GrowthData {
+  TotalIncomeGrowth?: number | null
+  TotalTaxGrowth?: number | null
+  TotalTransactionsGrowth?: number | null
+}
+
+export interface GrowthApiItem {
+  'IncomeGrowth_%': number | null
+  'TaxGrowth_%': number | null
+  'TransactionsGrowth_%': number | null
+  'Year': number
+}
+
+interface DashboardStatistics {
+  taxpayers: number
+  income: number
+  tax: number
+  transactions: number
+  variation: GrowthData
 }

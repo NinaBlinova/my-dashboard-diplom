@@ -1,9 +1,9 @@
-import { reactive, watch } from 'vue'
+import { watch } from 'vue'
 import { sub } from 'date-fns'
 import type { DashboardFilters, Period } from '~/types'
 
 export function useDashboardFilters() {
-  const filters = reactive<DashboardFilters>({
+  const filters = useState<DashboardFilters>('dashboard-filters', () => ({
     range: {
       start: sub(new Date(), { days: 14 }),
       end: new Date()
@@ -11,21 +11,14 @@ export function useDashboardFilters() {
     period: 'monthly' as Period,
     taxType: undefined,
     mode: 'general',
-    scope: 'all'
-  })
+    scope: 'all',
+    inn: undefined
+  }))
 
-  // Правило 1: если выбран тип налога → считаем по всем налогоплательщикам all
-  watch(() => filters.taxType, (value) => {
-    if (value) {
-      filters.scope = 'all'
-    }
-  })
-
-  // Правило 2: если scope = alone → taxType = null и mode = general
-  watch(() => filters.scope, (value) => {
+  // Rule 1: if scope = alone → taxType = null and mode = general
+  watch(() => filters.value.scope, (value) => {
     if (value === 'alone') {
-      filters.taxType = undefined
-      filters.mode = 'general'
+      filters.value.taxType = undefined
     }
   })
 

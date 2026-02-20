@@ -33,25 +33,23 @@ export default defineEventHandler(async (event) => {
     ? `${config.public.backendUrl}/api/dashboard/taxpayers/${taxType}`
     : `${config.public.backendUrl}/api/dashboard/taxpayers`
 
-  const [count, average, growth] = await Promise.all([
+  const [count, yearly] = await Promise.all([
     $fetch(taxpayersUrl),
-    $fetch(taxType
-      ? `${backend}/api/dashboard/monthly/median/${taxType}`
-      : `${backend}/api/dashboard/monthly/median`),
-    $fetch(taxType
-      ? `${backend}/api/dashboard/yearly/growth/median/${taxType}`
-      : `${backend}/api/dashboard/yearly/growth/median`)
+    $fetch(
+      taxType
+        ? `${backend}/api/dashboard/yearly/growth/median/${taxType}`
+        : `${backend}/api/dashboard/yearly/growth/median`
+    )
   ])
 
-  const latest = average.data?.at(-1) ?? {}
-  const latestGrowth = growth.data?.at(-1) ?? {}
+  const latest = yearly.data?.at(-1) ?? {}
 
   return {
     taxpayers: count.count ?? 0,
     income: latest.Income ?? 0,
     tax: latest.Tax ?? 0,
     transactions: latest.Transactions ?? 0,
-    variation: roundVariation(latestGrowth)
+    variation: roundVariation(latest)
   }
 })
 

@@ -24,15 +24,12 @@ const links = [[{
   }
 }, {
   // Customers
-  label: 'Analysis',
-  icon: 'i-lucide-chart-bar',
+  label: 'Models',
+  icon: 'i-lucide-brain',
   to: '/inbox',
   onSelect: () => {
     open.value = false
   }
-}, {
-  label: 'Models',
-  icon: 'i-lucide-brain'
 }, {
   label: 'Settings',
   to: '/settings',

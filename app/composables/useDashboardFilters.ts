@@ -1,18 +1,14 @@
 import { watch } from 'vue'
-import { sub } from 'date-fns'
-import type { DashboardFilters, Period } from '~/types'
+import type { DashboardFilters } from '~/types'
 
 export function useDashboardFilters() {
   const filters = useState<DashboardFilters>('dashboard-filters', () => ({
-    range: {
-      start: sub(new Date(), { days: 14 }),
-      end: new Date()
-    },
-    period: 'monthly' as Period,
     taxType: undefined,
     mode: 'general',
     scope: 'all',
-    inn: undefined
+    inn: undefined,
+    startYear: undefined,
+    endYear: undefined
   }))
 
   // Rule 1: if scope = alone → taxType = null and mode = general

@@ -62,12 +62,12 @@ export interface Range {
 }
 
 export interface DashboardFilters {
-  range: Range
-  period: Period
   taxType?: string
   mode: 'general' | 'average'
   scope: 'all' | 'alone'
   inn: undefined
+  startYear?: number
+  endYear?: number
 }
 
 interface YearsResponse {
@@ -85,11 +85,14 @@ interface GrowthData {
   TotalTransactionsGrowth?: number | null
 }
 
-export interface GrowthApiItem {
+export type GrowthApiItem = {
+  'Year': number
+  'Income': number
+  'Tax': number
+  'Transactions': number
   'IncomeGrowth_%': number | null
   'TaxGrowth_%': number | null
   'TransactionsGrowth_%': number | null
-  'Year': number
 }
 
 interface DashboardStatistics {
@@ -98,4 +101,52 @@ interface DashboardStatistics {
   tax: number
   transactions: number
   variation: GrowthData
+}
+
+export interface YearlyItem {
+  Income: number
+  Tax: number
+  Transactions: number
+  Year: number
+}
+
+export interface YearlyResponse {
+  data: YearlyItem[]
+}
+
+export interface GrowthResponse {
+  data: GrowthApiItem[]
+}
+
+export interface TaxpayersCountResponse {
+  count: number
+}
+
+export interface MonthlyApiItem {
+  Id: number
+  Year: number
+  Month: number
+  Income: number
+  Tax: number
+  Transactions: number
+  TaxType: string | null
+  CreatedAt: string
+}
+
+export interface MonthlyResponse {
+  success: boolean
+  data: MonthlyApiItem[]
+}
+
+export interface MonthlyGeneralItem {
+  Month: number
+  Year: number
+  TotalIncome: number
+  TotalTax: number
+  TotalTransactions: number
+}
+
+export interface MonthlyGeneralResponse {
+  success: boolean
+  data: MonthlyGeneralItem[]
 }

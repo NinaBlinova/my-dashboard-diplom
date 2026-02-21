@@ -15,10 +15,6 @@ const UCheckbox = resolveComponent('UCheckbox')
 const toast = useToast()
 const table = useTemplateRef('table')
 
-const columnFilters = ref([{
-  id: 'INN',
-  value: ''
-}])
 const columnVisibility = ref()
 const rowSelection = ref({ 1: true })
 

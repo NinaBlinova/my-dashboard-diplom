@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import type { YearsResponse } from '~/types'
 
+const { filters } = useDashboardFilters()
 const availableYears = ref<number[]>([])
 const selectedYear = ref<number | undefined>(undefined)
 const maxYear = ref<number | undefined>(undefined)
@@ -36,6 +37,10 @@ const upperBound = computed(() => {
 })
 
 onMounted(fetchYears)
+watch(selectedYear, (selectedYear) => {
+  filters.value.startYear = selectedYear
+  filters.value.endYear = upperBound.value
+})
 </script>
 
 <template>

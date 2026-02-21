@@ -1,105 +1,163 @@
 <script setup lang="ts">
-import { eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, format } from 'date-fns'
+import { computed, watchEffect } from 'vue'
 import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
-import type { Period, Range } from '~/types'
-// Это реальный график (Unovis).
-const cardRef = useTemplateRef<HTMLElement | null>('cardRef')
+
+type ApiItem = {
+  Year: number
+  Month: number
+  Income: number
+  Tax: number
+  Transactions: number
+}
+
+type ChartPoint = {
+  x: number
+  value: number
+  year: number
+  label: string
+}
 
 const props = defineProps<{
-  period: Period
-  range: Range
+  title: string
+  metric: 'Income' | 'Tax' | 'Transactions'
+  data: ApiItem[]
 }>()
 
-type DataRecord = {
-  date: Date
-  amount: number
-}
+const getX = (d: ChartPoint): number => d.x
+// const getY = (d: ChartPoint): number => d.value
 
-const { width } = useElementSize(cardRef)
+const groupedByYear = computed<Record<number, ApiItem[]>>(() => {
+  const groups: Record<number, ApiItem[]> = {}
 
-const data = ref<DataRecord[]>([])
+  if (!Array.isArray(props.data)) return groups
 
-watch([() => props.period, () => props.range], () => {
-  const dates = ({
-    daily: eachDayOfInterval,
-    weekly: eachWeekOfInterval,
-    monthly: eachMonthOfInterval
-  } as Record<Period, typeof eachDayOfInterval>)[props.period](props.range)
-
-  const min = 1000
-  const max = 10000
-
-  data.value = dates.map(date => ({ date, amount: Math.floor(Math.random() * (max - min + 1)) + min }))
-}, { immediate: true })
-
-const x = (_: DataRecord, i: number) => i
-const y = (d: DataRecord) => d.amount
-
-const total = computed(() => data.value.reduce((acc: number, { amount }) => acc + amount, 0))
-
-const formatNumber = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format
-
-const formatDate = (date: Date): string => {
-  return ({
-    daily: format(date, 'd MMM'),
-    weekly: format(date, 'd MMM'),
-    monthly: format(date, 'MMM yyy')
-  })[props.period]
-}
-
-const xTicks = (i: number) => {
-  if (i === 0 || i === data.value.length - 1 || !data.value[i]) {
-    return ''
+  for (const item of props.data) {
+    if (!groups[item.Year]) {
+      groups[item.Year] = []
+    }
+    groups[item.Year]!.push(item)
   }
 
-  return formatDate(data.value[i].date)
-}
+  return groups
+})
 
-const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amount)}`
+const series = computed<{ year: number, data: ChartPoint[] }[]>(() =>
+  Object.entries(groupedByYear.value).map(([year, items]) => {
+    const typedItems = items as ApiItem[]
+
+    return {
+      year: Number(year),
+      data: typedItems
+        .sort((a, b) => a.Month - b.Month)
+        .map((d: ApiItem): ChartPoint => ({
+          x: d.Month,
+          value: d[props.metric],
+          year: Number(d.Year),
+          label: `${d.Month}.${d.Year}`
+        }))
+    }
+  })
+)
+
+const template = (d: ChartPoint) =>
+  `${d.label}: ${d.value.toLocaleString()}`
+
+watchEffect(() => {
+  console.log('RAW API DATA:', props.data)
+  console.log('CHART DATA:', series.value)
+})
+
+const getCssVar = (name: string): string =>
+  getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim()
+
+const themePalette = computed<string[]>(() => {
+  const colors = [
+    getCssVar('--ui-primary'),
+    getCssVar('--ui-success'),
+    getCssVar('--ui-warning'),
+    getCssVar('--ui-danger'),
+    getCssVar('--ui-info')
+  ].filter((c): c is string => Boolean(c))
+
+  return colors.length ? colors : ['#3b82f6'] // fallback
+})
+
+const usedColors = new Map<number, string>()
+
+const getColor = (year: number): string => {
+  if (usedColors.has(year)) {
+    return usedColors.get(year)!
+  }
+  const palette = themePalette.value
+  if (!palette.length) {
+    return '#3b82f6'
+  }
+  const taken = new Set(usedColors.values())
+  const available = palette.find(c => !taken.has(c))
+  const fallback = palette[usedColors.size % palette.length]
+  const color = available || fallback || '#3b82f6'
+  usedColors.set(year, color)
+  return color
+}
+watch(series, () => {
+  usedColors.clear()
+})
+
+const containerData = computed<ChartPoint[]>(() =>
+  series.value.flatMap(s => s.data)
+)
 </script>
 
 <template>
-  <UCard ref="cardRef" :ui="{ root: 'overflow-visible', body: '!px-0 !pt-0 !pb-3' }">
+  <UCard :ui="{ body: '!px-0 !pt-0 !pb-3' }">
     <template #header>
       <div>
         <p class="text-xs text-muted uppercase mb-1.5">
-          Revenue
+          {{ title }}
         </p>
-        <p class="text-3xl text-highlighted font-semibold">
-          {{ formatNumber(total) }}
-        </p>
+        <div class="flex flex-wrap gap-4">
+          <div
+            v-for="s in series"
+            :key="s.year"
+            class="flex items-center gap-2 text-sm"
+          >
+            <span
+              class="w-3 h-3 rounded-full"
+              :style="{ backgroundColor: getColor(s.year) }"
+            />
+            <span class="font-medium">
+              {{ s.year }}
+            </span>
+          </div>
+        </div>
       </div>
     </template>
 
     <VisXYContainer
-      :data="data"
-      :padding="{ top: 40 }"
-      class="h-96"
-      :width="width"
+      v-if="containerData.length"
+      :data="containerData"
+      class="h-72"
     >
-      <VisLine
-        :x="x"
-        :y="y"
-        color="var(--ui-primary)"
-      />
-      <VisArea
-        :x="x"
-        :y="y"
-        color="var(--ui-primary)"
-        :opacity="0.1"
-      />
+      <template v-for="s in series" :key="s.year">
+        <VisLine
+          :x="getX"
+          :y="(d: ChartPoint) => d.year === s.year ? d.value : undefined"
+          :color="getColor(s.year)"
+        />
 
-      <VisAxis
-        type="x"
-        :x="x"
-        :tick-format="xTicks"
-      />
+        <VisArea
+          :x="getX"
+          :y="(d: ChartPoint) => d.year === s.year ? d.value : undefined"
+          :color="getColor(s.year)"
+          :opacity="0.08"
+        />
+      </template>
 
-      <VisCrosshair
-        color="var(--ui-primary)"
-        :template="template"
-      />
-
+      <VisAxis type="x" />
+      <VisAxis type="y" />
+      <VisCrosshair :template="template" />
       <VisTooltip />
     </VisXYContainer>
   </UCard>

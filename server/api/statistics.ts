@@ -1,31 +1,35 @@
 import type { GrowthData, GrowthApiItem } from '~/types'
 
+type GrowthResponse = {
+  data: GrowthApiItem[]
+  success: boolean
+}
+
+type TaxpayersCountResponse = {
+  count: number
+}
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
-
   const query = getQuery(event)
-
   const scope = query.scope as string
   const taxType = query.taxType as string | undefined
   const inn = query.inn as string | undefined
-
   const backend = config.public.backendUrl
 
   if (scope === 'alone' && inn) {
-    const [yearly, growth] = await Promise.all([
-      $fetch(`${config.public.backendUrl}/api/dashboard/yearly/median/${inn}`),
-      $fetch(`${config.public.backendUrl}/api/dashboard/yearly/growth/${inn}`)
-    ])
+    const response = await $fetch<GrowthResponse>(
+      `${backend}/api/dashboard/yearly/growth/${inn}`
+    )
 
-    const latest = yearly.data?.at(-1) || {}
-    const latestGrowth = growth.data?.at(-1) || {}
+    const latest = response.data?.at(-1)
 
     return {
       taxpayers: 1,
-      income: latest.Income || 0,
-      tax: latest.Tax || 0,
-      transactions: latest.Transactions || 0,
-      variation: roundVariation(latestGrowth)
+      income: latest?.Income ?? 0,
+      tax: latest?.Tax ?? 0,
+      transactions: latest?.Transactions ?? 0,
+      variation: roundVariation(latest)
     }
   }
 
@@ -34,21 +38,21 @@ export default defineEventHandler(async (event) => {
     : `${config.public.backendUrl}/api/dashboard/taxpayers`
 
   const [count, yearly] = await Promise.all([
-    $fetch(taxpayersUrl),
-    $fetch(
+    $fetch<TaxpayersCountResponse>(taxpayersUrl),
+    $fetch<GrowthResponse>(
       taxType
         ? `${backend}/api/dashboard/yearly/growth/median/${taxType}`
         : `${backend}/api/dashboard/yearly/growth/median`
     )
   ])
 
-  const latest = yearly.data?.at(-1) ?? {}
+  const latest = yearly.data?.at(-1)
 
   return {
     taxpayers: count.count ?? 0,
-    income: latest.Income ?? 0,
-    tax: latest.Tax ?? 0,
-    transactions: latest.Transactions ?? 0,
+    income: latest?.Income ?? 0,
+    tax: latest?.Tax ?? 0,
+    transactions: latest?.Transactions ?? 0,
     variation: roundVariation(latest)
   }
 })

@@ -36,18 +36,18 @@ const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboar
 })
 const monthlyDataMedian = computed(() => response_median.value?.data ?? [])
 
-// const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboard', {
-//   query: computed(() => ({
-//     type: 'monthly-general',
-//     scope: filters.value.scope,
-//     taxType: filters.value.taxType,
-//     inn: filters.value.inn,
-//     startYear: filters.value.startYear,
-//     endYear: filters.value.endYear
-//   }))
-// })
-//
-// const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
+const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboard', {
+  query: computed(() => ({
+    type: 'monthly-general',
+    scope: filters.value.scope,
+    taxType: filters.value.taxType,
+    inn: filters.value.inn,
+    startYear: filters.value.startYear,
+    endYear: filters.value.endYear
+  }))
+})
+
+const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
 </script>
 
 <template>
@@ -107,23 +107,23 @@ const monthlyDataMedian = computed(() => response_median.value?.data ?? [])
           :data="monthlyDataMedian"
         />
       </div>
-      <!--      <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> -->
-      <!--        <HomeChart -->
-      <!--          title="Income" -->
-      <!--          metric="Income" -->
-      <!--          :data="monthlyDataGeneral" -->
-      <!--        /> -->
-      <!--        <HomeChart -->
-      <!--          title="Tax" -->
-      <!--          metric="Tax" -->
-      <!--          :data="monthlyDataGeneral" -->
-      <!--        /> -->
-      <!--        <HomeChart -->
-      <!--          title="Transactions" -->
-      <!--          metric="Transactions" -->
-      <!--          :data="monthlyDataGeneral" -->
-      <!--        /> -->
-      <!--      </div> -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <HomeChart
+          title="Income"
+          metric="Income"
+          :data="monthlyDataGeneral"
+        />
+        <HomeChart
+          title="Tax"
+          metric="Tax"
+          :data="monthlyDataGeneral"
+        />
+        <HomeChart
+          title="Transactions"
+          metric="Transactions"
+          :data="monthlyDataGeneral"
+        />
+      </div>
       <!--      <HomeSales :period="period" :range="range" /> -->
     </template>
   </UDashboardPanel>

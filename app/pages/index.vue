@@ -35,6 +35,9 @@ const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboa
 })
 
 const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
+// watchEffect(() => {
+//   console.log('MONTHLY MEDIAN:', monthlyDataMedian.value)
+// })
 </script>
 
 <template>
@@ -88,6 +91,16 @@ const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
         <HomeChart
           title="Transactions"
           metric="Transactions"
+          :data="monthlyDataGeneral"
+        />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <HomeIncomeTransactionChart
+          title="Income = F(Transactions) (Median)"
+          :data="monthlyDataMedian"
+        />
+        <HomeIncomeTransactionChart
+          title="Income = F(Transactions) (General)"
           :data="monthlyDataGeneral"
         />
       </div>

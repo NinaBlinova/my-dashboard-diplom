@@ -51,8 +51,7 @@ const getTooltip = (d: PieItem): string =>
           {{ intervalLabel }}
         </p>
         <p class="text-xs text-muted">
-          {{ transactions }} transactions •
-          {{ (transactions / 12).toFixed(1) }} per month
+          {{ transactions }} transactions per month
         </p>
       </div>
     </template>

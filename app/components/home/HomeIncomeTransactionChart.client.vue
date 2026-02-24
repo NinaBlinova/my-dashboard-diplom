@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
+import { computed, watch } from 'vue'
+import {
+  VisXYContainer,
+  VisScatter,
+  VisLine,
+  VisAxis,
+  VisTooltip,
+  VisCrosshair
+} from '@unovis/vue'
 
 type ApiItem = {
   Year: number
@@ -12,26 +19,20 @@ type ApiItem = {
 
 type ChartPoint = {
   x: number
-  value: number
+  y: number
   year: number
   label: string
 }
 
 const props = defineProps<{
-  title: string
-  metric: 'Income' | 'Tax' | 'Transactions'
+  title?: string
   data: ApiItem[]
 }>()
-
-const getX = (d: ChartPoint): number => d.x
-// const getY = (d: ChartPoint): number => d.value
 
 const groupedByYear = computed<Record<number, ApiItem[]>>(() => {
   const groups: Record<number, ApiItem[]> = {}
 
-  if (!Array.isArray(props.data)) return groups
-
-  for (const item of props.data) {
+  for (const item of props.data ?? []) {
     if (!groups[item.Year]) {
       groups[item.Year] = []
     }
@@ -42,52 +43,68 @@ const groupedByYear = computed<Record<number, ApiItem[]>>(() => {
 })
 
 const series = computed<{ year: number, data: ChartPoint[] }[]>(() =>
-  Object.entries(groupedByYear.value).map(([year, items]) => {
-    const typedItems = items as ApiItem[]
-
-    return {
-      year: Number(year),
-      data: typedItems
-        .sort((a, b) => a.Month - b.Month)
-        .map((d: ApiItem): ChartPoint => ({
-          x: d.Month,
-          value: d[props.metric],
-          year: Number(d.Year),
-          label: `${d.Month}.${d.Year}`
-        }))
-    }
-  })
+  Object.entries(groupedByYear.value).map(([year, items]) => ({
+    year: Number(year),
+    data: [...items]
+      .sort((a, b) => a.Transactions - b.Transactions)
+      .map((d: ApiItem): ChartPoint => ({
+        x: d.Transactions,
+        y: d.Income,
+        year: d.Year,
+        label: `${d.Month}.${d.Year}`
+      }))
+  }))
 )
 
-const template = (d: ChartPoint) =>
-  `${d.label}: ${d.value.toLocaleString()}`
+const getX = (d: ChartPoint): number => d.x
+// const getY = (d: ChartPoint): number => d.y
 
-// watchEffect(() => {
-//   console.log('RAW API DATA:', props.data)
-//   console.log('CHART DATA:', series.value)
-// })
 const usedColors = new Map<number, string>()
 
 const getColor = (year: number): string => {
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
   return colors[year % colors.length] ?? '#3b82f6'
 }
+
 watch(series, () => {
   usedColors.clear()
 })
 
-const containerData = computed<ChartPoint[]>(() =>
+const formatCurrency = (v: number) =>
+  v.toLocaleString('ru-RU', {
+    style: 'currency',
+    currency: 'RUB',
+    maximumFractionDigits: 0
+  })
+
+const template = (d: ChartPoint) => `
+${d.label}
+Transactions: ${d.x.toLocaleString()}
+Income: ${formatCurrency(d.y)}
+`
+
+const containerData = computed(() =>
   series.value.flatMap(s => s.data)
 )
+
+// watchEffect(() => {
+//   console.log('RAW:', props.data.length)
+//
+//   series.value.forEach((s) => {
+//     console.log(`Year ${s.year}:`, s.data.length)
+//   })
+// })
 </script>
 
 <template>
+  <!--  <pre>{{ series }}</pre> -->
   <UCard :ui="{ body: '!px-0 !pt-0 !pb-3' }">
     <template #header>
       <div>
         <p class="text-xs text-muted uppercase mb-1.5">
-          {{ title }}
+          {{ title || 'Income vs Transactions' }}
         </p>
+
         <div class="flex flex-wrap gap-4">
           <div
             v-for="s in series"
@@ -109,23 +126,22 @@ const containerData = computed<ChartPoint[]>(() =>
     <VisXYContainer
       v-if="containerData.length"
       :data="containerData"
-      class="h-72"
+      class="h-80"
     >
       <template v-for="s in series" :key="s.year">
+        <VisScatter
+          :x="getX"
+          :y="(d: ChartPoint) => d.year === s.year ? d.y : undefined"
+          :color="getColor(s.year)"
+          :size="8"
+        />
         <VisLine
           :x="getX"
-          :y="(d: ChartPoint) => d.year === s.year ? d.value : undefined"
+          :y="(d: ChartPoint) => d.year === s.year ? d.y : undefined"
           :color="getColor(s.year)"
-        />
-
-        <VisArea
-          :x="getX"
-          :y="(d: ChartPoint) => d.year === s.year ? d.value : undefined"
-          :color="getColor(s.year)"
-          :opacity="0.08"
+          :opacity="0.5"
         />
       </template>
-
       <VisAxis type="x" />
       <VisAxis type="y" />
       <VisCrosshair :template="template" />
@@ -133,18 +149,3 @@ const containerData = computed<ChartPoint[]>(() =>
     </VisXYContainer>
   </UCard>
 </template>
-
-<style scoped>
-.unovis-xy-container {
-  --vis-crosshair-line-stroke-color: var(--ui-primary);
-  --vis-crosshair-circle-stroke-color: var(--ui-bg);
-
-  --vis-axis-grid-color: var(--ui-border);
-  --vis-axis-tick-color: var(--ui-border);
-  --vis-axis-tick-label-color: var(--ui-text-dimmed);
-
-  --vis-tooltip-background-color: var(--ui-bg);
-  --vis-tooltip-border-color: var(--ui-border);
-  --vis-tooltip-text-color: var(--ui-text-highlighted);
-}
-</style>

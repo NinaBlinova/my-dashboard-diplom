@@ -43,7 +43,7 @@ const yearlyCharts = computed(() => {
 
   const sorted = [...filtered].sort((a, b) => a.Year - b.Year)
 
-  return sorted.map((year) => ({
+  return sorted.map(year => ({
     label: String(year.Year),
     income: year.Income,
     tax: year.Tax,
@@ -72,7 +72,6 @@ const yearlyCharts = computed(() => {
     >
       <div class="flex items-center gap-2">
         <span class="text-2xl font-semibold text-highlighted">
-          <!-- форматируем Tax красиво -->
           {{ stat.title === 'Tax'
             ? formatCurrency(stat.value)
             : stat.value }}
@@ -89,7 +88,7 @@ const yearlyCharts = computed(() => {
       </div>
     </UPageCard>
   </UPageGrid>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <HomePieChart
       v-for="item in yearlyCharts"
       :key="item.label"

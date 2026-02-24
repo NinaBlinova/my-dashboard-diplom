@@ -38,6 +38,7 @@ const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
 // watchEffect(() => {
 //   console.log('MONTHLY MEDIAN:', monthlyDataMedian.value)
 // })
+const isAlone = computed(() => filters.value.scope === 'alone')
 </script>
 
 <template>
@@ -58,7 +59,24 @@ const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
       </UDashboardToolbar>
     </template>
 
-    <template #body>
+    <!-- 🔹 ALONE -->
+    <template v-if="isAlone" #body>
+      <HomeStats :period="period" :range="range" />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <HomeChart title="Income" metric="Income" :data="monthlyDataMedian" />
+        <HomeChart title="Tax" metric="Tax" :data="monthlyDataMedian" />
+        <HomeChart title="Transactions" metric="Transactions" :data="monthlyDataMedian" />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <HomeIncomeTransactionChart
+          title="Income = F(Transactions)"
+          :data="monthlyDataMedian"
+        />
+      </div>
+    </template>
+
+    <template v-else #body>
       <HomeStats :period="period" :range="range" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <HomeChart

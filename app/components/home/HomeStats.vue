@@ -19,7 +19,8 @@ const { data: yearlyResponse } = await useFetch('/api/pie_chart', {
   query: computed(() => ({
     scope: filters.value.scope,
     taxType: filters.value.taxType,
-    inn: filters.value.inn
+    inn: filters.value.inn,
+    year: filters.value.startYear
   }))
 })
 

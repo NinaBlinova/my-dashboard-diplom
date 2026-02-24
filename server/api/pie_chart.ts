@@ -12,12 +12,18 @@ export default defineEventHandler(async (event) => {
   const scope = query.scope as string
   const taxType = query.taxType as string | undefined
   const inn = query.inn as string | undefined
+  const year = query.year as string | undefined
 
   const backend = config.public.backendUrl
 
   if (scope === 'alone' && inn) {
     return await $fetch<GrowthResponse>(
-      `${backend}/api/dashboard/yearly/growth/${inn}`
+      `${backend}/api/dashboard/yearly/growth/${inn}`,
+      {
+        query: {
+          year
+        }
+      }
     )
   }
 

@@ -52,6 +52,21 @@ const yearlyCharts = computed(() => {
     color: generateColorFromYear(year.Year)
   }))
 })
+
+const histogramData = computed(() => {
+  const data = yearlyData.value
+  if (!data || data.length === 0) return []
+
+  const start = Number(filters.value.startYear)
+  const end = Number(filters.value.endYear)
+
+  return [...data]
+    .filter(item =>
+      (!start || item.Year >= start)
+      && (!end || item.Year <= end)
+    )
+    .sort((a, b) => a.Year - b.Year)
+})
 </script>
 
 <template>
@@ -98,6 +113,12 @@ const yearlyCharts = computed(() => {
       :tax="item.tax"
       :transactions="item.transactions"
       :color="item.color"
+    />
+  </div>
+  <div class="mt-6">
+    <HomeHistogram
+      title="Income / Tax / Transactions"
+      :data="histogramData"
     />
   </div>
 </template>

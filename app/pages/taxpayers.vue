@@ -4,8 +4,8 @@ import { upperFirst } from 'scule'
 import type { Row } from '@tanstack/table-core'
 import type { Taxpayer } from '~/types'
 
-import AddModal from '~/components/taxpayers/AddModal.vue'
-import DeleteModal from '~/components/taxpayers/DeleteModal.vue'
+// import AddModal from '~/components/taxpayers/AddModal.vue'
+// import DeleteModal from '~/components/taxpayers/DeleteModal.vue'
 
 const UAvatar = resolveComponent('UAvatar')
 const UButton = resolveComponent('UButton')
@@ -48,25 +48,14 @@ function getRowItems(row: Row<Taxpayer>) {
     },
     {
       label: 'View taxpayer details',
-      icon: 'i-lucide-list'
-    },
-    {
-      label: 'View taxpayer payments',
-      icon: 'i-lucide-wallet'
+      icon: 'i-lucide-list',
+      onSelect() {
+        selectedINN.value = row.original.INN
+        viewModalOpen.value = true
+      }
     },
     {
       type: 'separator'
-    },
-    {
-      label: 'Delete taxpayer',
-      icon: 'i-lucide-trash',
-      color: 'error',
-      onSelect() {
-        toast.add({
-          title: 'Taxpayer deleted',
-          description: 'The taxpayer has been deleted.'
-        })
-      }
     }
   ]
 }
@@ -180,6 +169,9 @@ async function fetchTaxpayers() {
   }
 }
 
+const selectedINN = ref<string | null>(null)
+const viewModalOpen = ref(false)
+
 watch([() => pagination.pageIndex, () => pagination.pageSize, INNFilter], fetchTaxpayers, { immediate: true })
 const debouncedINNFilter = refDebounced(INNFilter, 300)
 watch(debouncedINNFilter, () => {
@@ -196,7 +188,7 @@ watch(debouncedINNFilter, () => {
         </template>
 
         <template #right>
-          <AddModal />
+          <!--          <AddModal /> -->
         </template>
       </UDashboardNavbar>
     </template>
@@ -211,21 +203,21 @@ watch(debouncedINNFilter, () => {
         />
 
         <div class="flex flex-wrap items-center gap-1.5">
-          <DeleteModal :count="table?.tableApi?.getFilteredSelectedRowModel().rows.length">
-            <UButton
-              v-if="table?.tableApi?.getFilteredSelectedRowModel().rows.length"
-              label="Delete"
-              color="error"
-              variant="subtle"
-              icon="i-lucide-trash"
-            >
-              <template #trailing>
-                <UKbd>
-                  {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length }}
-                </UKbd>
-              </template>
-            </UButton>
-          </DeleteModal>
+          <!--          <DeleteModal :count="table?.tableApi?.getFilteredSelectedRowModel().rows.length"> -->
+          <!--            <UButton -->
+          <!--              v-if="table?.tableApi?.getFilteredSelectedRowModel().rows.length" -->
+          <!--              label="Delete" -->
+          <!--              color="error" -->
+          <!--              variant="subtle" -->
+          <!--              icon="i-lucide-trash" -->
+          <!--            > -->
+          <!--              <template #trailing> -->
+          <!--                <UKbd> -->
+          <!--                  {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length }} -->
+          <!--                </UKbd> -->
+          <!--              </template> -->
+          <!--            </UButton> -->
+          <!--          </DeleteModal> -->
           <UDropdownMenu
             :items="
               table?.tableApi
@@ -291,6 +283,10 @@ watch(debouncedINNFilter, () => {
           />
         </div>
       </div>
+      <TaxpayersTaxpayerDetailsModal
+        v-model:open="viewModalOpen"
+        :inn="selectedINN"
+      />
     </template>
   </UDashboardPanel>
 </template>

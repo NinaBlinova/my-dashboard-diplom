@@ -62,10 +62,10 @@ const series = computed<{ year: number, data: ChartPoint[] }[]>(() =>
 const template = (d: ChartPoint) =>
   `${d.label}: ${d.value.toLocaleString()}`
 
-watchEffect(() => {
-  console.log('RAW API DATA:', props.data)
-  console.log('CHART DATA:', series.value)
-})
+// watchEffect(() => {
+//   console.log('RAW API DATA:', props.data)
+//   console.log('CHART DATA:', series.value)
+// })
 
 const getCssVar = (name: string): string =>
   getComputedStyle(document.documentElement)

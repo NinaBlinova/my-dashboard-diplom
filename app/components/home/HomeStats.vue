@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { stats } = useDashboardStats()
+const { filters } = useDashboardFilters()
 
 function formatCurrency(value: number): string {
   return value.toLocaleString('ru-RU', {
@@ -8,6 +9,48 @@ function formatCurrency(value: number): string {
     maximumFractionDigits: 0
   })
 }
+
+function generateColorFromYear(year: number) {
+  const hue = (year * 47) % 360
+  return `hsl(${hue}, 70%, 55%)`
+}
+
+const { data: yearlyResponse } = await useFetch('/api/pie_chart', {
+  query: computed(() => ({
+    scope: filters.value.scope,
+    taxType: filters.value.taxType,
+    inn: filters.value.inn
+  }))
+})
+
+const yearlyData = computed(() => yearlyResponse.value?.data ?? [])
+watchEffect(() => {
+  console.log('YEARLY DATA:', yearlyData.value)
+})
+const yearlyCharts = computed(() => {
+  const data = yearlyData.value
+  if (!data || data.length === 0) return []
+
+  const start = Number(filters.value.startYear)
+  const end = Number(filters.value.endYear)
+
+  const filtered = data.filter(year =>
+    (!start || year.Year >= start)
+    && (!end || year.Year <= end)
+  )
+
+  if (filtered.length === 0) return []
+
+  const sorted = [...filtered].sort((a, b) => a.Year - b.Year)
+
+  return sorted.map((year) => ({
+    label: String(year.Year),
+    income: year.Income,
+    tax: year.Tax,
+    transactions: year.Transactions,
+    color: generateColorFromYear(year.Year)
+  }))
+})
 </script>
 
 <template>
@@ -46,4 +89,15 @@ function formatCurrency(value: number): string {
       </div>
     </UPageCard>
   </UPageGrid>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+    <HomePieChart
+      v-for="item in yearlyCharts"
+      :key="item.label"
+      :interval-label="item.label"
+      :income="item.income"
+      :tax="item.tax"
+      :transactions="item.transactions"
+      :color="item.color"
+    />
+  </div>
 </template>

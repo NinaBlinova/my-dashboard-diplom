@@ -11,6 +11,9 @@ export interface Taxpayer {
   TaxpayerType: UserStatus
   registration_district: string
   has_employees: boolean
+  employees_count: number
+  passport: string
+  activity_type: string
 }
 
 // тут скорее всего нужно будет не User, а Employer
@@ -28,14 +31,6 @@ export interface Member {
   username: string
   role: 'member' | 'owner'
   avatar: AvatarProps
-}
-
-export interface Stat {
-  title: string
-  icon: string
-  value: number | string
-  variation: number
-  formatter?: (value: number) => string
 }
 
 export interface Sale {
@@ -95,31 +90,8 @@ export type GrowthApiItem = {
   'TransactionsGrowth_%': number | null
 }
 
-interface DashboardStatistics {
-  taxpayers: number
-  income: number
-  tax: number
-  transactions: number
-  variation: GrowthData
-}
-
-export interface YearlyItem {
-  Income: number
-  Tax: number
-  Transactions: number
-  Year: number
-}
-
-export interface YearlyResponse {
-  data: YearlyItem[]
-}
-
 export interface GrowthResponse {
   data: GrowthApiItem[]
-}
-
-export interface TaxpayersCountResponse {
-  count: number
 }
 
 export interface MonthlyApiItem {
@@ -144,9 +116,4 @@ export interface MonthlyGeneralItem {
   TotalIncome: number
   TotalTax: number
   TotalTransactions: number
-}
-
-export interface MonthlyGeneralResponse {
-  success: boolean
-  data: MonthlyGeneralItem[]
 }

@@ -16,16 +16,6 @@ export interface Taxpayer {
   activity_type: string
 }
 
-// тут скорее всего нужно будет не User, а Employer
-export interface Mail {
-  id: number
-  unread?: boolean
-  from: Taxpayer
-  subject: string
-  body: string
-  date: string
-}
-
 export interface Member {
   name: string
   username: string
@@ -116,4 +106,18 @@ export interface MonthlyGeneralItem {
   TotalIncome: number
   TotalTax: number
   TotalTransactions: number
+}
+
+export interface ModelItem {
+  CreatedAt: string
+  MAE: number
+  ModelName: string
+  ModelVersion: string
+  R2: number
+  RMSE: number
+  TargetName: string
+}
+
+export interface ModelsItems {
+  data: ModelItem[]
 }

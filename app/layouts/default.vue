@@ -26,7 +26,7 @@ const links = [[{
   // Customers
   label: 'Models',
   icon: 'i-lucide-brain',
-  to: '/inbox',
+  to: '/models',
   onSelect: () => {
     open.value = false
   }

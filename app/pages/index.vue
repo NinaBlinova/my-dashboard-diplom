@@ -39,6 +39,17 @@ const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
 //   console.log('MONTHLY MEDIAN:', monthlyDataMedian.value)
 // })
 const isAlone = computed(() => filters.value.scope === 'alone')
+
+// const displayCharts = reactive({
+//   incomeMedian: true,
+//   taxMedian: true,
+//   transactionsMedian: true,
+//   incomeGeneral: true,
+//   taxGeneral: true,
+//   transactionsGeneral: true,
+//   incomeVsTransactionsMedian: true,
+//   incomeVsTransactionsGeneral: true
+// })
 </script>
 
 <template>
@@ -55,6 +66,26 @@ const isAlone = computed(() => filters.value.scope === 'alone')
           <!-- NOTE: The `-ms-1` class is used to align with the `DashboardSidebarCollapse` button here. -->
           <HomeDateRangePicker v-model="range" class="-ms-1" />
           <Filters v-model="period" :range="range" />
+          <!--          <UDropdownMenu -->
+          <!--            :items="[ -->
+          <!--              { label: 'Income (Median)', type: 'checkbox', checked: displayCharts.incomeMedian, onUpdateChecked: val => displayCharts.incomeMedian = val }, -->
+          <!--              { label: 'Tax (Median)', type: 'checkbox', checked: displayCharts.taxMedian, onUpdateChecked: val => displayCharts.taxMedian = val }, -->
+          <!--              { label: 'Transactions (Median)', type: 'checkbox', checked: displayCharts.transactionsMedian, onUpdateChecked: val => displayCharts.transactionsMedian = val }, -->
+          <!--              { label: 'Income (General)', type: 'checkbox', checked: displayCharts.incomeGeneral, onUpdateChecked: val => displayCharts.incomeGeneral = val }, -->
+          <!--              { label: 'Tax (General)', type: 'checkbox', checked: displayCharts.taxGeneral, onUpdateChecked: val => displayCharts.taxGeneral = val }, -->
+          <!--              { label: 'Transactions (General)', type: 'checkbox', checked: displayCharts.transactionsGeneral, onUpdateChecked: val => displayCharts.transactionsGeneral = val }, -->
+          <!--              { label: 'Income vs Transactions (Median)', type: 'checkbox', checked: displayCharts.incomeVsTransactionsMedian, onUpdateChecked: val => displayCharts.incomeVsTransactionsMedian = val }, -->
+          <!--              { label: 'Income vs Transactions (General)', type: 'checkbox', checked: displayCharts.incomeVsTransactionsGeneral, onUpdateChecked: val => displayCharts.incomeVsTransactionsGeneral = val } -->
+          <!--            ]" -->
+          <!--            :content="{ align: 'end' }" -->
+          <!--          > -->
+          <!--            <UButton -->
+          <!--              label="Display" -->
+          <!--              color="neutral" -->
+          <!--              variant="outline" -->
+          <!--              trailing-icon="i-lucide-settings-2" -->
+          <!--            /> -->
+          <!--          </UDropdownMenu> -->
         </template>
       </UDashboardToolbar>
     </template>

@@ -3,7 +3,7 @@ import type { ModelItem } from '~/types'
 import { useModels } from '~/composables/useModels'
 
 const selectedModel = defineModel<ModelItem | null>()
-const { models, activeModel, setActiveModel } = useModels()
+const { models, activeModel, setActiveModel, loadActiveModel } = useModels()
 
 const isActive = (m: ModelItem) => {
   return (
@@ -18,6 +18,10 @@ const activate = async (m: ModelItem) => {
     ModelVersion: m.ModelVersion
   })
 }
+
+onMounted(async () => {
+  await loadActiveModel()
+})
 </script>
 
 <template>
@@ -27,8 +31,7 @@ const activate = async (m: ModelItem) => {
       :key="model.ModelName + model.ModelVersion"
       class="p-4 cursor-pointer border-l-2 transition-colors"
       :class="[
-        selectedModel?.ModelName === model.ModelName
-          && selectedModel?.ModelVersion === model.ModelVersion
+        isActive(model)
           ? 'border-primary bg-primary/10'
           : 'border-transparent hover:border-primary hover:bg-primary/5'
       ]"
@@ -41,7 +44,7 @@ const activate = async (m: ModelItem) => {
         Version: {{ model.ModelVersion }}
       </div>
       <UButton
-        v-if="!isActive"
+        v-if="!isActive(model)"
         label="Set Active"
         color="primary"
         @click="activate(model)"

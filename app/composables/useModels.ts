@@ -1,11 +1,21 @@
 import type { ModelsItems } from '~/types'
 
 export const useModels = () => {
+  type Model = {
+    ModelName: string
+    ModelVersion: string
+  }
   const { data, refresh } = useFetch<ModelsItems>('/api/models')
   const activeModel = useState<{ ModelName: string, ModelVersion: string } | null>('activeModel', () => null)
-
+  const loadActiveModel = async () => {
+    const response = await $fetch<{ success: boolean, active_model: Model }>(
+      '/api/models',
+      { query: { active: 'true' } }
+    )
+    activeModel.value = response.active_model
+  }
   const setActiveModel = async (model: { ModelName: string, ModelVersion: string }) => {
-    await $fetch('/api/models/set_active', {
+    await $fetch('/api/models', {
       method: 'POST',
       body: model
     })
@@ -21,7 +31,7 @@ export const useModels = () => {
       query: model
     })
 
-    return response.data // ← возвращаем ВЕСЬ массив
+    return response.data
   }
 
   return {
@@ -29,6 +39,7 @@ export const useModels = () => {
     activeModel,
     setActiveModel,
     refresh,
-    fetchModelInfo
+    fetchModelInfo,
+    loadActiveModel
   }
 }

@@ -55,7 +55,7 @@ export interface DashboardFilters {
   endYear?: number
 }
 
-interface YearsResponse {
+export interface YearsResponse {
   data?: {
     max_year?: number
     min_year?: number
@@ -64,7 +64,7 @@ interface YearsResponse {
   success: boolean
 }
 
-interface GrowthData {
+export interface GrowthData {
   TotalIncomeGrowth?: number | null
   TotalTaxGrowth?: number | null
   TotalTransactionsGrowth?: number | null
@@ -120,4 +120,17 @@ export interface ModelItem {
 
 export interface ModelsItems {
   data: ModelItem[]
+}
+
+export interface User {
+  Id: number
+  Username: string
+  Email: string
+  FullName: string
+  CreatedAt: string
+}
+
+export interface LoginResponse {
+  success: boolean
+  user: User
 }

@@ -10,7 +10,6 @@ import type { Taxpayer } from '~/types'
 const UAvatar = resolveComponent('UAvatar')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
-const UCheckbox = resolveComponent('UCheckbox')
 
 const toast = useToast()
 const table = useTemplateRef('table')
@@ -61,24 +60,24 @@ function getRowItems(row: Row<Taxpayer>) {
 }
 
 const columns: TableColumn<Taxpayer>[] = [
-  {
-    id: 'select',
-    header: ({ table }) =>
-      h(UCheckbox, {
-        'modelValue': table.getIsSomePageRowsSelected()
-          ? 'indeterminate'
-          : table.getIsAllPageRowsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
-          table.toggleAllPageRowsSelected(!!value),
-        'ariaLabel': 'Select all'
-      }),
-    cell: ({ row }) =>
-      h(UCheckbox, {
-        'modelValue': row.getIsSelected(),
-        'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-        'ariaLabel': 'Select row'
-      })
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) =>
+  //     h(UCheckbox, {
+  //       'modelValue': table.getIsSomePageRowsSelected()
+  //         ? 'indeterminate'
+  //         : table.getIsAllPageRowsSelected(),
+  //       'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
+  //         table.toggleAllPageRowsSelected(!!value),
+  //       'ariaLabel': 'Select all'
+  //     }),
+  //   cell: ({ row }) =>
+  //     h(UCheckbox, {
+  //       'modelValue': row.getIsSelected(),
+  //       'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
+  //       'ariaLabel': 'Select row'
+  //     })
+  // },
   {
     accessorKey: 'id',
     header: 'ID'

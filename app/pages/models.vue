@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ModelItem } from '~/types'
-import ModelsList from '~/components/inbox/ModelsList.vue'
-import ModelDetails from '~/components/inbox/ModelDetails.vue'
+import ModelsList from '~/components/models_view/ModelsList.vue'
+import ModelDetails from '~/components/models_view/ModelDetails.vue'
 
 const { models, fetchModelInfo } = useModels()
 const selectedModel = ref<ModelItem | null>(null)

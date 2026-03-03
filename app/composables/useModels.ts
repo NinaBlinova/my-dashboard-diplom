@@ -1,14 +1,10 @@
-import type { ModelsItems } from '~/types'
+import type { ModelItem, ModelsItems } from '~/types'
 
 export const useModels = () => {
-  type Model = {
-    ModelName: string
-    ModelVersion: string
-  }
   const { data, refresh } = useFetch<ModelsItems>('/api/models')
   const activeModel = useState<{ ModelName: string, ModelVersion: string } | null>('activeModel', () => null)
   const loadActiveModel = async () => {
-    const response = await $fetch<{ success: boolean, active_model: Model }>(
+    const response = await $fetch<{ success: boolean, active_model: ModelItem }>(
       '/api/models',
       { query: { active: 'true' } }
     )

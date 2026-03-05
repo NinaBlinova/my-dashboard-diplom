@@ -5,7 +5,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 const fileRef = ref<HTMLInputElement>()
 const { user } = useLogin()
 const { updateProfile } = useSetting()
-const { updateAvatar, getAvatarUrl } = useAvatar()
+const { updateAvatar, getAvatarUrl, avatarUrl } = useAvatar()
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Too short'),
@@ -31,7 +31,7 @@ watchEffect(() => {
     profile.email = user.value.Email
     profile.username = user.value.Username
     profile.bio = user.value.Bio
-    profile.avatar = getAvatarUrl(user.value.Id)
+    profile.avatar = avatarUrl.value || getAvatarUrl(user.value.Id)
   }
 })
 
@@ -56,14 +56,13 @@ async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
 
 async function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
-
-  if (!input.files?.length || !user.value) {
-    return
-  }
+  if (!input.files?.length || !user.value) return
   const file = input.files?.[0]
   if (!file || !user.value) return
   profile.avatar = URL.createObjectURL(file)
   await updateAvatar(file, user.value.Id)
+  avatarUrl.value = `${getAvatarUrl(user.value.Id)}?t=${Date.now()}`
+
   toast.add({
     title: 'Avatar updated',
     icon: 'i-lucide-check',

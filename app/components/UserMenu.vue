@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
-const { getAvatarUrl } = useAvatar()
+const { avatarUrl } = useAvatar()
 
 defineProps<{
   collapsed?: boolean
@@ -16,21 +16,11 @@ const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
 const user = computed(() => {
   if (!authUser.value) {
-    return {
-      name: 'Guest',
-      avatar: {
-        src: '',
-        alt: 'Guest'
-      }
-    }
+    return { name: 'Guest', avatar: { src: '', alt: 'Guest' } }
   }
-
   return {
     name: authUser.value.FullName,
-    avatar: {
-      src: getAvatarUrl(authUser.value.Id),
-      alt: authUser.value.FullName
-    }
+    avatar: { src: avatarUrl.value, alt: authUser.value.FullName }
   }
 })
 

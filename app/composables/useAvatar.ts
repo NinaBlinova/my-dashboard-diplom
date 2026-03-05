@@ -17,5 +17,10 @@ export const useAvatar = () => {
     const config = useRuntimeConfig()
     return `${config.public.backendUrl}/api/settings/avatar/${userId}`
   }
-  return { updateAvatar, getAvatarUrl }
+
+  const avatarUrl = useState<string>('avatarUrl', () => {
+    const { user } = useLogin()
+    return user.value ? `${getAvatarUrl(user.value.Id)}?t=${Date.now()}` : ''
+  })
+  return { updateAvatar, getAvatarUrl, avatarUrl }
 }

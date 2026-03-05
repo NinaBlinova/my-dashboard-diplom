@@ -127,10 +127,17 @@ export interface User {
   Username: string
   Email: string
   FullName: string
+  Bio?: string
+  Avatar?: string
   CreatedAt: string
 }
 
 export interface LoginResponse {
   success: boolean
   user: User
+}
+
+export interface UpdateProfileResponse {
+  success: boolean
+  message: string
 }

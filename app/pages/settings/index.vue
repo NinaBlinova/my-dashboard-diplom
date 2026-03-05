@@ -3,6 +3,9 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
 const fileRef = ref<HTMLInputElement>()
+const { user } = useLogin()
+const { updateProfile } = useSetting()
+const { updateAvatar, getAvatarUrl } = useAvatar()
 
 const profileSchema = z.object({
   name: z.string().min(2, 'Too short'),
@@ -15,31 +18,57 @@ const profileSchema = z.object({
 type ProfileSchema = z.output<typeof profileSchema>
 
 const profile = reactive<Partial<ProfileSchema>>({
-  name: 'Benjamin Canac',
-  email: 'ben@nuxtlabs.com',
-  username: 'benjamincanac',
+  name: '',
+  email: '',
+  username: '',
   avatar: undefined,
   bio: undefined
 })
+
+watchEffect(() => {
+  if (user.value) {
+    profile.name = user.value.FullName
+    profile.email = user.value.Email
+    profile.username = user.value.Username
+    profile.bio = user.value.Bio
+    profile.avatar = getAvatarUrl(user.value.Id)
+  }
+})
+
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
+  const { data } = event
+
+  await updateProfile(
+    data.name,
+    data.email,
+    data.username,
+    data.bio
+  )
+
   toast.add({
     title: 'Success',
     description: 'Your settings have been updated.',
     icon: 'i-lucide-check',
     color: 'success'
   })
-  console.log(event.data)
 }
 
-function onFileChange(e: Event) {
+async function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
 
-  if (!input.files?.length) {
+  if (!input.files?.length || !user.value) {
     return
   }
-
-  profile.avatar = URL.createObjectURL(input.files[0]!)
+  const file = input.files?.[0]
+  if (!file || !user.value) return
+  profile.avatar = URL.createObjectURL(file)
+  await updateAvatar(file, user.value.Id)
+  toast.add({
+    title: 'Avatar updated',
+    icon: 'i-lucide-check',
+    color: 'success'
+  })
 }
 
 function onFileClick() {

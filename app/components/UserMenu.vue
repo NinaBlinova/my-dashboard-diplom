@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
+const { getAvatarUrl } = useAvatar()
+
 defineProps<{
   collapsed?: boolean
 }>()
@@ -26,7 +28,7 @@ const user = computed(() => {
   return {
     name: authUser.value.FullName,
     avatar: {
-      src: `https://ui-avatars.com/api/?name=${authUser.value.FullName}`,
+      src: getAvatarUrl(authUser.value.Id),
       alt: authUser.value.FullName
     }
   }

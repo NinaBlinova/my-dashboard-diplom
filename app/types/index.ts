@@ -124,6 +124,7 @@ export interface ModelsItems {
 
 export interface User {
   Id: number
+  password: string
   Username: string
   Email: string
   FullName: string
@@ -135,9 +136,11 @@ export interface User {
 export interface LoginResponse {
   success: boolean
   user: User
+  message?: string
 }
 
 export interface UpdateProfileResponse {
   success: boolean
+  user: User
   message: string
 }

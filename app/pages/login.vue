@@ -4,6 +4,7 @@ import { navigateTo } from '#imports'
 import { ref } from 'vue'
 
 const { login } = useLogin()
+
 const username = ref('')
 const password = ref('')
 const error = ref('')
@@ -12,7 +13,13 @@ const loading = ref(false)
 const submit = async () => {
   error.value = ''
   loading.value = true
+
   try {
+    const res = await login(username.value, password.value)
+    if (!res?.success) {
+      error.value = res?.message || 'Login failed'
+      return
+    }
     await login(username.value, password.value)
     navigateTo('/')
   } catch (e: unknown) {
@@ -32,14 +39,16 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-50">
+  <div class="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
     <UCard class="w-96 p-6 shadow-lg rounded-2xl">
       <div class="flex flex-col items-center mb-6">
-        <UIcon name="user-circle" class="text-5xl text-blue-600 mb-2" />
-        <h2 class="text-2xl font-semibold text-gray-800">
+        <UIcon name="i-lucide-user-circle" class="text-5xl text-primary mb-2" />
+
+        <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">
           Welcome Back
         </h2>
-        <p class="text-gray-500 text-sm">
+
+        <p class="text-gray-500 dark:text-gray-400 text-sm">
           Please login to your account
         </p>
       </div>
@@ -48,7 +57,7 @@ definePageMeta({
         v-model="username"
         placeholder="Username"
         class="mb-4 w-full"
-        leading-icon="user"
+        leading-icon="i-lucide-user"
         clearable
       />
 
@@ -57,7 +66,7 @@ definePageMeta({
         type="password"
         placeholder="Password"
         class="mb-4 w-full"
-        leading-icon="lock"
+        leading-icon="i-lucide-lock"
         clearable
       />
 
@@ -75,7 +84,7 @@ definePageMeta({
         {{ error }}
       </p>
 
-      <div class="text-center mt-4 text-gray-500 text-xs">
+      <div class="text-center mt-4 text-gray-500 dark:text-gray-400 text-xs">
         © 2026 MyDashboard. All rights reserved.
       </div>
     </UCard>

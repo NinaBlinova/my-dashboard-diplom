@@ -13,8 +13,12 @@ export const useLogin = () => {
       throw new Error(error.value.statusMessage)
     }
 
-    if (data.value?.success) {
-      user.value = data.value.user
+    if (!data.value) {
+      throw new Error('No response from server')
+    }
+
+    if (!data.value.success) {
+      throw new Error(data.value.message ?? 'Login failed')
     }
 
     return data.value

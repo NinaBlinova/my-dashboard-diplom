@@ -1,9 +1,9 @@
-<script setup lang="ts">
-const colorMode = useColorMode() // Можно использовать для динамического фона, иначе убрать
-</script>
-
 <template>
-  <UApp :class="colorMode.value === 'dark' ? 'bg-gray-900' : 'bg-gray-50'" class="min-h-screen flex items-center justify-center">
-    <NuxtPage />
+  <UApp>
+    <ColorScheme>
+      <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors">
+        <NuxtPage />
+      </div>
+    </ColorScheme>
   </UApp>
 </template>

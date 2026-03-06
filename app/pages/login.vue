@@ -20,7 +20,6 @@ const submit = async () => {
       error.value = res?.message || 'Login failed'
       return
     }
-    await login(username.value, password.value)
     navigateTo('/')
   } catch (e: unknown) {
     if (e instanceof Error) {

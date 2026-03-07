@@ -1,10 +1,13 @@
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const backend = config.public.backendUrl
 
+  const body = await readBody(event)
+
   try {
-    return await $fetch(`${backend}/api/admin/members`, {
-      method: 'GET',
+    return await $fetch(`${backend}/api/auth/logout`, {
+      method: 'POST',
+      body,
       headers: {
         'Content-Type': 'application/json'
       }
@@ -14,7 +17,7 @@ export default defineEventHandler(async () => {
 
     throw createError({
       statusCode: e.status ?? 500,
-      message: e.data?.message ?? 'Failed to fetch members'
+      message: e.data?.message ?? 'Logout failed'
     })
   }
 })

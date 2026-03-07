@@ -3,6 +3,7 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 const toast = useToast()
+const { user } = useLogin()
 
 const open = ref(false)
 
@@ -43,13 +44,13 @@ const links = [[{
     onSelect: () => {
       open.value = false
     }
-  }, {
-    label: 'Members',
-    to: '/settings/members',
-    onSelect: () => {
-      open.value = false
-    }
-  }, {
+  }, ...(user.value?.user_role === 'admin'
+    ? [{
+        label: 'Members',
+        to: '/settings/members',
+        onSelect: () => { open.value = false }
+      }]
+    : []), {
     label: 'Notifications',
     to: '/settings/notifications',
     onSelect: () => {

@@ -31,8 +31,22 @@ export const useLogin = () => {
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    const currentUser = user.value
     user.value = null
+    try {
+      if (currentUser) {
+        await $fetch('/api/logout', {
+          method: 'POST',
+          body: {
+            username: currentUser.Username,
+            user_id: currentUser.Id
+          }
+        })
+      }
+    } catch (error) {
+      console.error('Logout logging failed', error)
+    }
   }
 
   return {

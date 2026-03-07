@@ -131,6 +131,8 @@ export interface User {
   Bio?: string
   Avatar?: string
   CreatedAt: string
+  IsActive: number
+  user_role: string
 }
 
 export interface LoginResponse {

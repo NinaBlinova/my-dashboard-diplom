@@ -61,7 +61,6 @@ async function onFileChange(e: Event) {
   if (!file || !user.value) return
   profile.avatar = URL.createObjectURL(file)
   await updateAvatar(file, user.value.Id)
-  avatarUrl.value = `${getAvatarUrl(user.value.Id)}?t=${Date.now()}`
 
   toast.add({
     title: 'Avatar updated',

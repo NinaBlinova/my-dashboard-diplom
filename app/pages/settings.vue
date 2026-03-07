@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
+const { user } = useLogin()
+
 const links = [[{
   label: 'General',
   icon: 'i-lucide-user',
   to: '/settings',
   exact: true
-}, {
-  label: 'Members',
-  icon: 'i-lucide-users',
-  to: '/settings/members'
-}, {
+},
+...(user.value?.user_role === 'admin'
+  ? [{
+      label: 'Members',
+      icon: 'i-lucide-users',
+      to: '/settings/members'
+    }]
+  : []), {
   label: 'Notifications',
   icon: 'i-lucide-bell',
   to: '/settings/notifications'

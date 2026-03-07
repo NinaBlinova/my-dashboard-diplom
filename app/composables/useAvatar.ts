@@ -1,26 +1,36 @@
-import type { UpdateProfileResponse } from '~/types'
-
 export const useAvatar = () => {
-  async function updateAvatar(file: File, userId: number): Promise<UpdateProfileResponse> {
-    const formData = new FormData()
+  const { user } = useLogin()
+  const config = useRuntimeConfig()
 
+  const avatarVersion = useState('avatarVersion', () => 0)
+
+  function getAvatarUrl(userId: number) {
+    return `${config.public.backendUrl}/api/settings/avatar/${userId}?v=${avatarVersion.value}`
+  }
+
+  const avatarUrl = computed(() => {
+    if (!user.value) return ''
+    return getAvatarUrl(user.value.Id)
+  })
+
+  function refreshAvatar() {
+    avatarVersion.value++
+  }
+
+  async function updateAvatar(file: File, userId: number) {
+    const formData = new FormData()
     formData.append('avatar', file)
     formData.append('user_id', String(userId))
 
-    return await $fetch('/api/avatar', {
+    const res = await $fetch('/api/avatar', {
       method: 'PATCH',
       body: formData
     })
+
+    refreshAvatar()
+
+    return res
   }
 
-  function getAvatarUrl(userId: number) {
-    const config = useRuntimeConfig()
-    return `${config.public.backendUrl}/api/settings/avatar/${userId}`
-  }
-
-  const avatarUrl = useState<string>('avatarUrl', () => {
-    const { user } = useLogin()
-    return user.value ? `${getAvatarUrl(user.value.Id)}?t=${Date.now()}` : ''
-  })
-  return { updateAvatar, getAvatarUrl, avatarUrl }
+  return { avatarUrl, updateAvatar, getAvatarUrl, refreshAvatar }
 }

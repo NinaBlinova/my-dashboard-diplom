@@ -22,7 +22,7 @@ export const useAvatar = () => {
     formData.append('avatar', file)
     formData.append('user_id', String(userId))
 
-    const res = await $fetch('/api/avatar', {
+    const res = await $fetch('/api/profile/avatar', {
       method: 'PATCH',
       body: formData
     })

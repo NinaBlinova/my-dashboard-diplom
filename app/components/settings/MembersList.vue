@@ -2,15 +2,46 @@
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { User } from '~/types'
 import { useAvatar } from '~/composables/useAvatar'
+import { useMembers } from '~/composables/useMembers'
 
 defineProps<{ members: User[] }>()
+const emit = defineEmits<{
+  refresh: []
+}>()
 
 const config = useRuntimeConfig()
 const { getAvatarUrl } = useAvatar()
+const { activateUser, deactivateUser, getUserLogs } = useMembers()
+const admin = useState<User | null>('user')
+const adminId = computed(() => admin.value?.Id)
 
-const items = [
+const items = (member: User): DropdownMenuItem[] => [
   { label: 'Edit member', onSelect: () => console.log('Edit member') },
-  { label: 'Remove member', color: 'error' as const, onSelect: () => console.log('Remove member') }
+  {
+    label: 'Show history',
+    onSelect: async () => {
+      const logs = await getUserLogs(member.Id)
+      console.log('User logs', logs)
+    }
+  },
+  {
+    label: 'Return member',
+    color: 'primary',
+    onSelect: async () => {
+      if (!adminId.value) return
+      await activateUser(adminId.value, member.Id)
+      emit('refresh')
+    }
+  },
+  {
+    label: 'Remove member',
+    color: 'error',
+    onSelect: async () => {
+      if (!adminId.value) return
+      await deactivateUser(adminId.value, member.Id)
+      emit('refresh')
+    }
+  }
 ] satisfies DropdownMenuItem[]
 </script>
 
@@ -21,7 +52,6 @@ const items = [
       :key="member.Id"
       class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6"
     >
-      <!-- Левая часть: аватар + базовая информация -->
       <div class="flex items-center gap-3 min-w-0">
         <UAvatar
           :src="member.Avatar ? `${config.public.backendUrl}${member.Avatar}` : getAvatarUrl(member.Id)"
@@ -50,20 +80,19 @@ const items = [
           Status: <span class="font-medium">{{ member.IsActive ? 'Active' : 'Inactive' }}</span>
         </div>
         <div>
-          Created: <span class="font-medium">{{ new Date(member.CreatedAt).toLocaleString() }}</span>
+          Last change: <span class="font-medium">{{ new Date(member.CreatedAt).toLocaleString() }}</span>
         </div>
       </div>
 
-      <!-- Правая часть: селект + меню -->
       <div class="flex items-center gap-3">
-        <USelect
-          :model-value="member.user_role ?? 'member'"
-          :items="['member', 'owner', 'admin']"
-          color="neutral"
-          :ui="{ value: 'capitalize', item: 'capitalize' }"
-        />
+        <!--        <USelect -->
+        <!--          :model-value="member.user_role ?? 'member'" -->
+        <!--          :items="['member', 'owner', 'admin']" -->
+        <!--          color="neutral" -->
+        <!--          :ui="{ value: 'capitalize', item: 'capitalize' }" -->
+        <!--        /> -->
 
-        <UDropdownMenu :items="items" :content="{ align: 'end' }">
+        <UDropdownMenu :items="items(member)" :content="{ align: 'end' }">
           <UButton
             icon="i-lucide-ellipsis-vertical"
             color="neutral"

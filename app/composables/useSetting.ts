@@ -9,7 +9,7 @@ export const useSetting = () => {
     username: string,
     bio?: string
   ) => {
-    const data = await $fetch<UpdateProfileResponse>('/api/settings', {
+    const data = await $fetch<UpdateProfileResponse>('/api/profile/settings', {
       method: 'PUT',
       body: {
         user_id: user.value?.Id,

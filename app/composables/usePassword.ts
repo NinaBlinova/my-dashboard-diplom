@@ -6,7 +6,7 @@ export const usePassword = () => {
     old_password: string,
     new_password: string
   ): Promise<UpdateProfileResponse> => {
-    return await $fetch('/api/password', {
+    return await $fetch('/api/profile/password', {
       method: 'PATCH',
       body: {
         user_id,

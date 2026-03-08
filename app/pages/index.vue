@@ -11,7 +11,7 @@ const period = ref<Period>('daily')
 
 const { filters } = useDashboardFilters()
 
-const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard', {
+const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
   query: computed(() => ({
     type: 'monthly-median',
     scope: filters.value.scope,
@@ -23,7 +23,7 @@ const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboar
 })
 const monthlyDataMedian = computed(() => response_median.value?.data ?? [])
 
-const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboard', {
+const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
   query: computed(() => ({
     type: 'monthly-general',
     scope: filters.value.scope,

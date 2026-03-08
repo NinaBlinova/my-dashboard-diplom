@@ -6,7 +6,7 @@ export const useLogin = () => {
 
   const login = async (username: string, password: string) => {
     try {
-      const data = await $fetch<LoginResponse>('/api/login', {
+      const data = await $fetch<LoginResponse>('/api/profile/login', {
         method: 'POST',
         body: { username, password }
       })
@@ -36,7 +36,7 @@ export const useLogin = () => {
     user.value = null
     try {
       if (currentUser) {
-        await $fetch('/api/logout', {
+        await $fetch('/api/profile/logout', {
           method: 'POST',
           body: {
             username: currentUser.Username,

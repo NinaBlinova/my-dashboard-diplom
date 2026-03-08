@@ -15,7 +15,7 @@ function generateColorFromYear(year: number) {
   return `hsl(${hue}, 70%, 55%)`
 }
 
-const { data: yearlyResponse } = await useFetch('/api/pie_chart', {
+const { data: yearlyResponse } = await useFetch('/api/dashboard/pie_chart', {
   query: computed(() => ({
     scope: filters.value.scope,
     taxType: filters.value.taxType,

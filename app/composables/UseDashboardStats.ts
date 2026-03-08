@@ -3,7 +3,7 @@ export function useDashboardStats() {
 
   const { data, pending, refresh } = useAsyncData(
     'dashboard-stats',
-    () => $fetch('/api/statistics', {
+    () => $fetch('/api/dashboard/statistics', {
       query: {
         scope: filters.value.scope,
         taxType: filters.value.taxType,

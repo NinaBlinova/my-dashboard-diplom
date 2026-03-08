@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { User } from '~/types'
 
-const { data: members } = await useFetch<User[]>('/api/members', { default: () => [] })
+const members = ref<User[]>([])
+
+const fetchMembers = async () => {
+  const { data } = await useFetch<User[]>('/api/admin/members', { default: () => [] })
+  members.value = data.value
+}
 
 const q = ref('')
 
@@ -10,19 +15,25 @@ const filteredMembers = computed(() => {
     return member.FullName.search(new RegExp(q.value, 'i')) !== -1 || member.Username.search(new RegExp(q.value, 'i')) !== -1
   })
 })
+
+onMounted(fetchMembers)
+
+const refresh = async () => {
+  await fetchMembers()
+}
 </script>
 
 <template>
   <div>
     <UPageCard
       title="Members"
-      description="Invite new members by email address."
+      description="Add new member."
       variant="naked"
       orientation="horizontal"
       class="mb-4"
     >
       <UButton
-        label="Invite people"
+        label="Add user"
         color="neutral"
         class="w-fit lg:ms-auto"
       />
@@ -39,7 +50,7 @@ const filteredMembers = computed(() => {
         />
       </template>
 
-      <SettingsMembersList :members="filteredMembers" />
+      <SettingsMembersList :members="filteredMembers" @refresh="refresh" />
     </UPageCard>
   </div>
 </template>

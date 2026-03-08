@@ -16,13 +16,6 @@ export interface Taxpayer {
   activity_type: string
 }
 
-export interface Member {
-  name: string
-  username: string
-  role: 'member' | 'owner'
-  avatar: AvatarProps
-}
-
 export interface Sale {
   id: string
   date: string
@@ -100,14 +93,6 @@ export interface MonthlyResponse {
   data: MonthlyApiItem[]
 }
 
-export interface MonthlyGeneralItem {
-  Month: number
-  Year: number
-  TotalIncome: number
-  TotalTax: number
-  TotalTransactions: number
-}
-
 export interface ModelItem {
   CreatedAt: string
   MAE: number
@@ -145,4 +130,18 @@ export interface UpdateProfileResponse {
   success: boolean
   user: User
   message: string
+}
+
+export interface UserLog {
+  LogId: number
+  UserId: number
+  Username: string
+  Action: string
+  AdditionalInfo: string | null
+  ActionDate: string
+}
+
+export interface UserLogsResponse {
+  success: boolean
+  logs: UserLog[]
 }

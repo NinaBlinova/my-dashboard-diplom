@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import type { User } from '~/types'
+const { members, fetchMembers } = useMembers()
 
-const members = ref<User[]>([])
-
-const fetchMembers = async () => {
-  const { data } = await useFetch<User[]>('/api/admin/members', { default: () => [] })
-  members.value = data.value
-}
+onMounted(fetchMembers)
 
 const q = ref('')
 
 const filteredMembers = computed(() => {
   return members.value.filter((member) => {
-    return member.FullName.search(new RegExp(q.value, 'i')) !== -1 || member.Username.search(new RegExp(q.value, 'i')) !== -1
+    return (
+      member.FullName.search(new RegExp(q.value, 'i')) !== -1
+      || member.Username.search(new RegExp(q.value, 'i')) !== -1
+    )
   })
 })
-
-onMounted(fetchMembers)
 
 const refresh = async () => {
   await fetchMembers()

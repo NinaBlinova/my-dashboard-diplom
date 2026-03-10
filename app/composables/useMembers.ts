@@ -80,7 +80,7 @@ export const useMembers = () => {
         body: {
           admin_id,
           user_id,
-          updates
+          ...updates
         }
       })
 

@@ -12,7 +12,7 @@ const profileSchema = z.object({
   email: z.string().email('Invalid email'),
   username: z.string().min(2, 'Too short'),
   avatar: z.string().optional(),
-  bio: z.string().optional()
+  Bio: z.string().optional()
 })
 
 type ProfileSchema = z.output<typeof profileSchema>
@@ -22,7 +22,7 @@ const profile = reactive<Partial<ProfileSchema>>({
   email: '',
   username: '',
   avatar: undefined,
-  bio: undefined
+  Bio: undefined
 })
 
 watchEffect(() => {
@@ -30,7 +30,7 @@ watchEffect(() => {
     profile.name = user.value.FullName
     profile.email = user.value.Email
     profile.username = user.value.Username
-    profile.bio = user.value.Bio
+    profile.Bio = user.value.Bio
     profile.avatar = avatarUrl.value || getAvatarUrl(user.value.Id)
   }
 })
@@ -43,9 +43,8 @@ async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
     data.name,
     data.email,
     data.username,
-    data.bio
+    data.Bio
   )
-
   toast.add({
     title: 'Success',
     description: 'Your settings have been updated.',
@@ -167,14 +166,14 @@ function onFileClick() {
       </UFormField>
       <USeparator />
       <UFormField
-        name="bio"
+        name="Bio"
         label="Bio"
         description="Brief description for your profile. URLs are hyperlinked."
         class="flex max-sm:flex-col justify-between items-start gap-4"
         :ui="{ container: 'w-full' }"
       >
         <UTextarea
-          v-model="profile.bio"
+          v-model="profile.Bio"
           :rows="5"
           autoresize
           class="w-full"

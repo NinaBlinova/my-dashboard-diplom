@@ -114,6 +114,21 @@ export interface User {
   Email: string
   FullName: string
   Bio?: string
+
+  Phone?: string
+  BirthDate?: string
+  Gender?: string
+  Address_Reg?: string
+
+  PassportSeries?: string
+  PassportNumber?: string
+  PassportIssuedBy?: string
+  PassportIssueDate?: string
+
+  SNILS?: string
+  INN?: string
+  OMSPolicyNumber?: string
+
   Avatar?: string
   CreatedAt: string
   IsActive: number

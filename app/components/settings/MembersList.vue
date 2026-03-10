@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
-import type { User } from '~/types'
+import type { User, UserLog } from '~/types'
 import { useAvatar } from '~/composables/useAvatar'
 import { useMembers } from '~/composables/useMembers'
+import UserLogsModal from '~/modals/UserLogsModal.vue'
 
 defineProps<{ members: User[] }>()
 const emit = defineEmits<{
@@ -15,15 +16,20 @@ const { activateUser, deactivateUser, getUserLogs } = useMembers()
 const admin = useState<User | null>('user')
 const adminId = computed(() => admin.value?.Id)
 
+const isLogsModalOpen = ref(false)
+const currentLogs = ref<UserLog[]>([])
+const selectedMember = ref<User | null>(null)
+
+const showUserLogs = async (member: User) => {
+  const response = await getUserLogs(member.Id)
+  currentLogs.value = response?.logs ?? []
+  selectedMember.value = member
+  isLogsModalOpen.value = true
+}
+
 const items = (member: User): DropdownMenuItem[] => [
   { label: 'Edit member', onSelect: () => console.log('Edit member') },
-  {
-    label: 'Show history',
-    onSelect: async () => {
-      const logs = await getUserLogs(member.Id)
-      console.log('User logs', logs)
-    }
-  },
+  { label: 'Show history', onSelect: () => showUserLogs(member) },
   {
     label: 'Return member',
     color: 'primary',
@@ -102,4 +108,8 @@ const items = (member: User): DropdownMenuItem[] => [
       </div>
     </li>
   </ul>
+  <UserLogsModal
+    v-model="isLogsModalOpen"
+    :logs="currentLogs"
+  />
 </template>

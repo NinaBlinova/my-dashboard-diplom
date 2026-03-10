@@ -6,7 +6,6 @@ const { filters } = useDashboardFilters()
 const availableYears = ref<number[]>([])
 const selectedYear = ref<number | undefined>(undefined)
 const maxYear = ref<number | undefined>(undefined)
-
 const fetchYears = async () => {
   const config = useRuntimeConfig()
 

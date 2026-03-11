@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RegisterUserModal from "~/modals/RegisterUserModal.vue";
+import RegisterUserModal from '~/modals/RegisterUserModal.vue'
 
 const { members, fetchMembers } = useMembers()
 

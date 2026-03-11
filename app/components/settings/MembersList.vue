@@ -6,7 +6,7 @@ import { useMembers } from '~/composables/useMembers'
 import UserLogsModal from '~/modals/UserLogsModal.vue'
 import UserEditModal from '~/modals/UserEditModal.vue'
 
-defineProps<{ members: User[] }>()
+const props = defineProps<{ members: User[] }>()
 const emit = defineEmits<{
   refresh: []
 }>()
@@ -16,7 +16,7 @@ const { getAvatarUrl } = useAvatar()
 const { activateUser, deactivateUser, getUserLogs } = useMembers()
 const admin = useState<User | null>('user')
 const adminId = computed(() => admin.value?.Id)
-
+const statusFilter = ref<'all' | 'active' | 'inactive'>('all')
 const isLogsModalOpen = ref(false)
 const currentLogs = ref<UserLog[]>([])
 const selectedMember = ref<User | null>(null)
@@ -60,12 +60,38 @@ const items = (member: User): DropdownMenuItem[] => {
   }
   return menu
 }
+
+const filteredMembers = computed(() => {
+  if (statusFilter.value === 'active') {
+    return props.members.filter((m: User) => m.IsActive)
+  }
+
+  if (statusFilter.value === 'inactive') {
+    return props.members.filter((m: User) => !m.IsActive)
+  }
+
+  return props.members
+})
 </script>
 
 <template>
+  <div class="flex items-center justify-between px-4 sm:px-6 py-3">
+    <h2 class="text-lg font-semibold">
+      Status
+    </h2>
+
+    <UTabs
+      v-model="statusFilter"
+      :items="[
+        { label: 'All', value: 'all' },
+        { label: 'Active', value: 'active' },
+        { label: 'Inactive', value: 'inactive' }
+      ]"
+    />
+  </div>
   <ul role="list" class="divide-y divide-default">
     <li
-      v-for="member in members"
+      v-for="member in filteredMembers"
       :key="member.Id"
       class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6"
     >
@@ -80,24 +106,36 @@ const items = (member: User): DropdownMenuItem[] => {
             {{ member.FullName }}
           </p>
           <p class="text-muted truncate">
+            <UIcon name="i-lucide-user" />
             {{ member.Username }}
           </p>
           <p class="text-muted truncate">
+            <UIcon name="i-lucide-mail" />
             {{ member.Email }}
           </p>
         </div>
       </div>
 
-      <div class="flex flex-col items-start gap-1 text-sm text-muted min-w-[200px]">
-        <div>
-          Role: <span class="font-medium">{{ member.user_role ?? 'member' }}</span>
-        </div>
-        <div>
-          Status: <span class="font-medium">{{ member.IsActive ? 'Active' : 'Inactive' }}</span>
-        </div>
-        <div>
-          Last change: <span class="font-medium">{{ new Date(member.CreatedAt).toLocaleString() }}</span>
-        </div>
+      <div class="flex items-center gap-2">
+        <UBadge
+          variant="soft"
+          color="neutral"
+          class="capitalize"
+        >
+          {{ member.user_role ?? 'member' }}
+        </UBadge>
+
+        <UBadge
+          variant="soft"
+          :color="member.IsActive ? 'success' : 'error'"
+        >
+          {{ member.IsActive ? 'Active' : 'Inactive' }}
+        </UBadge>
+      </div>
+
+      <div class="flex items-center gap-1 text-xs text-muted">
+        <UIcon name="i-lucide-clock" />
+        Last change: {{ new Date(member.CreatedAt).toLocaleString() }}
       </div>
 
       <div class="flex items-center gap-3">

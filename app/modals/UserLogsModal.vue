@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UserLog } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   modelValue: boolean
   logs: UserLog[]
 }>()
@@ -10,50 +10,90 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-const close = () => emit('update:modelValue', false)
-const isAvatarChange = (log: UserLog) => log.Action.toLowerCase().includes('avatar')
+const open = computed({
+  get: () => props.modelValue,
+  set: (v: boolean) => emit('update:modelValue', v)
+})
+
+const isAvatarChange = (log: UserLog) =>
+  log.Action.toLowerCase().includes('avatar')
+
+const close = () => (open.value = false)
+
+watch(open, (v) => {
+  document.body.style.overflow = v ? 'hidden' : ''
+})
+
+onMounted(() => {
+  const handler = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') open.value = false
+  }
+
+  window.addEventListener('keydown', handler)
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handler)
+  })
+})
 </script>
 
 <template>
   <div
-    v-if="modelValue"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    v-if="open"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    @click.self="close"
   >
-    <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg w-11/12 md:w-1/2 p-4 shadow-lg max-h-[80vh] overflow-y-auto relative">
-      <h3 class="text-lg font-bold mb-4">
-        User Logs
-        <UButton
-          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          size="sm"
-          color="error"
-          variant="subtle"
-          aria-label="Close"
-          @click="close"
-        >
-          <UIcon name="mdi-close" class="w-5 h-5" />
-        </UButton>
-      </h3>
+    <div
+      class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+        rounded-xl w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]"
+      @click.stop
+    >
+      <!-- HEADER -->
+      <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+        <h3 class="text-lg font-semibold flex items-center gap-2">
+          <UIcon name="i-lucide-history" />
+          User Logs
+        </h3>
 
-      <div class="space-y-4">
+        <UButton
+          icon="i-lucide-x"
+          color="neutral"
+          variant="ghost"
+          @click="close"
+        />
+      </div>
+
+      <!-- BODY -->
+      <div class="overflow-y-auto p-6 space-y-4">
         <div
           v-for="log in logs"
           :key="log.LogId"
-          class="p-2 border-b border-gray-200"
+          class="p-3 rounded-lg border border-gray-200 dark:border-gray-800"
         >
-          <p>
-            <strong>{{ log.Action }}:</strong>
-            <span v-if="!isAvatarChange(log)">
-              {{ log.AdditionalInfo }}
-            </span>
+          <p class="font-medium">
+            {{ log.Action }}
           </p>
-          <p class="text-xs text-gray-500 mt-1">
+
+          <p
+            v-if="!isAvatarChange(log)"
+            class="text-sm opacity-80 mt-1"
+          >
+            {{ log.AdditionalInfo }}
+          </p>
+
+          <p class="text-xs text-gray-500 mt-2">
             {{ new Date(log.ActionDate).toLocaleString() }}
           </p>
         </div>
       </div>
 
-      <div class="mt-4 flex justify-end">
-        <UButton color="error" variant="subtle" @click="close">
+      <!-- FOOTER -->
+      <div class="flex justify-end p-4 border-t border-gray-200 dark:border-gray-800">
+        <UButton
+          color="neutral"
+          variant="ghost"
+          @click="close"
+        >
           Close
         </UButton>
       </div>

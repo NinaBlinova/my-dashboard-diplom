@@ -24,6 +24,7 @@ export const useSetting = () => {
       user.value.FullName = name
       user.value.Email = email
       user.value.Username = username
+      user.value.Bio = bio
     }
 
     return data

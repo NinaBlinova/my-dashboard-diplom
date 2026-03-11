@@ -1,4 +1,4 @@
-import type { User, UserLogsResponse } from '~/types'
+import type { User, UserLogsResponse, RegisterUserPayload } from '~/types'
 
 export const useMembers = () => {
   const members = useState<User[]>('members', () => [])
@@ -49,13 +49,7 @@ export const useMembers = () => {
     }
   }
 
-  const registerUser = async (payload: {
-    admin_id: number
-    username: string
-    email: string
-    password: string
-    full_name: string
-  }) => {
+  const registerUser = async (payload: RegisterUserPayload) => {
     try {
       await $fetch('/api/admin/user/register', {
         method: 'POST',
@@ -72,7 +66,7 @@ export const useMembers = () => {
   const editUser = async (
     admin_id: number,
     user_id: number,
-    updates: Record<string, string>
+    updates: Record<string, string | null>
   ) => {
     try {
       await $fetch('/api/admin/user/edit_user', {

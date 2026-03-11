@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   try {
-    return await $fetch(`${backend}/api/admin/register`, {
+    return await $fetch(`${backend}/api/admin/register_employee`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

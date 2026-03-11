@@ -160,3 +160,14 @@ export interface UserLogsResponse {
   success: boolean
   logs: UserLog[]
 }
+
+export interface RegisterUserPayload {
+  admin_id: number
+  username: string
+  email: string
+  password: string
+  full_name: string
+  phone?: string
+  gender?: string
+  birth_date?: string
+}

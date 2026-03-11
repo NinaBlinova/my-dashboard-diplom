@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import RegisterUserModal from "~/modals/RegisterUserModal.vue";
+
 const { members, fetchMembers } = useMembers()
 
 onMounted(fetchMembers)
@@ -17,6 +19,8 @@ const filteredMembers = computed(() => {
 const refresh = async () => {
   await fetchMembers()
 }
+
+const registerModal = ref(false)
 </script>
 
 <template>
@@ -32,6 +36,7 @@ const refresh = async () => {
         label="Add user"
         color="neutral"
         class="w-fit lg:ms-auto"
+        @click="registerModal = true"
       />
     </UPageCard>
 
@@ -48,5 +53,9 @@ const refresh = async () => {
 
       <SettingsMembersList :members="filteredMembers" @refresh="refresh" />
     </UPageCard>
+    <RegisterUserModal
+      v-model="registerModal"
+      @created="refresh"
+    />
   </div>
 </template>

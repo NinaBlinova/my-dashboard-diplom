@@ -12,24 +12,20 @@ const emit = defineEmits<{
   'saved': []
 }>()
 
-const formatDate = (d: string) => {
-  if (!d) return null
-  return new Date(d).toISOString().slice(0, 10)
-}
+const open = computed({
+  get: () => props.modelValue,
+  set: (v: boolean) => emit('update:modelValue', v)
+})
 
 const admin = useState<User | null>('user')
 const adminId = computed(() => admin.value?.Id)
 
 const { editUser } = useMembers()
 
-const open = computed({
-  get: () => props.modelValue,
-  set: (v: boolean) => emit('update:modelValue', v)
-})
-
 const form = reactive({
   email: '',
   full_name: '',
+  phone: '',
   passport_series: '',
   passport_number: '',
   passport_issued_by: '',
@@ -39,9 +35,13 @@ const form = reactive({
   oms_policy: '',
   birth_date: '',
   gender: '',
-  address_reg: '',
-  phone: ''
+  address_reg: ''
 })
+
+const formatDate = (d: string) => {
+  if (!d) return null
+  return new Date(d).toISOString().slice(0, 10)
+}
 
 watch(
   () => props.user,
@@ -67,120 +67,177 @@ watch(
   },
   { immediate: true }
 )
+
 const loading = ref(false)
+
 const submit = async () => {
   if (!props.user || !adminId.value) return
+
   loading.value = true
+
   const payload = {
     ...form,
     birth_date: formatDate(form.birth_date),
     passport_issue_date: formatDate(form.passport_issue_date)
   }
+
   const cleanPayload = Object.fromEntries(
     Object.entries(payload).map(([k, v]) => [k, v === '' ? null : v])
   )
+
   await editUser(adminId.value, props.user.Id, cleanPayload)
+
   loading.value = false
   open.value = false
   emit('saved')
 }
+
+onMounted(() => {
+  const handler = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') open.value = false
+  }
+
+  window.addEventListener('keydown', handler)
+
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handler)
+  })
+})
 </script>
 
 <template>
   <div
-    v-if="modelValue"
-    class="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto p-4"
+    v-if="open"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    @click.self="open=false"
   >
-    <div class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg w-11/12 md:w-1/2 p-4 shadow-lg max-h-[80vh] overflow-y-auto relative">
-      <div class="relative flex items-center justify-between">
-        <h3 class="text-lg font-semibold">
-          Edit member
-        </h3>
+    <div
+      class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100
+        rounded-xl w-full max-w-3xl shadow-xl
+        max-h-[90vh] flex flex-col"
+    >
+      <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center gap-2">
+          <UIcon name="i-lucide-user-cog" />
+          <h3 class="font-semibold text-lg">
+            Edit member
+          </h3>
+        </div>
 
         <UButton
-          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-          size="sm"
+          icon="i-lucide-x"
           color="error"
           variant="subtle"
-          aria-label="Close"
           @click="open=false"
-        >
-          <UIcon name="mdi-close" class="w-5 h-5" />
-        </UButton>
+        />
       </div>
 
-      <div class="flex-1 overflow-y-auto space-y-4 pr-2">
-        <UFormField label="Full name">
-          <UInput v-model="form.full_name" />
-        </UFormField>
+      <div class="overflow-y-auto p-6 space-y-6">
+        <section class="space-y-4">
+          <h4 class="font-medium text-sm opacity-70">
+            Basic information
+          </h4>
 
-        <UFormField label="Email">
-          <UInput v-model="form.email" />
-        </UFormField>
+          <div class="grid md:grid-cols-2 gap-4">
+            <UFormField label="Full name">
+              <UInput v-model="form.full_name" icon="i-lucide-user" />
+            </UFormField>
 
-        <UFormField label="Phone">
-          <UInput v-model="form.phone" />
-        </UFormField>
+            <UFormField label="Email">
+              <UInput v-model="form.email" type="email" icon="i-lucide-mail" />
+            </UFormField>
 
-        <UFormField label="Passport series">
-          <UInput v-model="form.passport_series" />
-        </UFormField>
+            <UFormField label="Phone">
+              <UInput v-model="form.phone" icon="i-lucide-phone" />
+            </UFormField>
 
-        <UFormField label="Passport number">
-          <UInput v-model="form.passport_number" />
-        </UFormField>
+            <UFormField label="Gender">
+              <USelect
+                v-model="form.gender"
+                :items="['male', 'female']"
+                icon="i-lucide-users"
+              />
+            </UFormField>
+          </div>
+        </section>
 
-        <UFormField label="Issued by">
-          <UInput v-model="form.passport_issued_by" />
-        </UFormField>
+        <section class="space-y-4">
+          <h4 class="font-medium text-sm opacity-70">
+            Passport
+          </h4>
 
-        <UFormField label="Issue date">
-          <UInput v-model="form.passport_issue_date" type="date" />
-        </UFormField>
+          <div class="grid md:grid-cols-2 gap-4">
+            <UFormField label="Series">
+              <UInput v-model="form.passport_series" />
+            </UFormField>
 
-        <UFormField label="SNILS">
-          <UInput v-model="form.snils" />
-        </UFormField>
+            <UFormField label="Number">
+              <UInput v-model="form.passport_number" />
+            </UFormField>
 
-        <UFormField label="INN">
-          <UInput v-model="form.inn" />
-        </UFormField>
+            <UFormField label="Issued by" class="md:col-span-2">
+              <UInput v-model="form.passport_issued_by" />
+            </UFormField>
 
-        <UFormField label="OMS policy">
-          <UInput v-model="form.oms_policy" />
-        </UFormField>
+            <UFormField label="Issue date">
+              <UInput v-model="form.passport_issue_date" type="date" />
+            </UFormField>
+          </div>
+        </section>
 
-        <UFormField label="Birth date">
-          <UInput v-model="form.birth_date" type="date" />
-        </UFormField>
+        <section class="space-y-4">
+          <h4 class="font-medium text-sm opacity-70">
+            Documents
+          </h4>
 
-        <UFormField label="Gender">
-          <USelect
-            v-model="form.gender"
-            :items="['male', 'female']"
-          />
-        </UFormField>
+          <div class="grid md:grid-cols-3 gap-4">
+            <UFormField label="SNILS">
+              <UInput v-model="form.snils" />
+            </UFormField>
 
-        <UFormField label="Registration address">
-          <UInput v-model="form.address_reg" />
-        </UFormField>
+            <UFormField label="INN">
+              <UInput v-model="form.inn" />
+            </UFormField>
+
+            <UFormField label="OMS">
+              <UInput v-model="form.oms_policy" />
+            </UFormField>
+          </div>
+        </section>
+
+        <section class="space-y-4">
+          <h4 class="font-medium text-sm opacity-70">
+            Personal
+          </h4>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <UFormField label="Birth date">
+              <UInput v-model="form.birth_date" type="date" />
+            </UFormField>
+
+            <UFormField label="Registration address" class="md:col-span-2">
+              <UInput v-model="form.address_reg" />
+            </UFormField>
+          </div>
+        </section>
       </div>
 
-      <div class="flex justify-end gap-2">
+      <div class="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-gray-800">
         <UButton
           color="neutral"
           variant="ghost"
-          @click="open = false"
+          @click="open=false"
         >
           Cancel
         </UButton>
 
         <UButton
+          icon="i-lucide-save"
           color="primary"
           :loading="loading"
           @click="submit"
         >
-          Save
+          Save changes
         </UButton>
       </div>
     </div>

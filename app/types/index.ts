@@ -171,3 +171,16 @@ export interface RegisterUserPayload {
   gender?: string
   birth_date?: string
 }
+
+export interface ReportPayload {
+  medianData: MonthlyApiItem[]
+  generalData: MonthlyApiItem[]
+  filters: DashboardFilters
+  period: Period
+  range: Range
+  user?: {
+    Id: number
+    Username: string
+    FullName?: string
+  }
+}

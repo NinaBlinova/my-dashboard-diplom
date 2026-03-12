@@ -8,7 +8,7 @@ const range = shallowRef<Range>({
   end: new Date()
 })
 const period = ref<Period>('daily')
-
+const { user } = useLogin()
 const { filters } = useDashboardFilters()
 
 const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
@@ -50,6 +50,21 @@ const isAlone = computed(() => filters.value.scope === 'alone')
 //   incomeVsTransactionsMedian: true,
 //   incomeVsTransactionsGeneral: true
 // })
+
+const { generateReport } = useReport()
+
+async function handleGenerateReport() {
+  await generateReport({
+    medianData: monthlyDataMedian.value,
+    generalData: monthlyDataGeneral.value,
+    filters: filters.value,
+    period: period.value,
+    range: range.value,
+    user: user.value
+      ? { Id: user.value.Id, Username: user.value.Username, FullName: user.value.FullName }
+      : undefined
+  })
+}
 </script>
 
 <template>
@@ -63,34 +78,19 @@ const isAlone = computed(() => filters.value.scope === 'alone')
 
       <UDashboardToolbar>
         <template #left>
-          <!-- NOTE: The `-ms-1` class is used to align with the `DashboardSidebarCollapse` button here. -->
           <HomeDateRangePicker v-model="range" class="-ms-1" />
           <Filters v-model="period" :range="range" />
-          <!--          <UDropdownMenu -->
-          <!--            :items="[ -->
-          <!--              { label: 'Income (Median)', type: 'checkbox', checked: displayCharts.incomeMedian, onUpdateChecked: val => displayCharts.incomeMedian = val }, -->
-          <!--              { label: 'Tax (Median)', type: 'checkbox', checked: displayCharts.taxMedian, onUpdateChecked: val => displayCharts.taxMedian = val }, -->
-          <!--              { label: 'Transactions (Median)', type: 'checkbox', checked: displayCharts.transactionsMedian, onUpdateChecked: val => displayCharts.transactionsMedian = val }, -->
-          <!--              { label: 'Income (General)', type: 'checkbox', checked: displayCharts.incomeGeneral, onUpdateChecked: val => displayCharts.incomeGeneral = val }, -->
-          <!--              { label: 'Tax (General)', type: 'checkbox', checked: displayCharts.taxGeneral, onUpdateChecked: val => displayCharts.taxGeneral = val }, -->
-          <!--              { label: 'Transactions (General)', type: 'checkbox', checked: displayCharts.transactionsGeneral, onUpdateChecked: val => displayCharts.transactionsGeneral = val }, -->
-          <!--              { label: 'Income vs Transactions (Median)', type: 'checkbox', checked: displayCharts.incomeVsTransactionsMedian, onUpdateChecked: val => displayCharts.incomeVsTransactionsMedian = val }, -->
-          <!--              { label: 'Income vs Transactions (General)', type: 'checkbox', checked: displayCharts.incomeVsTransactionsGeneral, onUpdateChecked: val => displayCharts.incomeVsTransactionsGeneral = val } -->
-          <!--            ]" -->
-          <!--            :content="{ align: 'end' }" -->
-          <!--          > -->
-          <!--            <UButton -->
-          <!--              label="Display" -->
-          <!--              color="neutral" -->
-          <!--              variant="outline" -->
-          <!--              trailing-icon="i-lucide-settings-2" -->
-          <!--            /> -->
-          <!--          </UDropdownMenu> -->
+        </template>
+        <template #right>
+          <UButton
+            label="Generate Report"
+            icon="i-lucide-file-text"
+            @click="handleGenerateReport"
+          />
         </template>
       </UDashboardToolbar>
     </template>
 
-    <!-- 🔹 ALONE -->
     <template v-if="isAlone" #body>
       <HomeStats :period="period" :range="range" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

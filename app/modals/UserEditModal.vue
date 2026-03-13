@@ -127,7 +127,7 @@ onMounted(() => {
         <UButton
           icon="i-lucide-x"
           color="error"
-          variant="subtle"
+          variant="soft"
           @click="open=false"
         />
       </div>
@@ -224,8 +224,8 @@ onMounted(() => {
 
       <div class="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-gray-800">
         <UButton
-          color="neutral"
-          variant="ghost"
+          color="error"
+          variant="soft"
           @click="open=false"
         >
           Cancel
@@ -234,6 +234,7 @@ onMounted(() => {
         <UButton
           icon="i-lucide-save"
           color="primary"
+          variant="soft"
           :loading="loading"
           @click="submit"
         >

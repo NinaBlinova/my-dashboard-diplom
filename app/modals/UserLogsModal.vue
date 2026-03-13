@@ -57,9 +57,9 @@ onMounted(() => {
 
         <UButton
           icon="i-lucide-x"
-          color="neutral"
-          variant="ghost"
-          @click="close"
+          color="error"
+          variant="soft"
+          @click="open=false"
         />
       </div>
 
@@ -90,9 +90,9 @@ onMounted(() => {
       <!-- FOOTER -->
       <div class="flex justify-end p-4 border-t border-gray-200 dark:border-gray-800">
         <UButton
-          color="neutral"
-          variant="ghost"
-          @click="close"
+          color="error"
+          variant="soft"
+          @click="open=false"
         >
           Close
         </UButton>

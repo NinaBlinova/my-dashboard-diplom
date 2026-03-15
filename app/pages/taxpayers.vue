@@ -29,16 +29,16 @@ function getRowItems(row: Row<Taxpayer>) {
   return [
     {
       type: 'label',
-      label: 'Actions'
+      label: 'Действие'
     },
     {
-      label: 'Copy taxpayer ID',
+      label: 'Скопирвать ИНН',
       icon: 'i-lucide-copy',
       onSelect() {
         navigator.clipboard.writeText(row.original.INN)
         toast.add({
-          title: 'Copied to clipboard',
-          description: 'Taxpayers ID copied to clipboard'
+          title: 'Скопировано в буфер обмена',
+          description: 'Идентификационный номер налогоплательщика скопирован в буфер обмена.'
         })
       }
     },
@@ -46,7 +46,7 @@ function getRowItems(row: Row<Taxpayer>) {
       type: 'separator'
     },
     {
-      label: 'View taxpayer details',
+      label: 'Посмотреть детали',
       icon: 'i-lucide-list',
       onSelect() {
         selectedINN.value = row.original.INN
@@ -84,7 +84,7 @@ const columns: TableColumn<Taxpayer>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: 'ФИО',
     cell: ({ row }) => {
       return h('div', { class: 'flex items-center gap-3' }, [
         h(UAvatar, {
@@ -105,7 +105,7 @@ const columns: TableColumn<Taxpayer>[] = [
   },
   {
     accessorKey: 'registration_district',
-    header: 'registration_district',
+    header: 'Адрес регистрации',
     cell: ({ row }) => row.original.registration_district
   },
   {
@@ -174,14 +174,14 @@ const viewModalOpen = ref(false)
 watch([() => pagination.pageIndex, () => pagination.pageSize, INNFilter], fetchTaxpayers, { immediate: true })
 const debouncedINNFilter = refDebounced(INNFilter, 300)
 watch(debouncedINNFilter, () => {
-  pagination.pageIndex = 0 // Сбрасываем на первую страницу при изменении фильтра
+  pagination.pageIndex = 0
 })
 </script>
 
 <template>
   <UDashboardPanel id="taxpayers">
     <template #header>
-      <UDashboardNavbar title="Taxpayer">
+      <UDashboardNavbar title="Налогоплательщики">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -198,7 +198,7 @@ watch(debouncedINNFilter, () => {
           v-model="INNFilter"
           class="max-w-sm"
           icon="i-lucide-search"
-          placeholder="Filter INN..."
+          placeholder="Фильтр по ИНН..."
         />
 
         <div class="flex flex-wrap items-center gap-1.5">
@@ -237,7 +237,7 @@ watch(debouncedINNFilter, () => {
             :content="{ align: 'end' }"
           >
             <UButton
-              label="Display"
+              label="Дисплей"
               color="neutral"
               variant="outline"
               trailing-icon="i-lucide-settings-2"

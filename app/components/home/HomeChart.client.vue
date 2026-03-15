@@ -25,6 +25,8 @@ const props = defineProps<{
 
 const getX = (d: ChartPoint): number => d.x
 // const getY = (d: ChartPoint): number => d.value
+// const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
 
 const groupedByYear = computed<Record<number, ApiItem[]>>(() => {
   const groups: Record<number, ApiItem[]> = {}
@@ -59,8 +61,17 @@ const series = computed<{ year: number, data: ChartPoint[] }[]>(() =>
   })
 )
 
+const formatter = new Intl.NumberFormat('ru', {
+  notation: 'compact'
+})
+
+// const formatter = new Intl.NumberFormat('en', {
+// notation: 'compact',
+//   maximumFractionDigits: 1
+// })
+
 const template = (d: ChartPoint) =>
-  `${d.label}: ${d.value.toLocaleString()}`
+  `${d.label}: ${formatter.format(d.value)}`
 
 // watchEffect(() => {
 //   console.log('RAW API DATA:', props.data)
@@ -126,8 +137,15 @@ const containerData = computed<ChartPoint[]>(() =>
         />
       </template>
 
-      <VisAxis type="x" />
-      <VisAxis type="y" />
+      <VisAxis
+        type="x"
+        :num-ticks="6"
+        :tick-format="(v:number) => months[v-1]"
+      />
+      <VisAxis
+        type="y"
+        :tick-format="(v:number) => formatter.format(v)"
+      />
       <VisCrosshair :template="template" />
       <VisTooltip />
     </VisXYContainer>

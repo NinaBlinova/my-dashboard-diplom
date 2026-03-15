@@ -29,6 +29,11 @@ const props = defineProps<{
   data: ApiItem[]
 }>()
 
+const compact = new Intl.NumberFormat('ru', {
+  notation: 'compact',
+  maximumFractionDigits: 1
+})
+
 const groupedByYear = computed<Record<number, ApiItem[]>>(() => {
   const groups: Record<number, ApiItem[]> = {}
 
@@ -142,8 +147,15 @@ const containerData = computed(() =>
           :opacity="0.5"
         />
       </template>
-      <VisAxis type="x" />
-      <VisAxis type="y" />
+      <VisAxis
+        type="x"
+        :tick-format="(v:number) => compact.format(v)"
+      />
+
+      <VisAxis
+        type="y"
+        :tick-format="(v:number) => compact.format(v)"
+      />
       <VisCrosshair :template="template" />
       <VisTooltip />
     </VisXYContainer>

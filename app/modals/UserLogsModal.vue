@@ -52,7 +52,7 @@ onMounted(() => {
       <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
         <h3 class="text-lg font-semibold flex items-center gap-2">
           <UIcon name="i-lucide-history" />
-          User Logs
+          История пользователя
         </h3>
 
         <UButton
@@ -94,7 +94,7 @@ onMounted(() => {
           variant="soft"
           @click="open=false"
         >
-          Close
+          Закрыть
         </UButton>
       </div>
     </div>

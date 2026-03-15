@@ -33,12 +33,12 @@ const openEdit = (member: User) => {
 }
 const items = (member: User): DropdownMenuItem[] => {
   const menu: DropdownMenuItem[] = [
-    { label: 'Edit member', onSelect: () => openEdit(member) },
-    { label: 'Show history', onSelect: () => showUserLogs(member) }
+    { label: 'Редактировать', onSelect: () => openEdit(member) },
+    { label: 'История', onSelect: () => showUserLogs(member) }
   ]
   if (!member.IsActive) {
     menu.push({
-      label: 'Return member',
+      label: 'Активировать',
       color: 'primary',
       onSelect: async () => {
         if (!adminId.value) return
@@ -49,7 +49,7 @@ const items = (member: User): DropdownMenuItem[] => {
   }
   if (member.IsActive) {
     menu.push({
-      label: 'Remove member',
+      label: 'Деактивировать',
       color: 'error',
       onSelect: async () => {
         if (!adminId.value) return
@@ -61,6 +61,7 @@ const items = (member: User): DropdownMenuItem[] => {
   return menu
 }
 
+// фильтр на сервере сделать
 const filteredMembers = computed(() => {
   if (statusFilter.value === 'active') {
     return props.members.filter((m: User) => m.IsActive)
@@ -83,9 +84,9 @@ const filteredMembers = computed(() => {
     <UTabs
       v-model="statusFilter"
       :items="[
-        { label: 'All', value: 'all' },
-        { label: 'Active', value: 'active' },
-        { label: 'Inactive', value: 'inactive' }
+        { label: 'Все', value: 'all' },
+        { label: 'Активные', value: 'active' },
+        { label: 'Не активные', value: 'inactive' }
       ]"
     />
   </div>
@@ -122,14 +123,14 @@ const filteredMembers = computed(() => {
           color="neutral"
           class="capitalize"
         >
-          {{ member.user_role ?? 'member' }}
+          {{ member.user_role ?? 'участник' }}
         </UBadge>
 
         <UBadge
           variant="soft"
           :color="member.IsActive ? 'success' : 'error'"
         >
-          {{ member.IsActive ? 'Active' : 'Inactive' }}
+          {{ member.IsActive ? 'Активный' : 'Не активный' }}
         </UBadge>
       </div>
 

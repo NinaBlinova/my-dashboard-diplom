@@ -11,7 +11,7 @@ const formatDate = (date?: string) => {
   <UDashboardPanel
     resizable
   >
-    <UDashboardNavbar title="Profile" />
+    <UDashboardNavbar title="Профиль" />
     <UPage class="overflow-y-auto h-screen p-6 space-y-6">
       <UCard class="mb-6">
         <div class="flex items-center gap-4">
@@ -24,7 +24,7 @@ const formatDate = (date?: string) => {
               {{ user?.Email }}
             </p>
             <UBadge class="mt-2" color="primary" variant="soft">
-              {{ user?.user_role ?? 'member' }}
+              {{ user?.user_role ?? 'участник' }}
             </UBadge>
           </div>
         </div>
@@ -32,13 +32,13 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            Basic information
+            Основная информация
           </h3>
         </template>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <p class="text-sm text-muted">
-              Username
+              Имя пользователя
             </p>
             <p class="font-medium">
               {{ user?.Username }}
@@ -46,7 +46,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Phone
+              Теефон
             </p>
             <p class="font-medium">
               {{ user?.Phone }}
@@ -54,7 +54,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Birth date
+              День Рождения
             </p>
             <p class="font-medium">
               {{ formatDate(user?.BirthDate) }}
@@ -62,7 +62,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Gender
+              Пол
             </p>
             <p class="font-medium">
               {{ user?.Gender }}
@@ -70,7 +70,7 @@ const formatDate = (date?: string) => {
           </div>
           <div class="md:col-span-2">
             <p class="text-sm text-muted">
-              Address
+              Адресс регистрации
             </p>
             <p class="font-medium">
               {{ user?.Address_Reg }}
@@ -81,13 +81,13 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            Documents
+            Документы
           </h3>
         </template>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <p class="text-sm text-muted">
-              Passport
+              паспортные данные
             </p>
             <p class="font-medium">
               {{ user?.PassportSeries }} {{ user?.PassportNumber }}
@@ -95,7 +95,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Passport issue date
+              Дата выдачи
             </p>
             <p class="font-medium">
               {{ formatDate(user?.PassportIssueDate) }}
@@ -103,7 +103,7 @@ const formatDate = (date?: string) => {
           </div>
           <div class="md:col-span-2">
             <p class="text-sm text-muted">
-              Issued by
+              Выдан
             </p>
             <p class="font-medium">
               {{ user?.PassportIssuedBy }}
@@ -111,7 +111,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              SNILS
+              СНИЛС
             </p>
             <p class="font-medium">
               {{ user?.SNILS }}
@@ -119,7 +119,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              INN
+              ИНН
             </p>
             <p class="font-medium">
               {{ user?.INN }}
@@ -127,7 +127,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              OMS policy
+              ОМС полис
             </p>
             <p class="font-medium">
               {{ user?.OMSPolicyNumber }}
@@ -138,11 +138,11 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            About
+            Описание профиля
           </h3>
         </template>
         <p class="text-muted leading-relaxed">
-          {{ user?.Bio || 'No description' }}
+          {{ user?.Bio || 'Нет описания' }}
         </p>
       </UCard>
     </UPage>

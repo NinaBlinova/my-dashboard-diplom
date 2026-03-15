@@ -62,7 +62,7 @@ const getX = (d: ChartItem) => String(d.year)
       <!-- Income -->
       <div>
         <p class="text-sm font-medium mb-2">
-          Income
+          Доход
         </p>
         <VisXYContainer
           :data="chartData"
@@ -81,7 +81,7 @@ const getX = (d: ChartItem) => String(d.year)
       <!-- Tax -->
       <div>
         <p class="text-sm font-medium mb-2">
-          Tax
+          Налог
         </p>
         <VisXYContainer
           :data="chartData"
@@ -100,7 +100,7 @@ const getX = (d: ChartItem) => String(d.year)
       <!-- Transactions -->
       <div>
         <p class="text-sm font-medium mb-2">
-          Transactions
+          Транзакции
         </p>
         <VisXYContainer
           :data="chartData"

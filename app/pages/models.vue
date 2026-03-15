@@ -24,7 +24,7 @@ watch(selectedModel, async (newModel) => {
     :max-size="30"
     resizable
   >
-    <UDashboardNavbar title="Models">
+    <UDashboardNavbar title="Модели">
       <template #trailing>
         <UBadge :label="models.length" variant="subtle" />
       </template>

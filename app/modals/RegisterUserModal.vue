@@ -91,7 +91,7 @@ onMounted(() => {
       <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
         <h3 class="text-lg font-semibold flex items-center gap-2">
           <UIcon name="i-lucide-user-plus" />
-          Register User
+          Регистрация нового пользователя
         </h3>
 
         <UButton
@@ -104,11 +104,11 @@ onMounted(() => {
 
       <!-- BODY -->
       <div class="p-6 space-y-4 overflow-y-auto">
-        <UFormField label="Username">
+        <UFormField label="Имя пользователя">
           <UInput v-model="form.username" icon="i-lucide-user" />
         </UFormField>
 
-        <UFormField label="Full name">
+        <UFormField label="ФИО">
           <UInput v-model="form.full_name" />
         </UFormField>
 
@@ -116,22 +116,22 @@ onMounted(() => {
           <UInput v-model="form.email" type="email" icon="i-lucide-mail" />
         </UFormField>
 
-        <UFormField label="Password">
+        <UFormField label="Пароль">
           <UInput v-model="form.password" type="password" icon="i-lucide-lock" />
         </UFormField>
 
-        <UFormField label="Phone">
+        <UFormField label="Телефон">
           <UInput v-model="form.phone" icon="i-lucide-phone" />
         </UFormField>
 
-        <UFormField label="Gender">
+        <UFormField label="Пол">
           <USelect
             v-model="form.gender"
-            :items="['male', 'female']"
+            :items="['мужской', 'женский']"
           />
         </UFormField>
 
-        <UFormField label="Birth date">
+        <UFormField label="День рождения">
           <UInput v-model="form.birth_date" type="date" />
         </UFormField>
       </div>
@@ -143,7 +143,7 @@ onMounted(() => {
           variant="ghost"
           @click="open=false"
         >
-          Cancel
+          Отменить
         </UButton>
 
         <UButton
@@ -152,7 +152,7 @@ onMounted(() => {
           :loading="loading"
           @click="submit"
         >
-          Create user
+          Создать пользователя
         </UButton>
       </div>
     </div>

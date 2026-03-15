@@ -46,8 +46,8 @@ async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
     data.Bio
   )
   toast.add({
-    title: 'Success',
-    description: 'Your settings have been updated.',
+    title: 'Успешно',
+    description: 'Ваши настройки обновлены.',
     icon: 'i-lucide-check',
     color: 'success'
   })
@@ -62,7 +62,7 @@ async function onFileChange(e: Event) {
   await updateAvatar(file, user.value.Id)
 
   toast.add({
-    title: 'Avatar updated',
+    title: 'Аватар обновлен.',
     icon: 'i-lucide-check',
     color: 'success'
   })
@@ -81,15 +81,14 @@ function onFileClick() {
     @submit="onSubmit"
   >
     <UPageCard
-      title="Profile"
-      description="These informations will be displayed publicly."
+      title="Профиль"
       variant="naked"
       orientation="horizontal"
       class="mb-4"
     >
       <UButton
         form="settings"
-        label="Save changes"
+        label="Сохранить изменения"
         color="neutral"
         type="submit"
         class="w-fit lg:ms-auto"
@@ -99,8 +98,8 @@ function onFileClick() {
     <UPageCard variant="subtle">
       <UFormField
         name="name"
-        label="Name"
-        description="Will appear on receipts, invoices, and other communication."
+        label="ФИО"
+        description="Будет отображаться в документах."
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -113,7 +112,7 @@ function onFileClick() {
       <UFormField
         name="email"
         label="Email"
-        description="Used to sign in, for email receipts and product updates."
+        description="Используется для получения уведомлений, связи."
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -126,8 +125,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="username"
-        label="Username"
-        description="Your unique username for logging in and your profile URL."
+        label="Имя пользователя"
+        description="Ваше уникальное имя пользователя для входа в систему."
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -140,7 +139,7 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="avatar"
-        label="Avatar"
+        label="Аватар"
         description="JPG, GIF or PNG. 1MB Max."
         class="flex max-sm:flex-col justify-between sm:items-center gap-4"
       >
@@ -167,8 +166,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="Bio"
-        label="Bio"
-        description="Brief description for your profile. URLs are hyperlinked."
+        label="Описание профиля"
+        description="Краткое описание вашего профиля."
         class="flex max-sm:flex-col justify-between items-start gap-4"
         :ui="{ container: 'w-full' }"
       >

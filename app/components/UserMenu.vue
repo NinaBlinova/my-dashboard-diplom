@@ -30,7 +30,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   avatar: user.value.avatar
 }], [
   {
-    label: 'Profile',
+    label: 'Профиль',
     icon: 'i-lucide-user',
     to: 'profile'
   },
@@ -38,11 +38,11 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   //   icon: 'i-lucide-credit-card'
   // },
   {
-    label: 'Settings',
+    label: 'Настройки',
     icon: 'i-lucide-settings',
     to: '/settings'
   }], [{
-  label: 'Theme',
+  label: 'Палитра',
   icon: 'i-lucide-palette',
   children: [{
     label: 'Primary',
@@ -86,7 +86,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     }))
   }]
 }, {
-  label: 'Appearance',
+  label: 'Тема сиситемы',
   icon: 'i-lucide-sun-moon',
   children: [{
     label: 'Light',
@@ -112,38 +112,40 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       e.preventDefault()
     }
   }]
-}], [{
-  label: 'Templates',
-  icon: 'i-lucide-layout-template',
-  children: [{
-    label: 'Starter',
-    to: 'https://starter-template.nuxt.dev/'
-  }, {
-    label: 'Landing',
-    to: 'https://landing-template.nuxt.dev/'
-  }, {
-    label: 'Docs',
-    to: 'https://docs-template.nuxt.dev/'
-  }, {
-    label: 'SaaS',
-    to: 'https://saas-template.nuxt.dev/'
-  }, {
-    label: 'Dashboard',
-    to: 'https://dashboard-template.nuxt.dev/',
-    color: 'primary',
-    checked: true,
-    type: 'checkbox'
-  }, {
-    label: 'Chat',
-    to: 'https://chat-template.nuxt.dev/'
-  }, {
-    label: 'Portfolio',
-    to: 'https://portfolio-template.nuxt.dev/'
-  }, {
-    label: 'Changelog',
-    to: 'https://changelog-template.nuxt.dev/'
-  }]
-}], [{
+}],
+// [{
+//   label: 'Ссылки на источники',
+//   icon: 'i-lucide-layout-template',
+//   children: [{
+//     label: 'Starter',
+//     to: 'https://starter-template.nuxt.dev/'
+//   }, {
+//     label: 'Landing',
+//     to: 'https://landing-template.nuxt.dev/'
+//   }, {
+//     label: 'Docs',
+//     to: 'https://docs-template.nuxt.dev/'
+//   }, {
+//     label: 'SaaS',
+//     to: 'https://saas-template.nuxt.dev/'
+//   }, {
+//     label: 'Dashboard',
+//     to: 'https://dashboard-template.nuxt.dev/',
+//     color: 'primary',
+//     checked: true,
+//     type: 'checkbox'
+//   }, {
+//     label: 'Chat',
+//     to: 'https://chat-template.nuxt.dev/'
+//   }, {
+//     label: 'Portfolio',
+//     to: 'https://portfolio-template.nuxt.dev/'
+//   }, {
+//     label: 'Changelog',
+//     to: 'https://changelog-template.nuxt.dev/'
+//   }]
+// }],
+[{
   label: 'Documentation',
   icon: 'i-lucide-book-open',
   to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
@@ -153,8 +155,9 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   icon: 'i-simple-icons-github',
   to: 'https://github.com/nuxt-ui-templates/dashboard',
   target: '_blank'
-}, {
-  label: 'Log out',
+},
+{
+  label: 'Выйти',
   icon: 'i-lucide-log-out',
   onSelect: () => {
     logout()

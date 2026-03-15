@@ -4,13 +4,13 @@
     <USelect
       v-model="filters.taxType"
       :items="taxTypes"
-      label="Tax Type"
-      placeholder="Select tax type"
+      label="Тип налога"
+      placeholder="Выберите тип налога"
       class="min-w-[180px]"
       :disabled="filters.scope === 'alone'"
     />
 
-    <USwitch v-model="scope" label="All / Alone" />
+    <USwitch v-model="scope" label="Все / Конкретный (ИНН)" />
     <UInput
       v-if="filters.scope === 'alone'"
       v-model="filters.inn"

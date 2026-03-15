@@ -120,7 +120,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-user-cog" />
           <h3 class="font-semibold text-lg">
-            Edit member
+            Редактировать участника
           </h3>
         </div>
 
@@ -135,11 +135,11 @@ onMounted(() => {
       <div class="overflow-y-auto p-6 space-y-6">
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Basic information
+            Основная информация
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="Full name">
+            <UFormField label="ФИО">
               <UInput v-model="form.full_name" icon="i-lucide-user" />
             </UFormField>
 
@@ -147,14 +147,14 @@ onMounted(() => {
               <UInput v-model="form.email" type="email" icon="i-lucide-mail" />
             </UFormField>
 
-            <UFormField label="Phone">
+            <UFormField label="Телефон">
               <UInput v-model="form.phone" icon="i-lucide-phone" />
             </UFormField>
 
-            <UFormField label="Gender">
+            <UFormField label="Пол">
               <USelect
                 v-model="form.gender"
-                :items="['male', 'female']"
+                :items="['мужской', 'женский']"
                 icon="i-lucide-users"
               />
             </UFormField>
@@ -163,23 +163,23 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Passport
+            Паспортные данные
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="Series">
+            <UFormField label="Серия">
               <UInput v-model="form.passport_series" />
             </UFormField>
 
-            <UFormField label="Number">
+            <UFormField label="Номер">
               <UInput v-model="form.passport_number" />
             </UFormField>
 
-            <UFormField label="Issued by" class="md:col-span-2">
+            <UFormField label="Кем выдан" class="md:col-span-2">
               <UInput v-model="form.passport_issued_by" />
             </UFormField>
 
-            <UFormField label="Issue date">
+            <UFormField label="Дата выдачи">
               <UInput v-model="form.passport_issue_date" type="date" />
             </UFormField>
           </div>
@@ -187,19 +187,19 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Documents
+            Документы
           </h4>
 
           <div class="grid md:grid-cols-3 gap-4">
-            <UFormField label="SNILS">
+            <UFormField label="СНИЛС">
               <UInput v-model="form.snils" />
             </UFormField>
 
-            <UFormField label="INN">
+            <UFormField label="ИНН">
               <UInput v-model="form.inn" />
             </UFormField>
 
-            <UFormField label="OMS">
+            <UFormField label="ОМС">
               <UInput v-model="form.oms_policy" />
             </UFormField>
           </div>
@@ -207,15 +207,15 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Personal
+            Персональные данные
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="Birth date">
+            <UFormField label="День Рожения">
               <UInput v-model="form.birth_date" type="date" />
             </UFormField>
 
-            <UFormField label="Registration address" class="md:col-span-2">
+            <UFormField label="Адрес регистрации" class="md:col-span-2">
               <UInput v-model="form.address_reg" />
             </UFormField>
           </div>
@@ -228,7 +228,7 @@ onMounted(() => {
           variant="soft"
           @click="open=false"
         >
-          Cancel
+          Отменить
         </UButton>
 
         <UButton
@@ -238,7 +238,7 @@ onMounted(() => {
           :loading="loading"
           @click="submit"
         >
-          Save changes
+          Сохранить изменения
         </UButton>
       </div>
     </div>

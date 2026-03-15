@@ -28,6 +28,14 @@ const yearlyData = computed(() => yearlyResponse.value?.data ?? [])
 watchEffect(() => {
   console.log('YEARLY DATA:', yearlyData.value)
 })
+
+const titlesMap: Record<string, string> = {
+  Tax: 'Налог',
+  Taxpayers: 'Налогоплательщики',
+  Income: 'Доход',
+  Transactions: 'Транзакции'
+}
+
 const yearlyCharts = computed(() => {
   const data = yearlyData.value
   if (!data || data.length === 0) return []
@@ -117,7 +125,7 @@ const histogramData = computed(() => {
   </div>
   <div class="mt-6">
     <HomeHistogram
-      title="Income / Tax / Transactions"
+      title="Доход / Налог / Количество транзакций"
       :data="histogramData"
     />
   </div>

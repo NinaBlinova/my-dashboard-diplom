@@ -51,7 +51,7 @@ const getTooltip = (d: PieItem): string =>
           {{ intervalLabel }}
         </p>
         <p class="text-xs text-muted">
-          {{ transactions }} transactions per month
+          {{ transactions }} тразакций в месяц
         </p>
       </div>
     </template>
@@ -76,16 +76,16 @@ const getTooltip = (d: PieItem): string =>
         class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
       >
         <p class="text-xs text-muted">
-          Total
+          Весь доход
         </p>
         <p class="text-lg font-semibold">
           {{ props.income }}
         </p>
         <p class="text-xs text-primary font-medium">
-          {{ props.tax }} tax
+          {{ props.tax }} налог
         </p>
         <p class="text-xs text-primary font-medium">
-          {{ incomePercent }}% income
+          {{ incomePercent }}% оставшийся доход
         </p>
       </div>
     </div>

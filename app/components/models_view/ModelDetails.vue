@@ -1,22 +1,40 @@
 <script setup lang="ts">
 import type { ModelItem } from '~/types'
 
-const props = defineProps<{ model: ModelItem [] }>()
+defineProps<{ model: ModelItem[] }>()
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleString()
+
+const formatValue = (value: unknown) => {
+  if (typeof value === 'number') {
+    return value.toFixed(4)
+  }
+  return value
+}
+
+const fields: { label: string, key: keyof ModelItem }[] = [
+  { label: 'Версия', key: 'ModelVersion' },
+  { label: 'R²', key: 'R2' },
+  { label: 'MAE', key: 'MAE' },
+  { label: 'RMSE', key: 'RMSE' }
+]
 </script>
 
 <template>
   <UDashboardPanel
-    v-for="m in props.model"
-    :key="m.ModelName + m.ModelVersion"
+    v-for="m in model"
+    :key="`${m.ModelName}-${m.ModelVersion}`"
   >
     <UDashboardNavbar :title="m.TargetName" />
     <div class="p-6 space-y-4">
-      <div><strong>Version:</strong> {{ m.ModelVersion }}</div>
-      <div><strong>Target:</strong> {{ m.TargetName }}</div>
-      <div><strong>R²:</strong> {{ m.R2 }}</div>
-      <div><strong>MAE:</strong> {{ m.MAE }}</div>
-      <div><strong>RMSE:</strong> {{ m.RMSE }}</div>
-      <div><strong>Created:</strong> {{ m.CreatedAt }}</div>
+      <div v-for="f in fields" :key="f.key">
+        <strong>{{ f.label }}:</strong> {{ formatValue(m[f.key]) }}
+      </div>
+
+      <div>
+        <strong>Создано:</strong> {{ formatDate(m.CreatedAt) }}
+      </div>
     </div>
   </UDashboardPanel>
 </template>

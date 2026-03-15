@@ -41,15 +41,19 @@ onMounted(async () => {
         {{ model.ModelName }}
       </div>
       <div class="text-sm text-muted">
-        Version: {{ model.ModelVersion }}
+        Версия: {{ model.ModelVersion }}
       </div>
       <UButton
         v-if="!isActive(model)"
-        label="Set Active"
-        color="primary"
+        label="Установить активным"
+        variant="ghost"
         @click="activate(model)"
       />
-      <UBadge v-else label="Active" color="success" />
+      <UBadge
+        v-else
+        label="Активная"
+        color="success"
+      />
     </div>
   </div>
 </template>

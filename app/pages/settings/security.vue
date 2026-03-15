@@ -7,8 +7,8 @@ import { useLogin } from '~/composables/useLogin'
 const { changePassword } = usePassword()
 
 const passwordSchema = z.object({
-  current: z.string().min(3, 'Must be at least 3 characters'),
-  new: z.string().min(3, 'Must be at least 3 characters')
+  current: z.string().min(3, 'Должно быть не менее 3 символов'),
+  new: z.string().min(3, 'Должно быть не менее 3 символов')
 })
 
 type PasswordSchema = z.output<typeof passwordSchema>
@@ -21,7 +21,7 @@ const password = reactive<Partial<PasswordSchema>>({
 const validate = (state: Partial<PasswordSchema>): FormError[] => {
   const errors: FormError[] = []
   if (state.current && state.new && state.current === state.new) {
-    errors.push({ name: 'new', message: 'Passwords must be different' })
+    errors.push({ name: 'new', message: 'Новый пароль должен быть другим' })
   }
   return errors
 }
@@ -42,7 +42,7 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
     )
 
     if (res.success) {
-      alert('Password updated')
+      alert('Пароль обновился')
       password.current = ''
       password.new = ''
     } else {
@@ -50,15 +50,15 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
     }
   } catch (e) {
     console.error(e)
-    alert('Error updating password')
+    alert('Ошибка при обновлении пароля')
   }
 }
 </script>
 
 <template>
   <UPageCard
-    title="Password"
-    description="Confirm your current password before setting a new one."
+    title="Пароль"
+    description="Подтвердите свой текущий пароль, прежде чем устанавливать новый."
     variant="subtle"
   >
     <UForm
@@ -72,7 +72,7 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
         <UInput
           v-model="password.current"
           type="password"
-          placeholder="Current password"
+          placeholder="Текущий пароль"
           class="w-full"
         />
       </UFormField>
@@ -81,12 +81,12 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
         <UInput
           v-model="password.new"
           type="password"
-          placeholder="New password"
+          placeholder="Новый пароль"
           class="w-full"
         />
       </UFormField>
 
-      <UButton label="Update" class="w-fit" type="submit" />
+      <UButton label="Обновить" class="w-fit" type="submit" />
     </UForm>
   </UPageCard>
 

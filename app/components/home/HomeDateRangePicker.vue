@@ -43,7 +43,7 @@ watch(selectedYear, (selectedYear) => {
 </script>
 
 <template>
-  <div>From {{ selectedYear }} to {{ upperBound }}</div>
+  <div>С {{ selectedYear }} до {{ upperBound }}</div>
   <USelect
     v-model="selectedYear"
     :items="availableYears.map(y => ({

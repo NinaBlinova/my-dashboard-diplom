@@ -8,7 +8,7 @@ const { user } = useLogin()
 const open = ref(false)
 
 const links = [[{
-  label: 'Home',
+  label: 'Главная',
   icon: 'i-lucide-house',
   to: '/',
   onSelect: () => {
@@ -16,7 +16,7 @@ const links = [[{
   }
 }, {
   // Inbox
-  label: 'Taxpayers',
+  label: 'Налогоплательщики',
   icon: 'i-lucide-users',
   to: '/taxpayers',
   // badge: '4',
@@ -25,20 +25,20 @@ const links = [[{
   }
 }, {
   // Customers
-  label: 'Models',
+  label: 'Модели',
   icon: 'i-lucide-brain',
   to: '/models',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Settings',
+  label: 'Настройки',
   to: '/settings',
   icon: 'i-lucide-settings',
   defaultOpen: true,
   type: 'trigger',
   children: [{
-    label: 'General',
+    label: 'Общие',
     to: '/settings',
     exact: true,
     onSelect: () => {
@@ -46,34 +46,39 @@ const links = [[{
     }
   }, ...(user.value?.user_role === 'admin'
     ? [{
-        label: 'Members',
+        label: 'Учстинки системы',
         to: '/settings/members',
         onSelect: () => { open.value = false }
       }]
-    : []), {
-    label: 'Notifications',
-    to: '/settings/notifications',
-    onSelect: () => {
-      open.value = false
-    }
-  }, {
-    label: 'Security',
+    : []),
+  // {
+  //   label: 'Уведомления',
+  //   to: '/settings/notifications',
+  //   onSelect: () => {
+  //     open.value = false
+  //   }
+  // },
+  {
+    label: 'Безопасность',
     to: '/settings/security',
     onSelect: () => {
       open.value = false
     }
   }]
-}], [{
-  label: 'Feedback',
-  icon: 'i-lucide-message-circle',
-  to: 'https://github.com/nuxt-ui-templates/dashboard',
-  target: '_blank'
-}, {
-  label: 'Help & Support',
-  icon: 'i-lucide-info',
-  to: 'https://github.com/nuxt-ui-templates/dashboard',
-  target: '_blank'
-}]] satisfies NavigationMenuItem[][]
+}]
+// [{
+//   label: 'Feedback',
+//   icon: 'i-lucide-message-circle',
+//   to: 'https://github.com/nuxt-ui-templates/dashboard',
+//   target: '_blank'
+// }, {
+//   label: 'Help & Support',
+//   icon: 'i-lucide-info',
+//   to: 'https://github.com/nuxt-ui-templates/dashboard',
+//   target: '_blank'
+// }
+// ]
+] satisfies NavigationMenuItem[][]
 
 const groups = computed(() => [{
   id: 'links',
@@ -127,9 +132,9 @@ onMounted(async () => {
       class="bg-elevated/25"
       :ui="{ footer: 'lg:border-t lg:border-default' }"
     >
-      <template #header="{ collapsed }">
-        <TeamsMenu :collapsed="collapsed" />
-      </template>
+      <!--      <template #header="{ collapsed }"> -->
+      <!--        <TeamsMenu :collapsed="collapsed" /> -->
+      <!--      </template> -->
 
       <template #default="{ collapsed }">
         <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />

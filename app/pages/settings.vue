@@ -4,23 +4,25 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const { user } = useLogin()
 
 const links = [[{
-  label: 'General',
+  label: 'Общие',
   icon: 'i-lucide-user',
   to: '/settings',
   exact: true
 },
 ...(user.value?.user_role === 'admin'
   ? [{
-      label: 'Members',
+      label: 'Участники системы',
       icon: 'i-lucide-users',
       to: '/settings/members'
     }]
-  : []), {
-  label: 'Notifications',
-  icon: 'i-lucide-bell',
-  to: '/settings/notifications'
-}, {
-  label: 'Security',
+  : []),
+// {
+//   label: 'Уведомления',
+//   icon: 'i-lucide-bell',
+//   to: '/settings/notifications'
+// },
+{
+  label: 'Безопасность',
   icon: 'i-lucide-shield',
   to: '/settings/security'
 }], [{
@@ -34,7 +36,7 @@ const links = [[{
 <template>
   <UDashboardPanel id="settings" :ui="{ body: 'lg:py-12' }">
     <template #header>
-      <UDashboardNavbar title="Settings">
+      <UDashboardNavbar title="Настройки">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>

@@ -26,14 +26,14 @@ const registerModal = ref(false)
 <template>
   <div>
     <UPageCard
-      title="Members"
-      description="Add new member."
+      title="Участники системы"
+      description="Добавить нового участника."
       variant="naked"
       orientation="horizontal"
       class="mb-4"
     >
       <UButton
-        label="Add user"
+        label="Добавить пользователя"
         color="neutral"
         class="w-fit lg:ms-auto"
         @click="registerModal = true"
@@ -45,7 +45,7 @@ const registerModal = ref(false)
         <UInput
           v-model="q"
           icon="i-lucide-search"
-          placeholder="Search members"
+          placeholder="Искать участника"
           autofocus
           class="w-full"
         />

@@ -7,15 +7,20 @@ const props = defineProps<{
 
 const open = defineModel<boolean>('open')
 
-const { data: taxpayer, pending, error } = useFetch<Taxpayer>(
+const { data: taxpayer, pending, error, refresh } = useFetch<Taxpayer>(
   '/api/taxpayers_inn',
   {
     query: computed(() => ({ inn: props.inn })),
     immediate: false,
-    watch: [open],
     server: false
   }
 )
+
+watch(open, (val) => {
+  if (val && props.inn) {
+    refresh()
+  }
+})
 </script>
 
 <template>

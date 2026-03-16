@@ -5,18 +5,14 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const query = getQuery(event)
     // console.log('SERVER ROUTE QUERY:', query)
-    const data = await $fetch<{
+    return await $fetch<{
       data: Taxpayer[]
       total: number
       page: number
       pageSize: number
-    }>(
-      `${config.public.backendUrl}/api/taxpayers`,
-      {
-        query
-      }
-    )
-    return data
+    }>(`${config.public.backendUrl}/api/taxpayers`, {
+      query
+    })
   } catch (error) {
     console.error('The error get taxpayers:', error)
   }

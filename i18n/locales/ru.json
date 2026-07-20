@@ -1,0 +1,345 @@
+{
+  "common": {
+    "actions": {
+      "save": "Сохранить",
+      "saveChanges": "Сохранить изменения",
+      "cancel": "Отменить",
+      "create": "Создать",
+      "delete": "Удалить",
+      "close": "Закрыть",
+      "edit": "Редактировать",
+      "choose": "Выбрать"
+    },
+    "yes": "Да",
+    "no": "Нет"
+  },
+
+  "nav": {
+    "home": "Главная",
+    "taxpayers": "Налогоплательщики",
+    "models": "Модели",
+    "settings": "Настройки",
+    "settingsGeneral": "Общие",
+    "settingsMembers": "Участники системы",
+    "settingsNotifications": "Уведомления",
+    "settingsSecurity": "Безопасность",
+    "documentation": "Документация",
+    "search": {
+      "goTo": "Перейти",
+      "code": "Код",
+      "viewPageSource": "Посмотреть исходный код страницы"
+    }
+  },
+
+  "cookieConsent": {
+    "message": "Мы используем собственные файлы cookie, чтобы улучшить ваш опыт использования сайта.",
+    "accept": "Принять",
+    "optOut": "Отказаться"
+  },
+
+  "auth": {
+    "login": {
+      "welcomeBack": "С возвращением!",
+      "subtitle": "Пожалуйста, войдите в свою учетную запись",
+      "usernamePlaceholder": "Имя пользователя",
+      "passwordPlaceholder": "Пароль",
+      "submit": "Войти",
+      "footer": "2026 Диплом. Все права защищены.",
+      "errors": {
+        "loginFailed": "Не удалось войти"
+      }
+    }
+  },
+
+  "userMenu": {
+    "guest": "Гость",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "palette": "Палитра",
+    "primary": "Основной",
+    "neutral": "Нейтральный",
+    "systemTheme": "Тема оформления",
+    "light": "Светлая",
+    "dark": "Тёмная",
+    "documentation": "Документация",
+    "githubRepo": "Репозиторий на GitHub",
+    "logout": "Выйти"
+  },
+
+  "notifications": {
+    "title": "Уведомления"
+  },
+
+  "home": {
+    "title": "Главная",
+    "generateReport": "Отчет",
+    "charts": {
+      "income": "Доходы",
+      "tax": "Налоги",
+      "transactions": "Транзакции",
+      "incomeVsTransactions": "Доходы = F(Транзакции)",
+      "incomeVsTransactionsMedian": "Доходы = F(Транзакции) (Средние значения)",
+      "incomeVsTransactionsGeneral": "Доходы = F(Транзакции) (Суммированные значения)",
+      "incomeTaxTransactionsHistogram": "Доход / Налог / Количество транзакций"
+    },
+    "dateRange": {
+      "from": "С",
+      "to": "до"
+    },
+    "filters": {
+      "taxType": "Тип налога",
+      "taxTypePlaceholder": "Выберите тип налога",
+      "scopeSwitch": "Все / Конкретный (ИНН)",
+      "inn": "ИНН",
+      "innPlaceholder": "Введите ИНН",
+      "taxTypes": {
+        "selfEmployed": "Самозанятый (НПД)",
+        "ip6": "ИП на УСН 6%",
+        "ip15": "ИП на УСН 15%",
+        "ipOsno": "ИП на ОСНО",
+        "ipPatent": "ИП на патенте"
+      }
+    },
+    "stats": {
+      "tax": "Налог",
+      "taxpayers": "Налогоплательщики",
+      "income": "Доход",
+      "transactions": "Транзакции"
+    }
+  },
+
+  "taxpayers": {
+    "title": "Налогоплательщики",
+    "filterPlaceholder": "Фильтр по ИНН...",
+    "display": "Дисплей",
+    "table": {
+      "id": "ID",
+      "fullName": "ФИО",
+      "inn": "ИНН",
+      "registrationAddress": "Адрес регистрации"
+    },
+    "rowActions": {
+      "label": "Действие",
+      "copyInn": "Скопировать ИНН",
+      "viewDetails": "Посмотреть детали"
+    },
+    "toast": {
+      "copiedTitle": "Скопировано в буфер обмена",
+      "copiedDescription": "Идентификационный номер налогоплательщика скопирован в буфер обмена."
+    },
+    "selection": "Выбрано {selected} из {total} строк.",
+    "details": {
+      "title": "Данные налогоплательщика",
+      "description": "Подробная информация",
+      "loadError": "Ошибка загрузки данных",
+      "innLabel": "ИНН",
+      "passportLabel": "Паспорт",
+      "id": "ID",
+      "registrationDistrict": "Район регистрации",
+      "hasEmployees": "Есть сотрудники",
+      "employeesCount": "Количество сотрудников",
+      "notFound": "Налогоплательщик не найден"
+    },
+    "addModal": {
+      "title": "Новый налогоплательщик",
+      "description": "Добавить нового налогоплательщика в базу данных",
+      "trigger": "Новый налогоплательщик",
+      "nameLabel": "Имя",
+      "namePlaceholder": "Иван Иванов",
+      "emailLabel": "Email",
+      "emailPlaceholder": "ivan.ivanov{'@'}example.com",
+      "successTitle": "Успешно",
+      "successDescription": "Новый налогоплательщик {name} добавлен"
+    },
+    "deleteModal": {
+      "title": "Удалить {count} налогоплательщика(ей)",
+      "description": "Вы уверены? Это действие необратимо."
+    }
+  },
+
+  "models": {
+    "title": "Модели",
+    "versionLabel": "Версия: {version}",
+    "activate": "Установить активным",
+    "active": "Активная",
+    "createdAt": "Создано",
+    "fields": {
+      "version": "Версия",
+      "r2": "R²",
+      "mae": "MAE",
+      "rmse": "RMSE"
+    }
+  },
+
+  "profile": {
+    "title": "Профиль",
+    "roleFallback": "участник",
+    "basicInfo": "Основная информация",
+    "username": "Имя пользователя",
+    "phone": "Телефон",
+    "birthDate": "День рождения",
+    "gender": "Пол",
+    "registrationAddress": "Адрес регистрации",
+    "documents": "Документы",
+    "passportData": "Паспортные данные",
+    "passportIssueDate": "Дата выдачи",
+    "passportIssuedBy": "Выдан",
+    "snils": "СНИЛС",
+    "inn": "ИНН",
+    "omsPolicy": "ОМС полис",
+    "bio": "Описание профиля",
+    "noBio": "Нет описания"
+  },
+
+  "settings": {
+    "title": "Настройки",
+    "nav": {
+      "general": "Общие",
+      "members": "Участники системы",
+      "notifications": "Уведомления",
+      "security": "Безопасность"
+    },
+    "documentation": "Документация",
+    "general": {
+      "title": "Профиль",
+      "fullName": {
+        "label": "ФИО",
+        "description": "Будет отображаться в документах."
+      },
+      "email": {
+        "label": "Email",
+        "description": "Используется для получения уведомлений, связи."
+      },
+      "username": {
+        "label": "Имя пользователя",
+        "description": "Ваше уникальное имя пользователя для входа в систему."
+      },
+      "avatar": {
+        "label": "Аватар",
+        "description": "JPG, GIF или PNG. Максимум 1 МБ.",
+        "choose": "Выбрать"
+      },
+      "bio": {
+        "label": "Описание профиля",
+        "description": "Краткое описание вашего профиля."
+      },
+      "toast": {
+        "updatedTitle": "Успешно",
+        "updatedDescription": "Ваши настройки обновлены.",
+        "avatarUpdated": "Аватар обновлен."
+      }
+    },
+    "members": {
+      "title": "Участники системы",
+      "description": "Добавить нового участника.",
+      "addUser": "Добавить пользователя",
+      "searchPlaceholder": "Искать участника",
+      "status": "Статус",
+      "statusFilters": {
+        "all": "Все",
+        "active": "Активные",
+        "inactive": "Не активные"
+      },
+      "roleFallback": "участник",
+      "activeStatus": "Активный",
+      "inactiveStatus": "Не активный",
+      "lastChange": "Последнее изменение: {date}",
+      "actions": {
+        "edit": "Редактировать",
+        "history": "История",
+        "activate": "Активировать",
+        "deactivate": "Деактивировать"
+      }
+    },
+    "notifications": {
+      "channels": {
+        "title": "Каналы уведомлений",
+        "description": "Как мы можем вас уведомлять?",
+        "email": {
+          "label": "Email",
+          "description": "Получать ежедневную email-сводку."
+        },
+        "desktop": {
+          "label": "Рабочий стол",
+          "description": "Получать уведомления на рабочий стол."
+        }
+      },
+      "accountUpdates": {
+        "title": "Обновления аккаунта",
+        "description": "Получать обновления о Nuxt UI.",
+        "weeklyDigest": {
+          "label": "Еженедельная сводка",
+          "description": "Получать еженедельную сводку новостей."
+        },
+        "productUpdates": {
+          "label": "Обновления продукта",
+          "description": "Получать ежемесячное письмо со всеми новыми функциями и обновлениями."
+        },
+        "importantUpdates": {
+          "label": "Важные обновления",
+          "description": "Получать письма о важных обновлениях, таких как исправления безопасности, техобслуживание и т.д."
+        }
+      }
+    },
+    "security": {
+      "title": "Пароль",
+      "description": "Подтвердите свой текущий пароль, прежде чем устанавливать новый.",
+      "currentPasswordPlaceholder": "Текущий пароль",
+      "newPasswordPlaceholder": "Новый пароль",
+      "update": "Обновить",
+      "errors": {
+        "minLength": "Должно быть не менее 3 символов",
+        "samePassword": "Новый пароль должен быть другим",
+        "notLoggedIn": "Пользователь не авторизован",
+        "updateError": "Ошибка при обновлении пароля"
+      },
+      "success": "Пароль обновился"
+    }
+  },
+
+  "modals": {
+    "registerUser": {
+      "title": "Регистрация нового пользователя",
+      "username": "Имя пользователя",
+      "fullName": "ФИО",
+      "email": "Email",
+      "password": "Пароль",
+      "phone": "Телефон",
+      "gender": {
+        "label": "Пол",
+        "male": "мужской",
+        "female": "женский"
+      },
+      "birthDate": "День рождения",
+      "submit": "Создать пользователя"
+    },
+    "editUser": {
+      "title": "Редактировать участника",
+      "basicInfo": "Основная информация",
+      "fullName": "ФИО",
+      "email": "Email",
+      "phone": "Телефон",
+      "gender": {
+        "label": "Пол",
+        "male": "мужской",
+        "female": "женский"
+      },
+      "passportInfo": "Паспортные данные",
+      "series": "Серия",
+      "number": "Номер",
+      "issuedBy": "Кем выдан",
+      "issueDate": "Дата выдачи",
+      "documents": "Документы",
+      "snils": "СНИЛС",
+      "inn": "ИНН",
+      "oms": "ОМС",
+      "personalInfo": "Персональные данные",
+      "birthDate": "День рождения",
+      "registrationAddress": "Адрес регистрации",
+      "submit": "Сохранить изменения"
+    },
+    "userLogs": {
+      "title": "История пользователя"
+    }
+  }
+}

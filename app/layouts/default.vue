@@ -46,7 +46,7 @@ const links = [[{
     }
   }, ...(user.value?.user_role === 'admin'
     ? [{
-        label: 'Учстинки системы',
+        label: 'Участинки системы',
         to: '/settings/members',
         onSelect: () => { open.value = false }
       }]
@@ -138,6 +138,13 @@ onMounted(async () => {
 
       <template #default="{ collapsed }">
         <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
+
+        <div
+          v-if="!collapsed"
+          class="px-4 py-3"
+        >
+          <LanguageSwitcher />
+        </div>
 
         <UNavigationMenu
           :collapsed="collapsed"

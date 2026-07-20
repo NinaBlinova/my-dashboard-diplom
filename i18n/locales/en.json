@@ -1,0 +1,345 @@
+{
+  "common": {
+    "actions": {
+      "save": "Save",
+      "saveChanges": "Save changes",
+      "cancel": "Cancel",
+      "create": "Create",
+      "delete": "Delete",
+      "close": "Close",
+      "edit": "Edit",
+      "choose": "Choose"
+    },
+    "yes": "Yes",
+    "no": "No"
+  },
+
+  "nav": {
+    "home": "Home",
+    "taxpayers": "Taxpayers",
+    "models": "Models",
+    "settings": "Settings",
+    "settingsGeneral": "General",
+    "settingsMembers": "Members",
+    "settingsNotifications": "Notifications",
+    "settingsSecurity": "Security",
+    "documentation": "Documentation",
+    "search": {
+      "goTo": "Go to",
+      "code": "Code",
+      "viewPageSource": "View page source"
+    }
+  },
+
+  "cookieConsent": {
+    "message": "We use first-party cookies to enhance your experience on our website.",
+    "accept": "Accept",
+    "optOut": "Opt out"
+  },
+
+  "auth": {
+    "login": {
+      "welcomeBack": "Welcome back!",
+      "subtitle": "Please sign in to your account",
+      "usernamePlaceholder": "Username",
+      "passwordPlaceholder": "Password",
+      "submit": "Sign in",
+      "footer": "2026 Diploma. All rights reserved.",
+      "errors": {
+        "loginFailed": "Login failed"
+      }
+    }
+  },
+
+  "userMenu": {
+    "guest": "Guest",
+    "profile": "Profile",
+    "settings": "Settings",
+    "palette": "Palette",
+    "primary": "Primary",
+    "neutral": "Neutral",
+    "systemTheme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "documentation": "Documentation",
+    "githubRepo": "GitHub repository",
+    "logout": "Log out"
+  },
+
+  "notifications": {
+    "title": "Notifications"
+  },
+
+  "home": {
+    "title": "Home",
+    "generateReport": "Report",
+    "charts": {
+      "income": "Income",
+      "tax": "Tax",
+      "transactions": "Transactions",
+      "incomeVsTransactions": "Income = F(Transactions)",
+      "incomeVsTransactionsMedian": "Income = F(Transactions) (Median values)",
+      "incomeVsTransactionsGeneral": "Income = F(Transactions) (Total values)",
+      "incomeTaxTransactionsHistogram": "Income / Tax / Transaction count"
+    },
+    "dateRange": {
+      "from": "From",
+      "to": "to"
+    },
+    "filters": {
+      "taxType": "Tax type",
+      "taxTypePlaceholder": "Select a tax type",
+      "scopeSwitch": "All / Specific (INN)",
+      "inn": "INN",
+      "innPlaceholder": "Enter INN",
+      "taxTypes": {
+        "selfEmployed": "Self-employed (NPD)",
+        "ip6": "Sole proprietor, simplified 6%",
+        "ip15": "Sole proprietor, simplified 15%",
+        "ipOsno": "Sole proprietor, general regime",
+        "ipPatent": "Sole proprietor, patent"
+      }
+    },
+    "stats": {
+      "tax": "Tax",
+      "taxpayers": "Taxpayers",
+      "income": "Income",
+      "transactions": "Transactions"
+    }
+  },
+
+  "taxpayers": {
+    "title": "Taxpayers",
+    "filterPlaceholder": "Filter by INN...",
+    "display": "Display",
+    "table": {
+      "id": "ID",
+      "fullName": "Full name",
+      "inn": "INN",
+      "registrationAddress": "Registration address"
+    },
+    "rowActions": {
+      "label": "Actions",
+      "copyInn": "Copy INN",
+      "viewDetails": "View details"
+    },
+    "toast": {
+      "copiedTitle": "Copied to clipboard",
+      "copiedDescription": "The taxpayer identification number has been copied to the clipboard."
+    },
+    "selection": "{selected} of {total} row(s) selected.",
+    "details": {
+      "title": "Taxpayer details",
+      "description": "Detailed information",
+      "loadError": "Failed to load data",
+      "innLabel": "INN",
+      "passportLabel": "Passport",
+      "id": "ID",
+      "registrationDistrict": "Registration district",
+      "hasEmployees": "Has employees",
+      "employeesCount": "Number of employees",
+      "notFound": "Taxpayer not found"
+    },
+    "addModal": {
+      "title": "New taxpayer",
+      "description": "Add a new taxpayer to the database",
+      "trigger": "New taxpayer",
+      "nameLabel": "Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email",
+      "emailPlaceholder": "john.doe{'@'}example.com",
+      "successTitle": "Success",
+      "successDescription": "New taxpayer {name} added"
+    },
+    "deleteModal": {
+      "title": "Delete {count} taxpayer(s)",
+      "description": "Are you sure? This action cannot be undone."
+    }
+  },
+
+  "models": {
+    "title": "Models",
+    "versionLabel": "Version: {version}",
+    "activate": "Set as active",
+    "active": "Active",
+    "createdAt": "Created",
+    "fields": {
+      "version": "Version",
+      "r2": "R²",
+      "mae": "MAE",
+      "rmse": "RMSE"
+    }
+  },
+
+  "profile": {
+    "title": "Profile",
+    "roleFallback": "member",
+    "basicInfo": "Basic information",
+    "username": "Username",
+    "phone": "Phone",
+    "birthDate": "Date of birth",
+    "gender": "Gender",
+    "registrationAddress": "Registration address",
+    "documents": "Documents",
+    "passportData": "Passport details",
+    "passportIssueDate": "Issue date",
+    "passportIssuedBy": "Issued by",
+    "snils": "SNILS",
+    "inn": "INN",
+    "omsPolicy": "OMS policy",
+    "bio": "Profile description",
+    "noBio": "No description"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "nav": {
+      "general": "General",
+      "members": "Members",
+      "notifications": "Notifications",
+      "security": "Security"
+    },
+    "documentation": "Documentation",
+    "general": {
+      "title": "Profile",
+      "fullName": {
+        "label": "Full name",
+        "description": "Will appear on documents."
+      },
+      "email": {
+        "label": "Email",
+        "description": "Used to receive notifications and communication."
+      },
+      "username": {
+        "label": "Username",
+        "description": "Your unique username for signing in."
+      },
+      "avatar": {
+        "label": "Avatar",
+        "description": "JPG, GIF or PNG. 1MB max.",
+        "choose": "Choose"
+      },
+      "bio": {
+        "label": "Profile description",
+        "description": "A short description of your profile."
+      },
+      "toast": {
+        "updatedTitle": "Success",
+        "updatedDescription": "Your settings have been updated.",
+        "avatarUpdated": "Avatar updated."
+      }
+    },
+    "members": {
+      "title": "Members",
+      "description": "Add a new member.",
+      "addUser": "Add user",
+      "searchPlaceholder": "Search members",
+      "status": "Status",
+      "statusFilters": {
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "roleFallback": "member",
+      "activeStatus": "Active",
+      "inactiveStatus": "Inactive",
+      "lastChange": "Last change: {date}",
+      "actions": {
+        "edit": "Edit",
+        "history": "History",
+        "activate": "Activate",
+        "deactivate": "Deactivate"
+      }
+    },
+    "notifications": {
+      "channels": {
+        "title": "Notification channels",
+        "description": "Where can we notify you?",
+        "email": {
+          "label": "Email",
+          "description": "Receive a daily email digest."
+        },
+        "desktop": {
+          "label": "Desktop",
+          "description": "Receive desktop notifications."
+        }
+      },
+      "accountUpdates": {
+        "title": "Account updates",
+        "description": "Receive updates about Nuxt UI.",
+        "weeklyDigest": {
+          "label": "Weekly digest",
+          "description": "Receive a weekly digest of news."
+        },
+        "productUpdates": {
+          "label": "Product updates",
+          "description": "Receive a monthly email with all new features and updates."
+        },
+        "importantUpdates": {
+          "label": "Important updates",
+          "description": "Receive emails about important updates like security fixes, maintenance, etc."
+        }
+      }
+    },
+    "security": {
+      "title": "Password",
+      "description": "Confirm your current password before setting a new one.",
+      "currentPasswordPlaceholder": "Current password",
+      "newPasswordPlaceholder": "New password",
+      "update": "Update",
+      "errors": {
+        "minLength": "Must be at least 3 characters",
+        "samePassword": "The new password must be different",
+        "notLoggedIn": "User not logged in",
+        "updateError": "Error updating the password"
+      },
+      "success": "Password updated"
+    }
+  },
+
+  "modals": {
+    "registerUser": {
+      "title": "Register a new user",
+      "username": "Username",
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone",
+      "gender": {
+        "label": "Gender",
+        "male": "male",
+        "female": "female"
+      },
+      "birthDate": "Date of birth",
+      "submit": "Create user"
+    },
+    "editUser": {
+      "title": "Edit member",
+      "basicInfo": "Basic information",
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "gender": {
+        "label": "Gender",
+        "male": "male",
+        "female": "female"
+      },
+      "passportInfo": "Passport details",
+      "series": "Series",
+      "number": "Number",
+      "issuedBy": "Issued by",
+      "issueDate": "Issue date",
+      "documents": "Documents",
+      "snils": "SNILS",
+      "inn": "INN",
+      "oms": "OMS",
+      "personalInfo": "Personal details",
+      "birthDate": "Date of birth",
+      "registrationAddress": "Registration address",
+      "submit": "Save changes"
+    },
+    "userLogs": {
+      "title": "User history"
+    }
+  }
+}

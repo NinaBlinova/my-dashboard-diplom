@@ -23,25 +23,29 @@ export function useDashboardStats() {
     if (!data.value) return []
     return [
       {
-        title: 'Налогоплательщики',
+        type: 'taxpayers',
+        title: 'home.stats.taxpayers',
         value: data.value.taxpayers,
         variation: 0,
         icon: 'i-heroicons-users'
       },
       {
-        title: 'Доходы',
+        type: 'income',
+        title: 'home.stats.income',
         value: data.value.income,
         variation: data.value.variation.TotalIncomeGrowth ?? 0,
         icon: 'i-heroicons-banknotes'
       },
       {
-        title: 'Налоги',
+        type: 'tax',
+        title: 'home.stats.tax',
         value: data.value.tax,
         variation: data.value.variation.TotalTaxGrowth ?? 0,
         icon: 'i-heroicons-receipt-percent'
       },
       {
-        title: 'Транзакции',
+        type: 'transactions',
+        title: 'home.stats.transactions',
         value: data.value.transactions,
         variation: data.value.variation.TotalTransactionsGrowth ?? 0,
         icon: 'i-heroicons-arrows-right-left'

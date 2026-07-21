@@ -105,6 +105,11 @@
       "taxpayers": "Taxpayers",
       "income": "Income",
       "transactions": "Transactions"
+    },
+    "pieChart": {
+      "transactionsPerMonth": "{count} transactions per month",
+      "totalIncome": "Total income",
+      "remainingIncome": "remaining income"
     }
   },
 

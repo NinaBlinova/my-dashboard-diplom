@@ -4,41 +4,39 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 const route = useRoute()
 const toast = useToast()
 const { user } = useLogin()
+const { t } = useI18n()
 
 const open = ref(false)
 
-const links = [[{
-  label: 'Главная',
+const links = computed<NavigationMenuItem[][]>(() => [[{
+  label: t('nav.home'),
   icon: 'i-lucide-house',
   to: '/',
   onSelect: () => {
     open.value = false
   }
 }, {
-  // Inbox
-  label: 'Налогоплательщики',
+  label: t('nav.taxpayers'),
   icon: 'i-lucide-users',
   to: '/taxpayers',
-  // badge: '4',
   onSelect: () => {
     open.value = false
   }
 }, {
-  // Customers
-  label: 'Модели',
+  label: t('nav.models'),
   icon: 'i-lucide-brain',
   to: '/models',
   onSelect: () => {
     open.value = false
   }
 }, {
-  label: 'Настройки',
+  label: t('nav.settings'),
   to: '/settings',
   icon: 'i-lucide-settings',
   defaultOpen: true,
   type: 'trigger',
   children: [{
-    label: 'Общие',
+    label: t('nav.settingsGeneral'),
     to: '/settings',
     exact: true,
     onSelect: () => {
@@ -46,50 +44,38 @@ const links = [[{
     }
   }, ...(user.value?.user_role === 'admin'
     ? [{
-        label: 'Участинки системы',
+        label: t('nav.settingsMembers'),
         to: '/settings/members',
         onSelect: () => { open.value = false }
       }]
     : []),
   // {
-  //   label: 'Уведомления',
+  //   label: t('nav.settingsNotifications'),
   //   to: '/settings/notifications',
   //   onSelect: () => {
   //     open.value = false
   //   }
   // },
   {
-    label: 'Безопасность',
+    label: t('nav.settingsSecurity'),
     to: '/settings/security',
     onSelect: () => {
       open.value = false
     }
   }]
 }]
-// [{
-//   label: 'Feedback',
-//   icon: 'i-lucide-message-circle',
-//   to: 'https://github.com/nuxt-ui-templates/dashboard',
-//   target: '_blank'
-// }, {
-//   label: 'Help & Support',
-//   icon: 'i-lucide-info',
-//   to: 'https://github.com/nuxt-ui-templates/dashboard',
-//   target: '_blank'
-// }
-// ]
-] satisfies NavigationMenuItem[][]
+] satisfies NavigationMenuItem[][])
 
 const groups = computed(() => [{
   id: 'links',
-  label: 'Go to',
-  items: links.flat()
+  label: t('nav.search.goTo'),
+  items: links.value.flat()
 }, {
   id: 'code',
-  label: 'Code',
+  label: t('nav.search.code'),
   items: [{
     id: 'source',
-    label: 'View page source',
+    label: t('nav.search.viewPageSource'),
     icon: 'i-simple-icons-github',
     to: `https://github.com/nuxt-ui-templates/dashboard/blob/main/app/pages${route.path === '/' ? '/index' : route.path}.vue`,
     target: '_blank'
@@ -103,18 +89,18 @@ onMounted(async () => {
   }
 
   toast.add({
-    title: 'We use first-party cookies to enhance your experience on our website.',
+    title: t('cookieConsent.message'),
     duration: 0,
     close: false,
     actions: [{
-      label: 'Accept',
+      label: t('cookieConsent.accept'),
       color: 'neutral',
       variant: 'outline',
       onClick: () => {
         cookie.value = 'accepted'
       }
     }, {
-      label: 'Opt out',
+      label: t('cookieConsent.optOut'),
       color: 'neutral',
       variant: 'ghost'
     }]
@@ -132,10 +118,6 @@ onMounted(async () => {
       class="bg-elevated/25"
       :ui="{ footer: 'lg:border-t lg:border-default' }"
     >
-      <!--      <template #header="{ collapsed }"> -->
-      <!--        <TeamsMenu :collapsed="collapsed" /> -->
-      <!--      </template> -->
-
       <template #default="{ collapsed }">
         <UDashboardSearchButton :collapsed="collapsed" class="bg-transparent ring-default" />
 

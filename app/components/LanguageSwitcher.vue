@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { locale } = useI18n()
+const { locale, setLocale } = useI18n()
 
 type LanguageCode = 'ru' | 'en'
 
@@ -16,6 +16,10 @@ const languages: {
     label: 'EN'
   }
 ]
+
+async function changeLanguage(code: LanguageCode) {
+  await setLocale(code)
+}
 </script>
 
 <template>
@@ -25,7 +29,7 @@ const languages: {
       :key="language.code"
       :variant="locale === language.code ? 'solid' : 'ghost'"
       size="sm"
-      @click="locale = language.code"
+      @click="changeLanguage(language.code)"
     >
       {{ language.label }}
     </UButton>

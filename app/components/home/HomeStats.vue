@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { stats } = useDashboardStats()
 const { filters } = useDashboardFilters()
 
@@ -25,20 +26,13 @@ const { data: yearlyResponse } = await useFetch('/api/dashboard/pie_chart', {
 })
 
 const yearlyData = computed(() => yearlyResponse.value?.data ?? [])
-watchEffect(() => {
-  console.log('YEARLY DATA:', yearlyData.value)
-})
-
-const titlesMap: Record<string, string> = {
-  Tax: 'Налог',
-  Taxpayers: 'Налогоплательщики',
-  Income: 'Доход',
-  Transactions: 'Транзакции'
-}
 
 const yearlyCharts = computed(() => {
   const data = yearlyData.value
-  if (!data || data.length === 0) return []
+
+  if (!data || data.length === 0) {
+    return []
+  }
 
   const start = Number(filters.value.startYear)
   const end = Number(filters.value.endYear)
@@ -48,7 +42,9 @@ const yearlyCharts = computed(() => {
     && (!end || year.Year <= end)
   )
 
-  if (filtered.length === 0) return []
+  if (filtered.length === 0) {
+    return []
+  }
 
   const sorted = [...filtered].sort((a, b) => a.Year - b.Year)
 
@@ -63,7 +59,10 @@ const yearlyCharts = computed(() => {
 
 const histogramData = computed(() => {
   const data = yearlyData.value
-  if (!data || data.length === 0) return []
+
+  if (!data || data.length === 0) {
+    return []
+  }
 
   const start = Number(filters.value.startYear)
   const end = Number(filters.value.endYear)
@@ -83,7 +82,7 @@ const histogramData = computed(() => {
       v-for="(stat, index) in stats"
       :key="index"
       :icon="stat.icon"
-      :title="stat.title"
+      :title="t(stat.title)"
       to="/taxpayers"
       variant="subtle"
       :ui="{
@@ -96,13 +95,13 @@ const histogramData = computed(() => {
     >
       <div class="flex items-center gap-2">
         <span class="text-2xl font-semibold text-highlighted">
-          {{ stat.title === 'Tax'
-            ? formatCurrency(stat.value)
+          {{ stat.type === 'tax'
+            ? formatCurrency(stat.value!)
             : stat.value }}
         </span>
 
         <UBadge
-          v-if="stat.title !== 'Taxpayers'"
+          v-if="stat.type !== 'taxpayers'"
           :color="stat.variation > 0 ? 'success' : 'error'"
           variant="subtle"
           class="text-xs"
@@ -112,6 +111,7 @@ const histogramData = computed(() => {
       </div>
     </UPageCard>
   </UPageGrid>
+
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
     <HomePieChart
       v-for="item in yearlyCharts"
@@ -123,9 +123,10 @@ const histogramData = computed(() => {
       :color="item.color"
     />
   </div>
+
   <div class="mt-6">
     <HomeHistogram
-      title="Доход / Налог / Количество транзакций"
+      :title="t('home.charts.incomeTaxTransactionsHistogram')"
       :data="histogramData"
     />
   </div>

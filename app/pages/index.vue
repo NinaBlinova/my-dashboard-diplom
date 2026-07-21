@@ -10,6 +10,13 @@ const range = shallowRef<Range>({
 const period = ref<Period>('daily')
 const { user } = useLogin()
 const { filters } = useDashboardFilters()
+const { t } = useI18n()
+const { locale, messages } = useI18n()
+
+watchEffect(() => {
+  console.log('locale', locale.value)
+  console.log('messages', messages.value)
+})
 
 const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
   query: computed(() => ({
@@ -33,24 +40,9 @@ const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboa
     endYear: filters.value.endYear
   }))
 })
-
 const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
-// watchEffect(() => {
-//   console.log('MONTHLY MEDIAN:', monthlyDataMedian.value)
-// })
+
 const isAlone = computed(() => filters.value.scope === 'alone')
-
-// const displayCharts = reactive({
-//   incomeMedian: true,
-//   taxMedian: true,
-//   transactionsMedian: true,
-//   incomeGeneral: true,
-//   taxGeneral: true,
-//   transactionsGeneral: true,
-//   incomeVsTransactionsMedian: true,
-//   incomeVsTransactionsGeneral: true
-// })
-
 const { generateReport } = useReport()
 
 async function handleGenerateReport() {
@@ -70,7 +62,7 @@ async function handleGenerateReport() {
 <template>
   <UDashboardPanel id="home">
     <template #header>
-      <UDashboardNavbar title="Главная" :ui="{ right: 'gap-3' }">
+      <UDashboardNavbar :title="t('home.title')" :ui="{ right: 'gap-3' }">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -83,7 +75,7 @@ async function handleGenerateReport() {
         </template>
         <template #right>
           <UButton
-            label="Отчет"
+            :label="t('home.generateReport')"
             icon="i-lucide-file-text"
             @click="handleGenerateReport"
           />
@@ -94,14 +86,14 @@ async function handleGenerateReport() {
     <template v-if="isAlone" #body>
       <HomeStats :period="period" :range="range" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart title="Доходы" metric="Income" :data="monthlyDataMedian" />
-        <HomeChart title="Налоги" metric="Tax" :data="monthlyDataMedian" />
-        <HomeChart title="Транзакции" metric="Transactions" :data="monthlyDataMedian" />
+        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataMedian" />
+        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataMedian" />
+        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataMedian" />
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <HomeIncomeTransactionChart
-          title="Доходы = F(Транзакции)"
+          :title="t('home.charts.incomeVsTransactions')"
           :data="monthlyDataMedian"
         />
       </div>
@@ -110,46 +102,22 @@ async function handleGenerateReport() {
     <template v-else #body>
       <HomeStats :period="period" :range="range" />
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart
-          title="Доходы"
-          metric="Income"
-          :data="monthlyDataMedian"
-        />
-        <HomeChart
-          title="Налоги"
-          metric="Tax"
-          :data="monthlyDataMedian"
-        />
-        <HomeChart
-          title="Транзакции"
-          metric="Transactions"
-          :data="monthlyDataMedian"
-        />
+        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataMedian" />
+        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataMedian" />
+        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataMedian" />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart
-          title="Доходы"
-          metric="Income"
-          :data="monthlyDataGeneral"
-        />
-        <HomeChart
-          title="Налоги"
-          metric="Tax"
-          :data="monthlyDataGeneral"
-        />
-        <HomeChart
-          title="Транзакции"
-          metric="Transactions"
-          :data="monthlyDataGeneral"
-        />
+        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataGeneral" />
+        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataGeneral" />
+        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataGeneral" />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <HomeIncomeTransactionChart
-          title="Доходы = F(Транзакции) (Средние значения)"
+          :title="t('home.charts.incomeVsTransactionsMedian')"
           :data="monthlyDataMedian"
         />
         <HomeIncomeTransactionChart
-          title="Доходы = F(Транзакции) (Суммированные значения)"
+          :title="t('home.charts.incomeVsTransactionsGeneral')"
           :data="monthlyDataGeneral"
         />
       </div>

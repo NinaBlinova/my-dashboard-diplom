@@ -2,10 +2,7 @@
 import { computed } from 'vue'
 import { VisSingleContainer, VisDonut, VisTooltip } from '@unovis/vue'
 
-type PieItem = {
-  name: string
-  value: number
-}
+type PieItem = { name: string, value: number }
 
 const props = defineProps<{
   intervalLabel: string
@@ -15,19 +12,20 @@ const props = defineProps<{
   color: string
 }>()
 
+const { t, locale } = useI18n()
+
 const chartData = computed<PieItem[]>(() => [
   { name: 'Income', value: props.income },
   { name: 'Tax', value: props.tax }
 ])
 
 const total = computed(() => props.income - props.tax)
-
 const incomePercent = computed(() =>
   total.value ? ((total.value / props.income) * 100).toFixed(1) : '0'
 )
 
 const formatCurrency = (value: number) =>
-  value.toLocaleString('ru-RU', {
+  value.toLocaleString(locale.value === 'ru' ? 'ru-RU' : 'en-US', {
     style: 'currency',
     currency: 'RUB',
     maximumFractionDigits: 0
@@ -35,12 +33,8 @@ const formatCurrency = (value: number) =>
 
 const getValue = (d: PieItem): number => d.value
 const getName = (d: PieItem): string => d.name
-
-const getColor = (d: PieItem): string =>
-  d.name === 'Income' ? props.color : '#E5E7EB'
-
-const getTooltip = (d: PieItem): string =>
-  `${d.name}: ${formatCurrency(d.value)}`
+const getColor = (d: PieItem): string => d.name === 'Income' ? props.color : '#E5E7EB'
+const getTooltip = (d: PieItem): string => `${d.name}: ${formatCurrency(d.value)}`
 </script>
 
 <template>
@@ -51,17 +45,13 @@ const getTooltip = (d: PieItem): string =>
           {{ intervalLabel }}
         </p>
         <p class="text-xs text-muted">
-          {{ transactions }} тразакций в месяц
+          {{ t('home.pieChart.transactionsPerMonth', { count: transactions }) }}
         </p>
       </div>
     </template>
 
-    <!-- Donut -->
     <div class="relative">
-      <VisSingleContainer
-        :data="chartData"
-        class="h-72"
-      >
+      <VisSingleContainer :data="chartData" class="h-72">
         <VisDonut
           :value="getValue"
           :label="getName"
@@ -72,20 +62,18 @@ const getTooltip = (d: PieItem): string =>
         <VisTooltip :content="getTooltip" />
       </VisSingleContainer>
 
-      <div
-        class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
-      >
+      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         <p class="text-xs text-muted">
-          Весь доход
+          {{ t('home.pieChart.totalIncome') }}
         </p>
         <p class="text-lg font-semibold">
           {{ props.income }}
         </p>
         <p class="text-xs text-primary font-medium">
-          {{ props.tax }} налог
+          {{ props.tax }} {{ t('home.stats.tax').toLowerCase() }}
         </p>
         <p class="text-xs text-primary font-medium">
-          {{ incomePercent }}% оставшийся доход
+          {{ incomePercent }}% {{ t('home.pieChart.remainingIncome') }}
         </p>
       </div>
     </div>

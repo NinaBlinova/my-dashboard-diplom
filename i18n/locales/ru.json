@@ -105,6 +105,11 @@
       "taxpayers": "Налогоплательщики",
       "income": "Доход",
       "transactions": "Транзакции"
+    },
+    "pieChart": {
+      "transactionsPerMonth": "{count} транзакций в месяц",
+      "totalIncome": "Весь доход",
+      "remainingIncome": "оставшийся доход"
     }
   },
 

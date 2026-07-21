@@ -39,7 +39,10 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    defaultLocale: 'ru',
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    lazy: true,
+    langDir: 'locales',
     locales: [
       {
         code: 'ru',
@@ -51,7 +54,6 @@ export default defineNuxtConfig({
         name: 'English',
         file: 'en.json'
       }
-    ],
-    langDir: 'locales'
+    ]
   }
 })

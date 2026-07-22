@@ -3,6 +3,8 @@ import type { ModelItem } from '~/types'
 
 defineProps<{ model: ModelItem[] }>()
 
+const { t } = useI18n()
+
 const formatDate = (date: string) =>
   new Date(date).toLocaleString()
 
@@ -14,10 +16,10 @@ const formatValue = (value: unknown) => {
 }
 
 const fields: { label: string, key: keyof ModelItem }[] = [
-  { label: 'Версия', key: 'ModelVersion' },
-  { label: 'R²', key: 'R2' },
-  { label: 'MAE', key: 'MAE' },
-  { label: 'RMSE', key: 'RMSE' }
+  { label: 'models.fields.version', key: 'ModelVersion' },
+  { label: 'models.fields.r2', key: 'R2' },
+  { label: 'models.fields.mae', key: 'MAE' },
+  { label: 'models.fields.rmse', key: 'RMSE' }
 ]
 </script>
 
@@ -29,11 +31,11 @@ const fields: { label: string, key: keyof ModelItem }[] = [
     <UDashboardNavbar :title="m.TargetName" />
     <div class="p-6 space-y-4">
       <div v-for="f in fields" :key="f.key">
-        <strong>{{ f.label }}:</strong> {{ formatValue(m[f.key]) }}
+        <strong>{{ t(f.label) }}:</strong> {{ formatValue(m[f.key]) }}
       </div>
 
       <div>
-        <strong>Создано:</strong> {{ formatDate(m.CreatedAt) }}
+        <strong>{{ t('models.createdAt') }}:</strong> {{ formatDate(m.CreatedAt) }}
       </div>
     </div>
   </UDashboardPanel>

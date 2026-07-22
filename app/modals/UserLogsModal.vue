@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { UserLog } from '~/types'
 
+const { t } = useI18n()
 const props = defineProps<{
   modelValue: boolean
   logs: UserLog[]
@@ -48,11 +49,10 @@ onMounted(() => {
         rounded-xl w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]"
       @click.stop
     >
-      <!-- HEADER -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
         <h3 class="text-lg font-semibold flex items-center gap-2">
           <UIcon name="i-lucide-history" />
-          История пользователя
+          {{ t('modals.userLogs.title') }}
         </h3>
 
         <UButton
@@ -63,7 +63,6 @@ onMounted(() => {
         />
       </div>
 
-      <!-- BODY -->
       <div class="overflow-y-auto p-6 space-y-4">
         <div
           v-for="log in logs"
@@ -87,14 +86,13 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- FOOTER -->
       <div class="flex justify-end p-4 border-t border-gray-200 dark:border-gray-800">
         <UButton
           color="error"
           variant="soft"
           @click="open=false"
         >
-          Закрыть
+          {{ t('common.actions.close') }}
         </UButton>
       </div>
     </div>

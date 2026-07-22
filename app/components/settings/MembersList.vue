@@ -11,6 +11,8 @@ const emit = defineEmits<{
   refresh: []
 }>()
 
+const { t } = useI18n()
+
 const config = useRuntimeConfig()
 const { getAvatarUrl } = useAvatar()
 const { activateUser, deactivateUser, getUserLogs } = useMembers()
@@ -33,31 +35,42 @@ const openEdit = (member: User) => {
 }
 const items = (member: User): DropdownMenuItem[] => {
   const menu: DropdownMenuItem[] = [
-    { label: 'Редактировать', onSelect: () => openEdit(member) },
-    { label: 'История', onSelect: () => showUserLogs(member) }
+    {
+      label: t('settings.members.actions.edit'),
+      onSelect: () => openEdit(member)
+    },
+    {
+      label: t('settings.members.actions.history'),
+      onSelect: () => showUserLogs(member)
+    }
   ]
+
   if (!member.IsActive) {
     menu.push({
-      label: 'Активировать',
+      label: t('settings.members.actions.activate'),
       color: 'primary',
       onSelect: async () => {
         if (!adminId.value) return
+
         await activateUser(adminId.value, member.Id)
         emit('refresh')
       }
     })
   }
+
   if (member.IsActive) {
     menu.push({
-      label: 'Деактивировать',
+      label: t('settings.members.actions.deactivate'),
       color: 'error',
       onSelect: async () => {
         if (!adminId.value) return
+
         await deactivateUser(adminId.value, member.Id)
         emit('refresh')
       }
     })
   }
+
   return menu
 }
 
@@ -78,15 +91,15 @@ const filteredMembers = computed(() => {
 <template>
   <div class="flex items-center justify-between px-4 sm:px-6 py-3">
     <h2 class="text-lg font-semibold">
-      Status
+      {{ t('settings.members.status') }}
     </h2>
 
     <UTabs
       v-model="statusFilter"
       :items="[
-        { label: 'Все', value: 'all' },
-        { label: 'Активные', value: 'active' },
-        { label: 'Не активные', value: 'inactive' }
+        { label: t('settings.members.statusFilters.all'), value: 'all' },
+        { label: t('settings.members.statusFilters.active'), value: 'active' },
+        { label: t('settings.members.statusFilters.inactive'), value: 'inactive' }
       ]"
     />
   </div>
@@ -123,20 +136,23 @@ const filteredMembers = computed(() => {
           color="neutral"
           class="capitalize"
         >
-          {{ member.user_role ?? 'участник' }}
+          {{ member.user_role ?? t('settings.members.roleFallback') }}
         </UBadge>
 
         <UBadge
           variant="soft"
           :color="member.IsActive ? 'success' : 'error'"
         >
-          {{ member.IsActive ? 'Активный' : 'Не активный' }}
+          {{ member.IsActive ? t('settings.members.activeStatus')
+            : t('settings.members.inactiveStatus') }}
         </UBadge>
       </div>
 
       <div class="flex items-center gap-1 text-xs text-muted">
         <UIcon name="i-lucide-clock" />
-        Last change: {{ new Date(member.CreatedAt).toLocaleString() }}
+        {{ t('settings.members.lastChange', {
+          date: new Date(member.CreatedAt).toLocaleString()
+        }) }}
       </div>
 
       <div class="flex items-center gap-3">

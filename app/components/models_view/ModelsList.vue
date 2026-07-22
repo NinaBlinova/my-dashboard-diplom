@@ -2,6 +2,7 @@
 import type { ModelItem } from '~/types'
 import { useModels } from '~/composables/useModels'
 
+const { t } = useI18n()
 const selectedModel = defineModel<ModelItem | null>()
 const { models, activeModel, setActiveModel, loadActiveModel } = useModels()
 
@@ -41,17 +42,17 @@ onMounted(async () => {
         {{ model.ModelName }}
       </div>
       <div class="text-sm text-muted">
-        Версия: {{ model.ModelVersion }}
+        {{ t('models.versionLabel', { version: model.ModelVersion }) }}
       </div>
       <UButton
         v-if="!isActive(model)"
-        label="Установить активным"
+        :label="t('models.activate')"
         variant="ghost"
         @click="activate(model)"
       />
       <UBadge
         v-else
-        label="Активная"
+        :label="t('models.active')"
         color="success"
       />
     </div>

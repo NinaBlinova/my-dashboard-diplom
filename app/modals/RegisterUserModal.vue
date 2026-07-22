@@ -2,6 +2,7 @@
 import type { User } from '~/types'
 import { useMembers } from '~/composables/useMembers'
 
+const { t } = useI18n()
 const props = defineProps<{
   modelValue: boolean
 }>()
@@ -87,11 +88,10 @@ onMounted(() => {
         rounded-xl w-full max-w-lg shadow-xl flex flex-col max-h-[90vh]"
       @click.stop
     >
-      <!-- HEADER -->
       <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
         <h3 class="text-lg font-semibold flex items-center gap-2">
           <UIcon name="i-lucide-user-plus" />
-          Регистрация нового пользователя
+          {{ t('modals.registerUser.title') }}
         </h3>
 
         <UButton
@@ -102,48 +102,55 @@ onMounted(() => {
         />
       </div>
 
-      <!-- BODY -->
       <div class="p-6 space-y-4 overflow-y-auto">
-        <UFormField label="Имя пользователя">
+        <UFormField :label="t('modals.registerUser.username')">
           <UInput v-model="form.username" icon="i-lucide-user" />
         </UFormField>
 
-        <UFormField label="ФИО">
+        <UFormField :label="t('modals.registerUser.fullName')">
           <UInput v-model="form.full_name" />
         </UFormField>
 
-        <UFormField label="Email">
+        <UFormField :label="t('modals.registerUser.email')">
           <UInput v-model="form.email" type="email" icon="i-lucide-mail" />
         </UFormField>
 
-        <UFormField label="Пароль">
+        <UFormField :label="t('modals.registerUser.password')">
           <UInput v-model="form.password" type="password" icon="i-lucide-lock" />
         </UFormField>
 
-        <UFormField label="Телефон">
+        <UFormField :label="t('modals.registerUser.phone')">
           <UInput v-model="form.phone" icon="i-lucide-phone" />
         </UFormField>
 
-        <UFormField label="Пол">
+        <UFormField :label="t('modals.registerUser.gender.label')">
           <USelect
             v-model="form.gender"
-            :items="['мужской', 'женский']"
+            :items="[
+              {
+                label: t('modals.registerUser.gender.male'),
+                value: 'мужской'
+              },
+              {
+                label: t('modals.registerUser.gender.female'),
+                value: 'женский'
+              }
+            ]"
           />
         </UFormField>
 
-        <UFormField label="День рождения">
+        <UFormField :label="t('modals.registerUser.birthDate')">
           <UInput v-model="form.birth_date" type="date" />
         </UFormField>
       </div>
 
-      <!-- FOOTER -->
       <div class="flex justify-end gap-2 p-4 border-t border-gray-200 dark:border-gray-800">
         <UButton
           color="neutral"
           variant="ghost"
           @click="open=false"
         >
-          Отменить
+          {{ t('common.actions.cancel') }}
         </UButton>
 
         <UButton
@@ -152,7 +159,7 @@ onMounted(() => {
           :loading="loading"
           @click="submit"
         >
-          Создать пользователя
+          {{ t('modals.registerUser.submit') }}
         </UButton>
       </div>
     </div>

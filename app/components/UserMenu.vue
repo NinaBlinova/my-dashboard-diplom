@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
+const { t } = useI18n()
 const { avatarUrl } = useAvatar()
 
 defineProps<{
@@ -16,7 +17,7 @@ const neutrals = ['slate', 'gray', 'zinc', 'neutral', 'stone']
 
 const user = computed(() => {
   if (!authUser.value) {
-    return { name: 'Guest', avatar: { src: '', alt: 'Guest' } }
+    return { name: t('userMenu.guest'), avatar: { src: '', alt: t('userMenu.guest') } }
   }
   return {
     name: authUser.value.FullName,
@@ -30,7 +31,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   avatar: user.value.avatar
 }], [
   {
-    label: 'Профиль',
+    label: t('userMenu.profile'),
     icon: 'i-lucide-user',
     to: 'profile'
   },
@@ -38,14 +39,14 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
   //   icon: 'i-lucide-credit-card'
   // },
   {
-    label: 'Настройки',
+    label: t('userMenu.settings'),
     icon: 'i-lucide-settings',
     to: '/settings'
   }], [{
-  label: 'Палитра',
+  label: t('userMenu.palette'),
   icon: 'i-lucide-palette',
   children: [{
-    label: 'Primary',
+    label: t('userMenu.primary'),
     slot: 'chip',
     chip: appConfig.ui.colors.primary,
     content: {
@@ -65,7 +66,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       }
     }))
   }, {
-    label: 'Neutral',
+    label: t('userMenu.neutral'),
     slot: 'chip',
     chip: appConfig.ui.colors.neutral === 'neutral' ? 'old-neutral' : appConfig.ui.colors.neutral,
     content: {
@@ -86,10 +87,10 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
     }))
   }]
 }, {
-  label: 'Тема сиситемы',
+  label: t('userMenu.systemTheme'),
   icon: 'i-lucide-sun-moon',
   children: [{
-    label: 'Light',
+    label: t('userMenu.light'),
     icon: 'i-lucide-sun',
     type: 'checkbox',
     checked: colorMode.value === 'light',
@@ -99,7 +100,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
       colorMode.preference = 'light'
     }
   }, {
-    label: 'Dark',
+    label: t('userMenu.dark'),
     icon: 'i-lucide-moon',
     type: 'checkbox',
     checked: colorMode.value === 'dark',
@@ -146,18 +147,18 @@ const items = computed<DropdownMenuItem[][]>(() => ([[{
 //   }]
 // }],
 [{
-  label: 'Documentation',
+  label: t('userMenu.documentation'),
   icon: 'i-lucide-book-open',
   to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
   target: '_blank'
 }, {
-  label: 'GitHub repository',
+  label: t('userMenu.githubRepo'),
   icon: 'i-simple-icons-github',
   to: 'https://github.com/nuxt-ui-templates/dashboard',
   target: '_blank'
 },
 {
-  label: 'Выйти',
+  label: t('userMenu.logout'),
   icon: 'i-lucide-log-out',
   onSelect: () => {
     logout()

@@ -1,64 +1,102 @@
-# Nuxt Dashboard Template
+# My Dashboard — Tax Revenue Analytics & Forecasting
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+A web dashboard for analyzing and forecasting tax revenue dynamics of self-employed individuals (NPD) and sole proprietors (IP) in Russia, built as the frontend of a bachelor's thesis (VKR) project.
 
-Get started with the Nuxt dashboard template with multiple pages, collapsible sidebar, keyboard shortcuts, light & dark mode, command palette and more, powered by [Nuxt UI](https://ui.nuxt.com).
+> **Scope note:** the system is built around the taxation rules of the **Russian Federation** (self-employment tax, USN, OSNO, patent regimes for sole proprietors), and all monetary values shown in the interface and reports are in **Russian rubles (RUB)**.
 
-- [Live demo](https://dashboard-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+This repository contains the client application only. It communicates with a separate [Flask backend](https://github.com/NinaBlinova/DiplomaProject.git) that handles authentication, data aggregation, and the machine learning forecasting service ([LinearRegression, LightGBM, XGBoost]).
 
-<a href="https://dashboard-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-    <img alt="Nuxt Dashboard Template" src="https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png">
-  </picture>
-</a>
+## Screenshots
 
-> The dashboard template for Vue is on https://github.com/nuxt-ui-templates/dashboard-vue.
+**Login screen**
+*(insert screenshot — Figure 3 in the thesis)*
 
-## Quick Start
+**Dashboard — main page**
+*(insert screenshot — Figure Б.1 in the thesis)*
 
-```bash [Terminal]
-npm create nuxt@latest -- -t github:nuxt-ui-templates/dashboard
+**Forecasting models**
+*(insert screenshot — Figure Б.2 in the thesis)*
+
+## Features
+
+- **Dashboard** — income, tax, and transaction dynamics as line charts, donut charts, and bar charts, plus an income-vs-transactions correlation chart, all computed for median and total values across taxpayers.
+- **Filtering** — by date range/period, tax regime, and scope (all taxpayers or a single one by INN).
+- **Taxpayers** — searchable table of taxpayers with a detail view (passport data, registration address, employee count) and add/delete actions.
+- **Forecasting models** — browse available ML models with quality metrics (R², MAE, RMSE) and switch the active model used for predictions.
+- **Report generation** — export the currently displayed dashboard data as a `.docx` report.
+- **Settings** — profile editing, avatar upload, password change, and (for admins) managing system members and their access.
+- **Internationalization** — Russian and English UI via `@nuxtjs/i18n`.
+- **Light/dark theme** and adjustable accent color.
+
+## Tech stack
+
+- [Nuxt 4](https://nuxt.com/) + TypeScript
+- [Nuxt UI](https://ui.nuxt.com/) for interface components
+- [Unovis](https://unovis.dev/) for interactive charts
+- [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for localization
+- [Tailwind CSS](https://tailwindcss.com/)
+
+## Project structure
+
+```
+app/
+├── components/       # UI components (home dashboard, taxpayers, models, settings...)
+├── composables/       # Reusable client-side logic (filters, stats, auth, report generation)
+├── layouts/           # Application layout (sidebar, navbar)
+├── middleware/         # Route guards (auth)
+├── modals/            # Modal dialogs (register user, edit user, user logs)
+├── pages/             # File-based routes (/, /login, /models, /profile, /taxpayers, /settings/*)
+├── types/             # Shared TypeScript types
+└── utils/             # Helper utilities
+server/
+└── api/               # Nuxt server routes proxying requests to the Flask backend
+i18n/
+└── locales/           # ru.json / en.json translation files
 ```
 
-## Deploy your own
+## Getting started
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=dashboard&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fdashboard&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fdashboard-dark.png&demo-url=https%3A%2F%2Fdashboard-template.nuxt.dev%2F&demo-title=Nuxt%20Dashboard%20Template&demo-description=A%20dashboard%20template%20with%20multi-column%20layout%20for%20building%20sophisticated%20admin%20interfaces.)
+### Prerequisites
 
-## Setup
+- Node.js
+- npm
+- A running instance of the [backend service](#) (the app expects it at the URL configured below)
 
-Make sure to install the dependencies:
+### Installation
 
 ```bash
-pnpm install
+npm install
 ```
 
-## Development Server
+### Configuration
 
-Start the development server on `http://localhost:3000`:
+The backend URL is set via `runtimeConfig.public.backendUrl` in `nuxt.config.ts` (defaults to `http://localhost:5002`). Override it with an environment variable if needed:
 
 ```bash
-pnpm dev
+NUXT_PUBLIC_BACKEND_URL=http://localhost:5002
 ```
 
-## Production
-
-Build the application for production:
+### Run in development
 
 ```bash
-pnpm build
+npm run dev
 ```
 
-Locally preview production build:
+The app will be available at `http://localhost:3000`.
+
+### Other commands
 
 ```bash
-pnpm preview
+npm run build       # production build
+npm run preview     # preview the production build
+npm run lint        # lint the codebase
+npm run typecheck   # run TypeScript type checking
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Related repositories
 
-## Renovate integration
+- Backend (Flask + ML forecasting service): *link here*
 
-Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+## About
+
+This project is the frontend part of a bachelor's thesis (ВКР) on the analysis and forecasting of tax revenue dynamics for self-employed individuals and sole proprietors using machine learning.

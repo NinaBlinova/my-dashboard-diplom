@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { t } = useI18n()
+
 withDefaults(defineProps<{
   count?: number
 }>(), {
@@ -16,21 +18,21 @@ async function onSubmit() {
 <template>
   <UModal
     v-model:open="open"
-    :title="`Delete ${count} taxpayer${count > 1 ? 's' : ''}`"
-    :description="`Are you sure, this action cannot be undone.`"
+    :title="t('taxpayers.deleteModal.title', { count })"
+    :description="t('taxpayers.deleteModal.description')"
   >
     <slot />
 
     <template #body>
       <div class="flex justify-end gap-2">
         <UButton
-          label="Cancel"
+          :label="t('common.actions.cancel')"
           color="neutral"
           variant="subtle"
           @click="open = false"
         />
         <UButton
-          label="Delete"
+          :label="t('common.actions.delete')"
           color="error"
           variant="solid"
           loading-auto

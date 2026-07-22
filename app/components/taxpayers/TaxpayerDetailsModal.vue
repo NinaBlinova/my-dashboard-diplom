@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Taxpayer } from '~/types'
 
+const { t } = useI18n()
 const props = defineProps<{
   inn: string | null
 }>()
@@ -26,23 +27,20 @@ watch(open, (val) => {
 <template>
   <UModal
     v-model:open="open"
-    title="Данные налогоплательщика"
-    description="Подробная информация"
+    :title="t('taxpayers.details.title')"
+    :description="t('taxpayers.details.description')"
   >
     <template #body>
-      <!-- Skeleton -->
       <div v-if="pending" class="space-y-4">
         <USkeleton class="h-16 w-full" />
         <USkeleton class="h-4 w-2/3" />
         <USkeleton class="h-4 w-1/2" />
       </div>
 
-      <!-- Error -->
       <div v-else-if="error" class="text-center py-6 text-red-500">
-        Ошибка загрузки данных
+        {{ t('taxpayers.details.loadError') }}
       </div>
 
-      <!-- Data -->
       <div v-else-if="taxpayer" class="space-y-6">
         <div class="flex items-center gap-4">
           <UAvatar :src="taxpayer.avatar?.src" size="xl" />
@@ -53,11 +51,11 @@ watch(open, (val) => {
             </p>
 
             <p class="text-sm text-muted font-mono">
-              ИНН: {{ taxpayer.INN }}
+              {{ t('taxpayers.details.innLabel') }}: {{ taxpayer.INN }}
             </p>
 
             <p class="text-sm text-muted font-mono">
-              Паспорт: {{ taxpayer.passport }}
+              {{ t('taxpayers.details.passportLabel') }}: {{ taxpayer.passport }}
             </p>
           </div>
         </div>
@@ -65,7 +63,7 @@ watch(open, (val) => {
         <div class="grid sm:grid-cols-2 gap-4 text-sm">
           <div>
             <p class="text-muted">
-              ID
+              {{ t('taxpayers.details.id') }}
             </p>
             <p class="font-medium">
               {{ taxpayer.id }}
@@ -74,7 +72,7 @@ watch(open, (val) => {
 
           <div>
             <p class="text-muted">
-              Район регистрации
+              {{ t('taxpayers.details.registrationDistrict') }}
             </p>
             <p class="font-medium">
               {{ taxpayer.registration_district }}
@@ -83,16 +81,20 @@ watch(open, (val) => {
 
           <div>
             <p class="text-muted">
-              Есть сотрудники
+              {{ t('taxpayers.details.hasEmployees') }}
             </p>
             <p class="font-medium">
-              {{ taxpayer.has_employees ? 'Да' : 'Нет' }}
+              {{
+                taxpayer.has_employees
+                  ? t('common.yes')
+                  : t('common.no')
+              }}
             </p>
           </div>
 
           <div v-if="taxpayer.has_employees">
             <p class="text-muted">
-              Количество сотрудников
+              {{ t('taxpayers.details.employeesCount') }}
             </p>
             <p class="font-medium">
               {{ taxpayer.employees_count ?? 0 }}
@@ -101,15 +103,14 @@ watch(open, (val) => {
         </div>
       </div>
 
-      <!-- Not found -->
       <div v-else class="text-center py-6 text-muted">
-        Налогоплательщик не найден
+        {{ t('taxpayers.details.notFound') }}
       </div>
     </template>
 
     <template #footer>
       <UButton
-        label="Закрыть"
+        :label="t('common.actions.close')"
         color="error"
         variant="subtle"
         @click="open = false"

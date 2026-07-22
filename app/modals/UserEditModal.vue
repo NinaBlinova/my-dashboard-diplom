@@ -2,6 +2,7 @@
 import type { User } from '~/types'
 import { useMembers } from '~/composables/useMembers'
 
+const { t } = useI18n()
 const props = defineProps<{
   modelValue: boolean
   user: User | null
@@ -120,7 +121,7 @@ onMounted(() => {
         <div class="flex items-center gap-2">
           <UIcon name="i-lucide-user-cog" />
           <h3 class="font-semibold text-lg">
-            Редактировать участника
+            {{ t('modals.editUser.title') }}
           </h3>
         </div>
 
@@ -135,26 +136,35 @@ onMounted(() => {
       <div class="overflow-y-auto p-6 space-y-6">
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Основная информация
+            {{ t('modals.editUser.basicInfo') }}
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="ФИО">
+            <UFormField :label="t('modals.editUser.fullName')">
               <UInput v-model="form.full_name" icon="i-lucide-user" />
             </UFormField>
 
-            <UFormField label="Email">
+            <UFormField :label="t('modals.editUser.email')">
               <UInput v-model="form.email" type="email" icon="i-lucide-mail" />
             </UFormField>
 
-            <UFormField label="Телефон">
+            <UFormField :label="t('modals.editUser.phone')">
               <UInput v-model="form.phone" icon="i-lucide-phone" />
             </UFormField>
 
-            <UFormField label="Пол">
+            <UFormField :label="t('modals.editUser.gender.label')">
               <USelect
                 v-model="form.gender"
-                :items="['мужской', 'женский']"
+                :items="[
+                  {
+                    label: t('modals.editUser.gender.male'),
+                    value: 'мужской'
+                  },
+                  {
+                    label: t('modals.editUser.gender.female'),
+                    value: 'женский'
+                  }
+                ]"
                 icon="i-lucide-users"
               />
             </UFormField>
@@ -163,23 +173,23 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Паспортные данные
+            {{ t('modals.editUser.passportInfo') }}
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="Серия">
+            <UFormField :label="t('modals.editUser.series')">
               <UInput v-model="form.passport_series" />
             </UFormField>
 
-            <UFormField label="Номер">
+            <UFormField :label="t('modals.editUser.number')">
               <UInput v-model="form.passport_number" />
             </UFormField>
 
-            <UFormField label="Кем выдан" class="md:col-span-2">
+            <UFormField :label="t('modals.editUser.issuedBy')" class="md:col-span-2">
               <UInput v-model="form.passport_issued_by" />
             </UFormField>
 
-            <UFormField label="Дата выдачи">
+            <UFormField :label="t('modals.editUser.issueDate')">
               <UInput v-model="form.passport_issue_date" type="date" />
             </UFormField>
           </div>
@@ -187,19 +197,19 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Документы
+            {{ t('modals.editUser.documents') }}
           </h4>
 
           <div class="grid md:grid-cols-3 gap-4">
-            <UFormField label="СНИЛС">
+            <UFormField :label="t('modals.editUser.snils')">
               <UInput v-model="form.snils" />
             </UFormField>
 
-            <UFormField label="ИНН">
+            <UFormField :label="t('modals.editUser.inn')">
               <UInput v-model="form.inn" />
             </UFormField>
 
-            <UFormField label="ОМС">
+            <UFormField :label="t('modals.editUser.oms')">
               <UInput v-model="form.oms_policy" />
             </UFormField>
           </div>
@@ -207,15 +217,15 @@ onMounted(() => {
 
         <section class="space-y-4">
           <h4 class="font-medium text-sm opacity-70">
-            Персональные данные
+            {{ t('modals.editUser.personalInfo') }}
           </h4>
 
           <div class="grid md:grid-cols-2 gap-4">
-            <UFormField label="День Рожения">
+            <UFormField :label="t('modals.editUser.birthDate')">
               <UInput v-model="form.birth_date" type="date" />
             </UFormField>
 
-            <UFormField label="Адрес регистрации" class="md:col-span-2">
+            <UFormField :label="t('modals.editUser.registrationAddress')" class="md:col-span-2">
               <UInput v-model="form.address_reg" />
             </UFormField>
           </div>
@@ -228,7 +238,7 @@ onMounted(() => {
           variant="soft"
           @click="open=false"
         >
-          Отменить
+          {{ t('common.actions.cancel') }}
         </UButton>
 
         <UButton
@@ -238,7 +248,7 @@ onMounted(() => {
           :loading="loading"
           @click="submit"
         >
-          Сохранить изменения
+          {{ t('modals.editUser.submit') }}
         </UButton>
       </div>
     </div>

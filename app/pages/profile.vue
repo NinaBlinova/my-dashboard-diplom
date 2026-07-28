@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import InfoRow from '~/components/common/InfoRow.vue'
+import SectionCard from '~/components/common/SectionCard.vue'
+
 const { t } = useI18n()
 const { user } = useLogin()
 const { avatarUrl } = useAvatar()
-const formatDate = (date?: string) => {
-  if (!date) return '-'
-  return new Date(date).toLocaleDateString()
-}
+const formatDate = (date?: string) => date ? new Date(date).toLocaleDateString() : '-'
 </script>
 
 <template>
-  <UDashboardPanel
-    resizable
-  >
+  <UDashboardPanel resizable>
     <UDashboardNavbar :title="t('profile.title')" />
     <UPage class="overflow-y-auto h-screen p-6 space-y-6">
       <UCard class="mb-6">
@@ -30,122 +28,33 @@ const formatDate = (date?: string) => {
           </div>
         </div>
       </UCard>
-      <UCard class="mb-6">
-        <template #header>
-          <h3 class="font-semibold text-lg">
-            {{ t('profile.basicInfo') }}
-          </h3>
-        </template>
+
+      <SectionCard :title="t('profile.basicInfo')">
         <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.username') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.Username }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.phone') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.Phone }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.birthDate') }}
-            </p>
-            <p class="font-medium">
-              {{ formatDate(user?.BirthDate) }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.gender') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.Gender }}
-            </p>
-          </div>
-          <div class="md:col-span-2">
-            <p class="text-sm text-muted">
-              {{ t('profile.registrationAddress') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.Address_Reg }}
-            </p>
-          </div>
+          <InfoRow :label="t('profile.username')" :value="user?.Username" />
+          <InfoRow :label="t('profile.phone')" :value="user?.Phone" />
+          <InfoRow :label="t('profile.birthDate')" :value="formatDate(user?.BirthDate)" />
+          <InfoRow :label="t('profile.gender')" :value="user?.Gender" />
+          <InfoRow :label="t('profile.registrationAddress')" :value="user?.Address_Reg" span />
         </div>
-      </UCard>
-      <UCard class="mb-6">
-        <template #header>
-          <h3 class="font-semibold text-lg">
-            {{ t('profile.documents') }}
-          </h3>
-        </template>
+      </SectionCard>
+
+      <SectionCard :title="t('profile.documents')">
         <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.passportData') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.PassportSeries }} {{ user?.PassportNumber }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.passportIssueDate') }}
-            </p>
-            <p class="font-medium">
-              {{ formatDate(user?.PassportIssueDate) }}
-            </p>
-          </div>
-          <div class="md:col-span-2">
-            <p class="text-sm text-muted">
-              {{ t('profile.passportIssuedBy') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.PassportIssuedBy }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.snils') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.SNILS }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.inn') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.INN }}
-            </p>
-          </div>
-          <div>
-            <p class="text-sm text-muted">
-              {{ t('profile.omsPolicy') }}
-            </p>
-            <p class="font-medium">
-              {{ user?.OMSPolicyNumber }}
-            </p>
-          </div>
+          <InfoRow :label="t('profile.passportData')" :value="`${user?.PassportSeries ?? ''} ${user?.PassportNumber ?? ''}`" />
+          <InfoRow :label="t('profile.passportIssueDate')" :value="formatDate(user?.PassportIssueDate)" />
+          <InfoRow :label="t('profile.passportIssuedBy')" :value="user?.PassportIssuedBy" span />
+          <InfoRow :label="t('profile.snils')" :value="user?.SNILS" />
+          <InfoRow :label="t('profile.inn')" :value="user?.INN" />
+          <InfoRow :label="t('profile.omsPolicy')" :value="user?.OMSPolicyNumber" />
         </div>
-      </UCard>
-      <UCard class="mb-6">
-        <template #header>
-          <h3 class="font-semibold text-lg">
-            {{ t('profile.bio') }}
-          </h3>
-        </template>
+      </SectionCard>
+
+      <SectionCard :title="t('profile.bio')">
         <p class="text-muted leading-relaxed">
           {{ user?.Bio || t('profile.noBio') }}
         </p>
-      </UCard>
+      </SectionCard>
     </UPage>
   </UDashboardPanel>
 </template>

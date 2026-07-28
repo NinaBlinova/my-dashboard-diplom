@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import PageActionHeader from '~/components/common/PageActionHeader.vue'
+import FormRow from '~/components/common/FormRow.vue'
 
 const { t } = useI18n()
 
@@ -41,12 +43,7 @@ const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
   const { data } = event
 
-  await updateProfile(
-    data.name,
-    data.email,
-    data.username,
-    data.Bio
-  )
+  await updateProfile(data.name, data.email, data.username, data.Bio)
   toast.add({
     title: t('settings.general.toast.updatedTitle'),
     description: t('settings.general.toast.updatedDescription'),
@@ -82,80 +79,57 @@ function onFileClick() {
     :state="profile"
     @submit="onSubmit"
   >
-    <UPageCard
-      :title="$t('settings.general.title')"
-      variant="naked"
-      orientation="horizontal"
-      class="mb-4"
-    >
-      <UButton
-        form="settings"
-        :label="$t('common.actions.saveChanges')"
-        color="neutral"
-        type="submit"
-        class="w-fit lg:ms-auto"
-      />
-    </UPageCard>
+    <PageActionHeader :title="t('settings.general.title')">
+      <template #action>
+        <UButton
+          form="settings"
+          :label="t('common.actions.saveChanges')"
+          color="neutral"
+          type="submit"
+          class="w-fit lg:ms-auto"
+        />
+      </template>
+    </PageActionHeader>
 
     <UPageCard variant="subtle">
-      <UFormField
+      <FormRow
         name="name"
-        :label="$t('settings.general.fullName.label')"
-        :description="$t('settings.general.fullName.description')"
+        :label="t('settings.general.fullName.label')"
+        :description="t('settings.general.fullName.description')"
         required
-        class="flex max-sm:flex-col justify-between items-start gap-4"
       >
-        <UInput
-          v-model="profile.name"
-          autocomplete="off"
-        />
-      </UFormField>
+        <UInput v-model="profile.name" autocomplete="off" />
+      </FormRow>
       <USeparator />
-      <UFormField
+
+      <FormRow
         name="email"
-        :label="$t('settings.general.email.label')"
-        :description="$t('settings.general.email.description')"
+        :label="t('settings.general.email.label')"
+        :description="t('settings.general.email.description')"
         required
-        class="flex max-sm:flex-col justify-between items-start gap-4"
       >
-        <UInput
-          v-model="profile.email"
-          type="email"
-          autocomplete="off"
-        />
-      </UFormField>
+        <UInput v-model="profile.email" type="email" autocomplete="off" />
+      </FormRow>
       <USeparator />
-      <UFormField
+
+      <FormRow
         name="username"
-        :label="$t('settings.general.username.label')"
-        :description="$t('settings.general.username.description')"
+        :label="t('settings.general.username.label')"
+        :description="t('settings.general.username.description')"
         required
-        class="flex max-sm:flex-col justify-between items-start gap-4"
       >
-        <UInput
-          v-model="profile.username"
-          type="username"
-          autocomplete="off"
-        />
-      </UFormField>
+        <UInput v-model="profile.username" type="username" autocomplete="off" />
+      </FormRow>
       <USeparator />
-      <UFormField
+
+      <FormRow
         name="avatar"
-        :label="$t('settings.general.avatar.label')"
-        :description="$t('settings.general.avatar.description')"
-        class="flex max-sm:flex-col justify-between sm:items-center gap-4"
+        :label="t('settings.general.avatar.label')"
+        :description="t('settings.general.avatar.description')"
       >
         <div class="flex flex-wrap items-center gap-3">
-          <UAvatar
-            :src="profile.avatar"
-            :alt="profile.name"
-            size="lg"
-          />
-          <UButton
-            :label="$t('settings.general.avatar.choose')"
-            color="neutral"
-            @click="onFileClick"
-          />
+          <UAvatar :src="profile.avatar" :alt="profile.name" size="lg" />
+          <UButton :label="t('settings.general.avatar.choose')" color="neutral" @click="onFileClick" />
           <input
             ref="fileRef"
             type="file"
@@ -164,14 +138,14 @@ function onFileClick() {
             @change="onFileChange"
           >
         </div>
-      </UFormField>
+      </FormRow>
       <USeparator />
-      <UFormField
+
+      <FormRow
         name="Bio"
-        :label="$t('settings.general.bio.label')"
-        :description="$t('settings.general.bio.description')"
-        class="flex max-sm:flex-col justify-between items-start gap-4"
-        :ui="{ container: 'w-full' }"
+        :label="t('settings.general.bio.label')"
+        :description="t('settings.general.bio.description')"
+        full-width
       >
         <UTextarea
           v-model="profile.Bio"
@@ -179,7 +153,7 @@ function onFileClick() {
           autoresize
           class="w-full"
         />
-      </UFormField>
+      </FormRow>
     </UPageCard>
   </UForm>
 </template>

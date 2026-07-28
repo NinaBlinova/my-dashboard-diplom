@@ -2,6 +2,7 @@
 import { sub } from 'date-fns'
 import type { MonthlyResponse, Period, Range } from '~/types'
 import Filters from '~/components/home/Filters.vue'
+import MetricsGrid from '~/components/common/MetricsGrid.vue';
 
 const range = shallowRef<Range>({
   start: sub(new Date(), { days: 14 }),
@@ -79,11 +80,7 @@ async function handleGenerateReport() {
 
     <template v-if="isAlone" #body>
       <HomeStats :period="period" :range="range" />
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataMedian" />
-        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataMedian" />
-        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataMedian" />
-      </div>
+      <MetricsGrid :data="monthlyDataMedian" />
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <HomeIncomeTransactionChart
@@ -95,16 +92,9 @@ async function handleGenerateReport() {
 
     <template v-else #body>
       <HomeStats :period="period" :range="range" />
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataMedian" />
-        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataMedian" />
-        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataMedian" />
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <HomeChart :title="t('home.charts.income')" metric="Income" :data="monthlyDataGeneral" />
-        <HomeChart :title="t('home.charts.tax')" metric="Tax" :data="monthlyDataGeneral" />
-        <HomeChart :title="t('home.charts.transactions')" metric="Transactions" :data="monthlyDataGeneral" />
-      </div>
+      <MetricsGrid :data="monthlyDataMedian" />
+      <MetricsGrid :data="monthlyDataGeneral" />
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <HomeIncomeTransactionChart
           :title="t('home.charts.incomeVsTransactionsMedian')"

@@ -3,6 +3,7 @@ import { useLogin } from '~/composables/useLogin'
 import { navigateTo } from '#imports'
 import { ref } from 'vue'
 
+const { t } = useI18n()
 const { login } = useLogin()
 
 const username = ref('')
@@ -17,7 +18,7 @@ const submit = async () => {
   try {
     const res = await login(username.value, password.value)
     if (!res?.success) {
-      error.value = res?.message || 'Login failed'
+      error.value = res?.message || t('auth.login.errors.loginFailed')
       return
     }
     navigateTo('/')
@@ -25,7 +26,7 @@ const submit = async () => {
     if (e instanceof Error) {
       error.value = e.message
     } else {
-      error.value = 'Login failed'
+      error.value = t('auth.login.errors.loginFailed')
     }
   } finally {
     loading.value = false
@@ -44,17 +45,17 @@ definePageMeta({
         <UIcon name="i-lucide-user-circle" class="text-5xl text-primary mb-2" />
 
         <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-          С возвращением!
+          {{ $t('auth.login.welcomeBack') }}
         </h2>
 
         <p class="text-gray-500 dark:text-gray-400 text-sm text-center">
-          Пожалуйста, войдите в свою учетную запись
+          {{ $t('auth.login.subtitle') }}
         </p>
       </div>
 
       <UInput
         v-model="username"
-        placeholder="Имя пользователя"
+        :placeholder="$t('auth.login.usernamePlaceholder')"
         class="mb-4 w-full"
         leading-icon="i-lucide-user"
         clearable
@@ -63,7 +64,7 @@ definePageMeta({
       <UInput
         v-model="password"
         type="password"
-        placeholder="Пароль"
+        :placeholder="$t('auth.login.passwordPlaceholder')"
         class="mb-4 w-full"
         leading-icon="i-lucide-lock"
         clearable
@@ -76,7 +77,7 @@ definePageMeta({
         class="mb-3"
         @click="submit"
       >
-        Войти
+        {{ $t('auth.login.submit') }}
       </UButton>
 
       <p v-if="error" class="text-red-500 text-sm text-center mt-2">
@@ -85,7 +86,7 @@ definePageMeta({
 
       <div class="flex items-center justify-center gap-1 mt-4 text-gray-500 dark:text-gray-400 text-xs">
         <UIcon name="i-lucide-copyright" />
-        <span>2026 Диплом. Все права защищены.</span>
+        <span>{{ $t('auth.login.footer') }}</span>
       </div>
     </UCard>
   </div>

@@ -4,14 +4,15 @@ import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import type { UpdateProfileResponse } from '~/types'
 import { useLogin } from '~/composables/useLogin'
 
+const { t } = useI18n()
 const { changePassword } = usePassword()
 
-const passwordSchema = z.object({
-  current: z.string().min(3, 'Должно быть не менее 3 символов'),
-  new: z.string().min(3, 'Должно быть не менее 3 символов')
-})
+const passwordSchema = computed(() => z.object({
+  current: z.string().min(3, t('settings.security.errors.minLength')),
+  new: z.string().min(3, t('settings.security.errors.minLength'))
+}))
 
-type PasswordSchema = z.output<typeof passwordSchema>
+type PasswordSchema = z.output<typeof passwordSchema.value>
 
 const password = reactive<Partial<PasswordSchema>>({
   current: '',
@@ -21,7 +22,7 @@ const password = reactive<Partial<PasswordSchema>>({
 const validate = (state: Partial<PasswordSchema>): FormError[] => {
   const errors: FormError[] = []
   if (state.current && state.new && state.current === state.new) {
-    errors.push({ name: 'new', message: 'Новый пароль должен быть другим' })
+    errors.push({ name: 'new', message: t('settings.security.errors.samePassword') })
   }
   return errors
 }
@@ -31,7 +32,7 @@ const { user } = useLogin()
 const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
   try {
     if (!user.value) {
-      alert('User not logged in')
+      alert(t('settings.security.errors.notLoggedIn'))
       return
     }
 
@@ -42,7 +43,7 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
     )
 
     if (res.success) {
-      alert('Пароль обновился')
+      alert(t('settings.security.success'))
       password.current = ''
       password.new = ''
     } else {
@@ -50,15 +51,15 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
     }
   } catch (e) {
     console.error(e)
-    alert('Ошибка при обновлении пароля')
+    alert(t('settings.security.errors.updateError'))
   }
 }
 </script>
 
 <template>
   <UPageCard
-    title="Пароль"
-    description="Подтвердите свой текущий пароль, прежде чем устанавливать новый."
+    :title="$t('settings.security.title')"
+    :description="$t('settings.security.description')"
     variant="subtle"
   >
     <UForm
@@ -72,7 +73,7 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
         <UInput
           v-model="password.current"
           type="password"
-          placeholder="Текущий пароль"
+          :placeholder="$t('settings.security.currentPasswordPlaceholder')"
           class="w-full"
         />
       </UFormField>
@@ -81,22 +82,12 @@ const submit = async (event: FormSubmitEvent<PasswordSchema>) => {
         <UInput
           v-model="password.new"
           type="password"
-          placeholder="Новый пароль"
+          :placeholder="$t('settings.security.newPasswordPlaceholder')"
           class="w-full"
         />
       </UFormField>
 
-      <UButton label="Обновить" class="w-fit" type="submit" />
+      <UButton :label="$t('settings.security.update')" class="w-fit" type="submit" />
     </UForm>
   </UPageCard>
-
-<!--  <UPageCard -->
-<!--    title="Account" -->
-<!--    description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently." -->
-<!--    class="bg-gradient-to-tl from-error/10 from-5% to-default" -->
-<!--  > -->
-<!--    <template #footer> -->
-<!--      <UButton label="Delete account" color="error" /> -->
-<!--    </template> -->
-<!--  </UPageCard> -->
 </template>

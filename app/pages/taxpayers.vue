@@ -11,16 +11,12 @@ const UAvatar = resolveComponent('UAvatar')
 const UButton = resolveComponent('UButton')
 const UDropdownMenu = resolveComponent('UDropdownMenu')
 
+const { t } = useI18n()
 const toast = useToast()
 const table = useTemplateRef('table')
 
 const columnVisibility = ref()
 const rowSelection = ref({ 1: true })
-
-// Получаем данные с обработкой ошибок
-// const { data, status } = useFetch<Taxpayer[]>('/api/taxpayers', {
-//   default: () => []
-// })
 
 const taxpayersData = ref<Taxpayer[]>([])
 const totalTaxpayers = ref(0)
@@ -29,16 +25,16 @@ function getRowItems(row: Row<Taxpayer>) {
   return [
     {
       type: 'label',
-      label: 'Действие'
+      label: t('taxpayers.rowActions.label')
     },
     {
-      label: 'Скопирвать ИНН',
+      label: t('taxpayers.rowActions.copyInn'),
       icon: 'i-lucide-copy',
       onSelect() {
         navigator.clipboard.writeText(row.original.INN)
         toast.add({
-          title: 'Скопировано в буфер обмена',
-          description: 'Идентификационный номер налогоплательщика скопирован в буфер обмена.'
+          title: t('taxpayers.toast.copiedTitle'),
+          description: t('taxpayers.toast.copiedDescription')
         })
       }
     },
@@ -46,7 +42,7 @@ function getRowItems(row: Row<Taxpayer>) {
       type: 'separator'
     },
     {
-      label: 'Посмотреть детали',
+      label: t('taxpayers.rowActions.viewDetails'),
       icon: 'i-lucide-list',
       onSelect() {
         selectedINN.value = row.original.INN
@@ -59,32 +55,14 @@ function getRowItems(row: Row<Taxpayer>) {
   ]
 }
 
-const columns: TableColumn<Taxpayer>[] = [
-  // {
-  //   id: 'select',
-  //   header: ({ table }) =>
-  //     h(UCheckbox, {
-  //       'modelValue': table.getIsSomePageRowsSelected()
-  //         ? 'indeterminate'
-  //         : table.getIsAllPageRowsSelected(),
-  //       'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
-  //         table.toggleAllPageRowsSelected(!!value),
-  //       'ariaLabel': 'Select all'
-  //     }),
-  //   cell: ({ row }) =>
-  //     h(UCheckbox, {
-  //       'modelValue': row.getIsSelected(),
-  //       'onUpdate:modelValue': (value: boolean | 'indeterminate') => row.toggleSelected(!!value),
-  //       'ariaLabel': 'Select row'
-  //     })
-  // },
+const columns = computed<TableColumn<Taxpayer>[]>(() => [
   {
     accessorKey: 'id',
-    header: 'ID'
+    header: t('taxpayers.table.id')
   },
   {
     accessorKey: 'name',
-    header: 'ФИО',
+    header: t('taxpayers.table.fullName'),
     cell: ({ row }) => {
       return h('div', { class: 'flex items-center gap-3' }, [
         h(UAvatar, {
@@ -100,12 +78,12 @@ const columns: TableColumn<Taxpayer>[] = [
   },
   {
     accessorKey: 'INN',
-    header: 'ИНН',
+    header: t('taxpayers.table.inn'),
     cell: ({ row }) => h('span', { class: 'font-mono' }, row.original.INN)
   },
   {
     accessorKey: 'registration_district',
-    header: 'Адрес регистрации',
+    header: t('taxpayers.table.registrationAddress'),
     cell: ({ row }) => row.original.registration_district
   },
   {
@@ -133,17 +111,9 @@ const columns: TableColumn<Taxpayer>[] = [
       )
     }
   }
-]
+])
 
 const INNFilter = ref('')
-// const INN = computed({
-//   get: (): string => {
-//     return (table.value?.tableApi?.getColumn('INN')?.getFilterValue() as string) || ''
-//   },
-//   set: (value: string) => {
-//     table.value?.tableApi?.getColumn('INN')?.setFilterValue(value || undefined)
-//   }
-// })
 
 const pagination = reactive({
   pageIndex: 0,
@@ -181,7 +151,7 @@ watch(debouncedINNFilter, () => {
 <template>
   <UDashboardPanel id="taxpayers">
     <template #header>
-      <UDashboardNavbar title="Налогоплательщики">
+      <UDashboardNavbar :title="t('taxpayers.title')">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -198,24 +168,12 @@ watch(debouncedINNFilter, () => {
           v-model="INNFilter"
           class="max-w-sm"
           icon="i-lucide-search"
-          placeholder="Фильтр по ИНН..."
+          :placeholder="t('taxpayers.filterPlaceholder')"
         />
 
         <div class="flex flex-wrap items-center gap-1.5">
           <!--          <DeleteModal :count="table?.tableApi?.getFilteredSelectedRowModel().rows.length"> -->
-          <!--            <UButton -->
-          <!--              v-if="table?.tableApi?.getFilteredSelectedRowModel().rows.length" -->
-          <!--              label="Delete" -->
-          <!--              color="error" -->
-          <!--              variant="subtle" -->
-          <!--              icon="i-lucide-trash" -->
-          <!--            > -->
-          <!--              <template #trailing> -->
-          <!--                <UKbd> -->
-          <!--                  {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length }} -->
-          <!--                </UKbd> -->
-          <!--              </template> -->
-          <!--            </UButton> -->
+          <!--            ... -->
           <!--          </DeleteModal> -->
           <UDropdownMenu
             :items="
@@ -237,7 +195,7 @@ watch(debouncedINNFilter, () => {
             :content="{ align: 'end' }"
           >
             <UButton
-              label="Дисплей"
+              :label="t('taxpayers.display')"
               color="neutral"
               variant="outline"
               trailing-icon="i-lucide-settings-2"
@@ -268,8 +226,10 @@ watch(debouncedINNFilter, () => {
 
       <div class="flex items-center justify-between gap-3 border-t border-default pt-4 mt-auto">
         <div class="text-sm text-muted">
-          {{ table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0 }} of
-          {{ table?.tableApi?.getFilteredRowModel().rows.length || 0 }} row(s) selected.
+          {{ t('taxpayers.selection', {
+            selected: table?.tableApi?.getFilteredSelectedRowModel().rows.length || 0,
+            total: table?.tableApi?.getFilteredRowModel().rows.length || 0
+          }) }}
         </div>
 
         <div class="flex items-center gap-1.5">

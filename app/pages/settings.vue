@@ -1,42 +1,49 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
+const { t } = useI18n()
+
 const { user } = useLogin()
 
-const links = [[{
-  label: 'Общие',
-  icon: 'i-lucide-user',
-  to: '/settings',
-  exact: true
-},
-...(user.value?.user_role === 'admin'
-  ? [{
-      label: 'Участники системы',
-      icon: 'i-lucide-users',
-      to: '/settings/members'
-    }]
-  : []),
-// {
-//   label: 'Уведомления',
-//   icon: 'i-lucide-bell',
-//   to: '/settings/notifications'
-// },
-{
-  label: 'Безопасность',
-  icon: 'i-lucide-shield',
-  to: '/settings/security'
-}], [{
-  label: 'Documentation',
-  icon: 'i-lucide-book-open',
-  to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-  target: '_blank'
-}]] satisfies NavigationMenuItem[][]
+const links = computed<NavigationMenuItem[][]>(() => [
+  [
+    {
+      label: t('nav.settingsGeneral'),
+      icon: 'i-lucide-user',
+      to: '/settings',
+      exact: true
+    },
+
+    ...(user.value?.user_role === 'admin'
+      ? [{
+          label: t('nav.settingsMembers'),
+          icon: 'i-lucide-users',
+          to: '/settings/members'
+        }]
+      : []),
+
+    {
+      label: t('nav.settingsSecurity'),
+      icon: 'i-lucide-shield',
+      to: '/settings/security'
+    }
+  ],
+
+  [
+    {
+      label: t('nav.documentation'),
+      icon: 'i-lucide-book-open',
+      to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
+      target: '_blank'
+    }
+  ]
+])
 </script>
 
 <template>
   <UDashboardPanel id="settings" :ui="{ body: 'lg:py-12' }">
     <template #header>
-      <UDashboardNavbar title="Настройки">
+      <UDashboardNavbar :title="$t('nav.settings')">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>

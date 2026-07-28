@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const { user } = useLogin()
 const { avatarUrl } = useAvatar()
 const formatDate = (date?: string) => {
@@ -11,7 +12,7 @@ const formatDate = (date?: string) => {
   <UDashboardPanel
     resizable
   >
-    <UDashboardNavbar title="Профиль" />
+    <UDashboardNavbar :title="t('profile.title')" />
     <UPage class="overflow-y-auto h-screen p-6 space-y-6">
       <UCard class="mb-6">
         <div class="flex items-center gap-4">
@@ -24,7 +25,7 @@ const formatDate = (date?: string) => {
               {{ user?.Email }}
             </p>
             <UBadge class="mt-2" color="primary" variant="soft">
-              {{ user?.user_role ?? 'участник' }}
+              {{ user?.user_role ?? t('profile.roleFallback') }}
             </UBadge>
           </div>
         </div>
@@ -32,13 +33,13 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            Основная информация
+            {{ t('profile.basicInfo') }}
           </h3>
         </template>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <p class="text-sm text-muted">
-              Имя пользователя
+              {{ t('profile.username') }}
             </p>
             <p class="font-medium">
               {{ user?.Username }}
@@ -46,7 +47,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Теефон
+              {{ t('profile.phone') }}
             </p>
             <p class="font-medium">
               {{ user?.Phone }}
@@ -54,7 +55,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              День Рождения
+              {{ t('profile.birthDate') }}
             </p>
             <p class="font-medium">
               {{ formatDate(user?.BirthDate) }}
@@ -62,7 +63,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Пол
+              {{ t('profile.gender') }}
             </p>
             <p class="font-medium">
               {{ user?.Gender }}
@@ -70,7 +71,7 @@ const formatDate = (date?: string) => {
           </div>
           <div class="md:col-span-2">
             <p class="text-sm text-muted">
-              Адресс регистрации
+              {{ t('profile.registrationAddress') }}
             </p>
             <p class="font-medium">
               {{ user?.Address_Reg }}
@@ -81,13 +82,13 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            Документы
+            {{ t('profile.documents') }}
           </h3>
         </template>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <p class="text-sm text-muted">
-              паспортные данные
+              {{ t('profile.passportData') }}
             </p>
             <p class="font-medium">
               {{ user?.PassportSeries }} {{ user?.PassportNumber }}
@@ -95,7 +96,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              Дата выдачи
+              {{ t('profile.passportIssueDate') }}
             </p>
             <p class="font-medium">
               {{ formatDate(user?.PassportIssueDate) }}
@@ -103,7 +104,7 @@ const formatDate = (date?: string) => {
           </div>
           <div class="md:col-span-2">
             <p class="text-sm text-muted">
-              Выдан
+              {{ t('profile.passportIssuedBy') }}
             </p>
             <p class="font-medium">
               {{ user?.PassportIssuedBy }}
@@ -111,7 +112,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              СНИЛС
+              {{ t('profile.snils') }}
             </p>
             <p class="font-medium">
               {{ user?.SNILS }}
@@ -119,7 +120,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              ИНН
+              {{ t('profile.inn') }}
             </p>
             <p class="font-medium">
               {{ user?.INN }}
@@ -127,7 +128,7 @@ const formatDate = (date?: string) => {
           </div>
           <div>
             <p class="text-sm text-muted">
-              ОМС полис
+              {{ t('profile.omsPolicy') }}
             </p>
             <p class="font-medium">
               {{ user?.OMSPolicyNumber }}
@@ -138,11 +139,11 @@ const formatDate = (date?: string) => {
       <UCard class="mb-6">
         <template #header>
           <h3 class="font-semibold text-lg">
-            Описание профиля
+            {{ t('profile.bio') }}
           </h3>
         </template>
         <p class="text-muted leading-relaxed">
-          {{ user?.Bio || 'Нет описания' }}
+          {{ user?.Bio || t('profile.noBio') }}
         </p>
       </UCard>
     </UPage>

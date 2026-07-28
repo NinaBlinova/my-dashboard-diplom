@@ -11,12 +11,6 @@ const period = ref<Period>('daily')
 const { user } = useLogin()
 const { filters } = useDashboardFilters()
 const { t } = useI18n()
-const { locale, messages } = useI18n()
-
-watchEffect(() => {
-  console.log('locale', locale.value)
-  console.log('messages', messages.value)
-})
 
 const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
   query: computed(() => ({

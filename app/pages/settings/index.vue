@@ -2,6 +2,8 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
+const { t } = useI18n()
+
 const fileRef = ref<HTMLInputElement>()
 const { user } = useLogin()
 const { updateProfile } = useSetting()
@@ -46,8 +48,8 @@ async function onSubmit(event: FormSubmitEvent<ProfileSchema>) {
     data.Bio
   )
   toast.add({
-    title: 'Успешно',
-    description: 'Ваши настройки обновлены.',
+    title: t('settings.general.toast.updatedTitle'),
+    description: t('settings.general.toast.updatedDescription'),
     icon: 'i-lucide-check',
     color: 'success'
   })
@@ -62,7 +64,7 @@ async function onFileChange(e: Event) {
   await updateAvatar(file, user.value.Id)
 
   toast.add({
-    title: 'Аватар обновлен.',
+    title: t('settings.general.toast.avatarUpdated'),
     icon: 'i-lucide-check',
     color: 'success'
   })
@@ -81,14 +83,14 @@ function onFileClick() {
     @submit="onSubmit"
   >
     <UPageCard
-      title="Профиль"
+      :title="$t('settings.general.title')"
       variant="naked"
       orientation="horizontal"
       class="mb-4"
     >
       <UButton
         form="settings"
-        label="Сохранить изменения"
+        :label="$t('common.actions.saveChanges')"
         color="neutral"
         type="submit"
         class="w-fit lg:ms-auto"
@@ -98,8 +100,8 @@ function onFileClick() {
     <UPageCard variant="subtle">
       <UFormField
         name="name"
-        label="ФИО"
-        description="Будет отображаться в документах."
+        :label="$t('settings.general.fullName.label')"
+        :description="$t('settings.general.fullName.description')"
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -111,8 +113,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="email"
-        label="Email"
-        description="Используется для получения уведомлений, связи."
+        :label="$t('settings.general.email.label')"
+        :description="$t('settings.general.email.description')"
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -125,8 +127,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="username"
-        label="Имя пользователя"
-        description="Ваше уникальное имя пользователя для входа в систему."
+        :label="$t('settings.general.username.label')"
+        :description="$t('settings.general.username.description')"
         required
         class="flex max-sm:flex-col justify-between items-start gap-4"
       >
@@ -139,8 +141,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="avatar"
-        label="Аватар"
-        description="JPG, GIF or PNG. 1MB Max."
+        :label="$t('settings.general.avatar.label')"
+        :description="$t('settings.general.avatar.description')"
         class="flex max-sm:flex-col justify-between sm:items-center gap-4"
       >
         <div class="flex flex-wrap items-center gap-3">
@@ -150,7 +152,7 @@ function onFileClick() {
             size="lg"
           />
           <UButton
-            label="Choose"
+            :label="$t('settings.general.avatar.choose')"
             color="neutral"
             @click="onFileClick"
           />
@@ -166,8 +168,8 @@ function onFileClick() {
       <USeparator />
       <UFormField
         name="Bio"
-        label="Описание профиля"
-        description="Краткое описание вашего профиля."
+        :label="$t('settings.general.bio.label')"
+        :description="$t('settings.general.bio.description')"
         class="flex max-sm:flex-col justify-between items-start gap-4"
         :ui="{ container: 'w-full' }"
       >

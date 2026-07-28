@@ -1,7 +1,8 @@
+import { createSharedComposable } from '@vueuse/core'
 import { watch } from 'vue'
 import type { DashboardFilters } from '~/types'
 
-export function useDashboardFilters() {
+const _useDashboardFilters = () => {
   const filters = useState<DashboardFilters>('dashboard-filters', () => ({
     taxType: undefined,
     mode: 'general',
@@ -11,7 +12,6 @@ export function useDashboardFilters() {
     endYear: undefined
   }))
 
-  // Rule 1: if scope = alone → taxType = null and mode = general
   watch(() => filters.value.scope, (value) => {
     if (value === 'alone') {
       filters.value.taxType = undefined
@@ -20,3 +20,5 @@ export function useDashboardFilters() {
 
   return { filters }
 }
+
+export const useDashboardFilters = createSharedComposable(_useDashboardFilters)

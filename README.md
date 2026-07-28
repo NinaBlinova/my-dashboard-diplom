@@ -8,14 +8,73 @@ This repository contains the client application only. It communicates with a sep
 
 ## Screenshots
 
-**Login screen**
-*(insert screenshot — Figure 3 in the thesis)*
+<h3 align="center">Login Screen</h3>
 
-**Dashboard — main page**
-*(insert screenshot — Figure Б.1 in the thesis)*
+<p align="center">
+  <img src="app/assets/images/login_ru.png" alt="Russian interface" width="45%">
+  <img src="app/assets/images/login_en.png" alt="English interface" width="45%">
+</p>
 
-**Forecasting models**
-*(insert screenshot — Figure Б.2 in the thesis)*
+<p align="center">
+  <em>Figure 1. Login screen of the web application (Russian and English interfaces).</em>
+</p>
+
+<h3 align="center">Dashboard Screen</h3>
+
+<p align="center">
+  <img src="app/assets/images/dashboard_ru.png" alt="Russian interface" width="45%">
+  <img src="app/assets/images/dashboard_en.png" alt="English interface" width="45%">
+</p>
+
+<p align="center">
+  <em>Figure 2. Dashboard screen of the web application (Russian and English interfaces).</em>
+</p>
+
+## User interface
+
+### Navigation
+
+<p align="center">
+  <img src="app/assets/images/nav-graph_ru.png" alt="Navigation graph (RU)" width="45%">
+  <img src="app/assets/images/nav-graph_en.png" alt="Navigation graph (EN)" width="45%">
+</p>
+
+<p align="center">
+  <em>Figure 3. Navigation graph of the web application (Russian and English languages).</em>
+</p>
+
+The sidebar gives quick access to the main sections of the app:
+
+- **Home** — income, tax, and transaction dynamics as charts and diagrams.
+- **Taxpayers** — a list of all taxpayers with a detail view for each.
+- **Models** — selection of the active forecasting model.
+- **Settings** — account and system configuration, split into three subsections:
+  - **General** — edit full name, username, and profile photo.
+  - **Members** *(admin only)* — view and edit system members' accounts.
+  - **Security** — change password.
+
+The sidebar can be resized or collapsed to widen the working area.
+
+At the bottom of the sidebar, the current user's photo and name are shown. Clicking the photo opens a menu with links to the user's profile, a light/dark theme switch, and an accent color picker.
+
+### Key screens
+
+- **Login** — username/password form with input icons styled to match the app; on success the user is redirected to the dashboard.
+- **Dashboard (home)** — the main analytics screen. A filter bar at the top lets the user pick a date range, tax type, and scope (all taxpayers or a single one by INN). Below it, summary cards show each metric's average value and its percentage change versus the previous year. Further down, charts break the same data into donut charts (average tax share of income), bar charts (year-over-year comparison), line charts (overall and median dynamics), and an income-vs-transactions correlation chart.
+- **Models** — a list of available ML models, each showing its version, creation date, and quality metrics (R², MAE, RMSE) split by category (tax, transactions, income). The active model is highlighted, and any model can be set as active.
+
+## Architecture
+
+<p align="center">
+  <img src="app/assets/images/rest-api-architecture_ru.png" alt="REST API scheme (RU)" width="45%">
+  <img src="app/assets/images/rest-api-architecture_en.png" alt="REST API scheme (EN)" width="45%">
+</p>
+
+<p align="center">
+  <em>Figure 4. Client–server interaction scheme based on REST API (Russian and English languages).</em>
+</p>
+
+The client (Nuxt) and server (Flask) communicate over REST: the client sends HTTP requests to server endpoints and the server responds with JSON. On the client, reactivity is handled by Nuxt's Composition API primitives (`useFetch`, `useAsyncData`, `computed`, `watch`), so changing a filter automatically triggers a new request and re-renders the affected charts without a full page reload.
 
 ## Features
 
@@ -99,4 +158,4 @@ npm run typecheck   # run TypeScript type checking
 
 ## About
 
-This project is the frontend part of a bachelor's thesis (ВКР) on the analysis and forecasting of tax revenue dynamics for self-employed individuals and sole proprietors using machine learning.
+This repository contains the frontend application developed as part of a bachelor's thesis on the analysis and forecasting of tax revenue dynamics for self-employed individuals and sole proprietors using machine learning techniques.

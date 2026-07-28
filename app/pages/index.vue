@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { sub } from 'date-fns'
-import type { MonthlyResponse, Period, Range } from '~/types'
+import type { Period, Range } from '~/types'
 import Filters from '~/components/home/Filters.vue'
-import MetricsGrid from '~/components/common/MetricsGrid.vue';
+import MetricsGrid from '~/components/common/MetricsGrid.vue'
 
 const range = shallowRef<Range>({
   start: sub(new Date(), { days: 14 }),
@@ -13,29 +13,8 @@ const { user } = useLogin()
 const { filters } = useDashboardFilters()
 const { t } = useI18n()
 
-const { data: response_median } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
-  query: computed(() => ({
-    type: 'monthly-median',
-    scope: filters.value.scope,
-    taxType: filters.value.taxType,
-    inn: filters.value.inn,
-    startYear: filters.value.startYear,
-    endYear: filters.value.endYear
-  }))
-})
-const monthlyDataMedian = computed(() => response_median.value?.data ?? [])
-
-const { data: response_general } = await useFetch<MonthlyResponse>('/api/dashboard/dashboard', {
-  query: computed(() => ({
-    type: 'monthly-general',
-    scope: filters.value.scope,
-    taxType: filters.value.taxType,
-    inn: filters.value.inn,
-    startYear: filters.value.startYear,
-    endYear: filters.value.endYear
-  }))
-})
-const monthlyDataGeneral = computed(() => response_general.value?.data ?? [])
+const monthlyDataMedian = useMonthlyData('monthly-median')
+const monthlyDataGeneral = useMonthlyData('monthly-general')
 
 const isAlone = computed(() => filters.value.scope === 'alone')
 const { generateReport } = useReport()
